@@ -6,5 +6,15 @@ layout: default
 
 # About Me
 
+Hello! My name is Lalo Esparza, and I am an engineering student attending Cornell University. My undergraduate education is in Electrical & Computer Engineering, and I am currently pursuing a Masters of Enginering in Systems Engineering. While I have multiple academic interests, I find robotics to be a wonderful blend of so many different specialties and I enjoy working in this field. Particularly, I am interested in control algorithms and state estimation.
+
+STILL NEED TO INSERT PHOTO
+
 # Lab Work
+
+Below are links to my lab documents for this class:
+
+
+
+
 
