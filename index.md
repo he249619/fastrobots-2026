@@ -12,7 +12,7 @@ STILL NEED TO INSERT PHOTO
 
 # Lab Work
 
-Below are links to my lab documents for this class:
+This will be updated as the labs are finished.
 
 
 
