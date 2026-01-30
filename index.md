@@ -7,7 +7,7 @@ layout: default
 # About Me
 
 <div style="display: flex; align-items: center; gap: 20px;">
-  <img src="/Images/WUSEF_2024_0039.jpg" alt="Me!" style="width: 160px; height: 240px"/>
+  <img src="Images/WUSEF_2024_0039.jpg" alt="Me!" style="width: 160px; height: 240px"/>
   <div>
     Hello! My name is Lalo Esparza, and I am an engineering student attending Cornell University. My undergraduate education is in Electrical & Computer Engineering, and I am currently pursuing a Masters of Enginering in Systems Engineering. While I have multiple academic interests, I find robotics to be a wonderful blend of so many different specialties and I enjoy working in this field. Particularly, I am interested in control algorithms and state estimation.
   </div>
@@ -16,7 +16,7 @@ layout: default
 
 
   
-![Me!](/Images/WUSEF_2024_0039.jpg){: width="160" height="240"} {: .side-by-side-image}
+![Me!](/Images/WUSEF_2024_0039.jpg){: width="160" height="240"}
 
 Hello! My name is Lalo Esparza, and I am an engineering student attending Cornell University. My undergraduate education is in Electrical & Computer Engineering, and I am currently pursuing a Masters of Enginering in Systems Engineering. While I have multiple academic interests, I find robotics to be a wonderful blend of so many different specialties and I enjoy working in this field. Particularly, I am interested in control algorithms and state estimation.
 
