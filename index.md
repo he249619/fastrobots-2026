@@ -17,4 +17,4 @@ layout: default
 
 This will be updated as the labs are finished.
 
-1. [Lab 1] (Pages/Lab1.md)
+1. [Lab 1](Pages/Lab1.md)
