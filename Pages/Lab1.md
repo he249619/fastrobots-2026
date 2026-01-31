@@ -1,5 +1,7 @@
 --- 
 title: "Lab 1"
-description: ""
+description: "Lab Description and Report"
 layout: default
 ---
+
+# Prelab
