@@ -4,4 +4,6 @@ description: "Lab Description and Report"
 layout: default
 ---
 
-# Prelab
+# Lab 1
+
+## Pelab
