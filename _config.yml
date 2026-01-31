@@ -1,4 +1,4 @@
 theme: jekyll-theme-slate
 title: [ECE 4160 Fast Robots]
-include: ["index.md"]
+# include: ["index.md"]
 description: [Project Documentation of Lalo Esparza's ECE 4160 Labs]
