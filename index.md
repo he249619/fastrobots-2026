@@ -16,3 +16,5 @@ layout: default
 # Lab Work
 
 This will be updated as the labs are finished.
+
+1. [Lab 1] (/Labs/Lab1.md)
