@@ -38,7 +38,7 @@ To get familiar with the capabilities of the Artemis board to handle analogue da
 
 **Also include video of temperature changing**
 
-# <img src="Images/Lab 1/lab1a_task4.png" alt="Task 3!" style="width: 1342px; height: 590px"/>
+# <img src="Images/Lab 1/lab1a_task4.png" alt="Task 3!" style="width: 671px; height: 295px"/>
 
 
 ### Task 5
