@@ -28,7 +28,7 @@ To begin programming the board, I burned Blink, from Arduino's example programs,
 
 **I forgot what this program does, redo and upload any necessary material**
 
-<img src="Pages/WUSEF_2024_0039.jpg" alt="Me!" style="width: 160px; height: 240px"/>
+<img src="Lab Work/Lab 1/lab1A_task3.png" alt="Me!" style="width: 1220px; height: 794px"/>
 
 ### Task 4
 
