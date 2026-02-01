@@ -6,6 +6,8 @@ layout: default
 
 # Lab 1: The Artemis Board and Bluetooth
 
+**Add titles for all tasks**
+
 ## Lab 1A
 
 ### Pelab
@@ -34,7 +36,7 @@ To begin programming the board, I burned Blink, from Arduino's example programs,
 
 To get familiar with the capabilities of the Artemis board to handle analogue data, I uploaded the Apollo3's Example2_analogRead code to the board. This program causes the board to read in data from its on-board temperature sensor. The original code prints this raw analog value, along with data about internal voltages and timing on the board. 
 
-**Add image from the output, and then change the code to output corrent image and maybe include this**
+**Add image from the output, and then change the code to output correct image and maybe include this**
 
 **Also include video of temperature changing**
 
@@ -50,5 +52,15 @@ Finally, I uploaded the Example1_MicrophoneOutput from the RedBoard Artemis Nano
 ## Lab 1B
 
 ### Pelab
+
+### Configuration
+
+In order to set up proper Bluetooth communication between my lapton and the board, I had to determine the MAC address of the board as well as the UUID associated with my board.
+
+**Include MAC address stuff and UUID image**
+
+### Task 1
+
+
 
 ## Discussion
