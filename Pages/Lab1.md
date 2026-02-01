@@ -28,7 +28,9 @@ To begin programming the board, I burned Blink, from Arduino's example programs,
 
 **I forgot what this program does, redo and upload any necessary material**
 
-<img src="Images/Lab 1/lab1A_task3.png" alt="Task 3!" style="width: 610px; height: 397px"/>
+![Alt text for screen readers](/Images/Lab 1/lab1A_task3.png "Optional title text on hover")
+
+# <img src="Images/Lab 1/lab1A_task3.png" alt="Task 3!" style="width: 610px; height: 397px"/>
 
 ### Task 4
 
