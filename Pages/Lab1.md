@@ -28,6 +28,8 @@ To begin programming the board, I burned Blink, from Arduino's example programs,
 
 **I forgot what this program does, redo and upload any necessary material**
 
+<img src="Pages/WUSEF_2024_0039.jpg" alt="Me!" style="width: 160px; height: 240px"/>
+
 ### Task 4
 
 To get familiar with the capabilities of the Artemis board to handle analogue data, I uploaded the Apollo3's Example2_analogRead code to the board. This program causes the board to read in data from its on-board temperature sensor. The original code prints this raw analog value, along with data about internal voltages and timing on the board. 
