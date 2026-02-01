@@ -38,6 +38,9 @@ To get familiar with the capabilities of the Artemis board to handle analogue da
 
 **Also include video of temperature changing**
 
+# <img src="Images/Lab 1/lab1A_task4.png" alt="Task 3!" style="width: 1342px; height: 590px"/>
+
+
 ### Task 5
 
 Finally, I uploaded the Example1_MicrophoneOutput from the RedBoard Artemis Nano examples in order to test out the pulse density microphone (PDM) on the Artemis board. By trying to move my voice to different pitches **I think, I need to double check**, I was able to change the highest recorded frequency that the PDM detected and the program output to the serial monitor.
