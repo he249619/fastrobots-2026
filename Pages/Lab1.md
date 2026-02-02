@@ -29,6 +29,17 @@ To begin programming the board, I burned Blink, from Arduino's example programs,
 </div>
 <br>
 
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/DG_8jBnNdu4"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  allowfullscreen>
+</iframe>
+
+
 ### Task 3
 
 **I forgot what this program does, redo and upload any necessary material**
