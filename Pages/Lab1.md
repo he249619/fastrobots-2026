@@ -24,6 +24,8 @@ I connected the Artemis board to my computer using the USB C output on my laptop
 
 To begin programming the board, I burned Blink, from Arduino's example programs, onto the Artemis board. This caused the blue LED on the board to turn on for one seconds and off for one second, repeatedly.
 
+<iframe width="560" height="315" src="https://youtu.be/DG_8jBnNdu4" title="Lab 1A: Task 2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 **Insert video of the blinking**
 
 ### Task 3
