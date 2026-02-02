@@ -55,13 +55,13 @@ Finally, I uploaded the Example1_MicrophoneOutput from the RedBoard Artemis Nano
 
 ### Configuration
 
-In order to set up proper Bluetooth communication between my lapton and the board, I had to determine the MAC address of the board as well as the UUID associated with my board.
+In order to set up proper Bluetooth communication between my lapton and the board, I had to determine the MAC address of the board. as well as the UUID associated with my board, both of which are 
 
 # <img src="Images/Lab 1/lab1b_artemis_MAC_address.png" alt="Task 3!" style="width: 352px; height: 30px"/>
 
-# <img src="Images/Lab 1/lab1b_more_ble_stuff.png" alt="Task 3!" style="width: 373px; height: 91px"/>
+Additionally, I needed to determine the UUID associated with the board, which  was done through my laptop using Jypeter Notebook.
 
-**Include MAC address stuff and UUID image**
+# <img src="Images/Lab 1/lab1b_more_ble_stuff.png" alt="Task 3!" style="width: 373px; height: 91px"/>
 
 ### Task 1
 
