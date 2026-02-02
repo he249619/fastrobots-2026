@@ -59,6 +59,8 @@ In order to set up proper Bluetooth communication between my lapton and the boar
 
 # <img src="Images/Lab 1/lab1b_artemis_MAC_address.png" alt="Task 3!" style="width: 352px; height: 30px"/>
 
+# <img src="Images/Lab 1/lab1b_more_ble_stuff.png" alt="Task 3!" style="width: 373px; height: 91px"/>
+
 **Include MAC address stuff and UUID image**
 
 ### Task 1
