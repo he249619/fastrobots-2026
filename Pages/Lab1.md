@@ -107,9 +107,9 @@ case ECHO:
 
 These images show what is sent and received by the Python program, and what is printed in the serial monitor. Particularly, this references the last line of the serial monitor.
 
-# <img src="Images/Lab 1/lab1b_echo.png" alt="Task 1, Image 1" style="width: 902px; height: 264px"/>
+# <img src="Images/Lab 1/lab1b_echo.png" alt="Task 1, Image 1" style="width: 451px; height: 132px"/>
 
-# <img src="Images/Lab 1/lab1b_echo_2.png" alt="Task 1, Image 2" style="width: 776px; height: 296px"/>
+# <img src="Images/Lab 1/lab1b_echo_2.png" alt="Task 1, Image 2" style="width: 338px; height: 148px"/>
 
 ### Task 2
 
@@ -145,7 +145,7 @@ case SEND_THREE_FLOATS:
 
 Sending `ble.send_command(CMD.SEND_THREE_FLOATS, "3.14|2.718|1.00")` resulted in the last line of the serial monitor shown below:
 
-# <img src="Images/Lab 1/lab1b_3_floats_2.png" alt="Task 2, Image 1" style="width: 770px; height: 288px"/>
+# <img src="Images/Lab 1/lab1b_3_floats_2.png" alt="Task 2, Image 1" style="width: 385px; height: 144px"/>
 
 ### Task 3
 
@@ -166,7 +166,7 @@ case GET_TIME_MILLIS:
 
 The `T:` in the above command was used so that it was clear that any data following these characters coresponds to the timing. This was used in the Python program on my laptop to use the data set to it. In the serial monitor, this data looks like the last line in this image:
 
-# <img src="Images/Lab 1/lab1b_millis.png" alt="Task 3, Image 1" style="width: 782px; height: 330px"/>
+# <img src="Images/Lab 1/lab1b_millis.png" alt="Task 3, Image 1" style="width: 391px; height: 165px"/>
 
 ### Task 4
 
@@ -256,7 +256,7 @@ case SEND_TIME_DATA:
 
 In the serial monitor, the data looks like this:
 
-# <img src="Images/Lab 1/lab1b_display_time_serial.png" alt="Task 6, Image 1" style="width: 422px; height: 666px"/>
+# <img src="Images/Lab 1/lab1b_display_time_serial.png" alt="Task 6, Image 1" style="width: 211px; height: 333px"/>
 
 The Python program interprets this data, removing the `T:` from the time stamp and placing each data point into the array that holds time data.
 
@@ -283,7 +283,7 @@ case GET_TEMP_READINGS:
 
 This command then sends whatever data was in the time and temperature arrays at the time of the call to the command. The notification handler is able to parse this data by looking for the `T:` and `Temp:` prefixes of the data, as shown in **Task 4**. The Python program then seperates the data and places them into their respective arrays in the Python program without their prefixes.
 
-# <img src="Images/Lab 1/lab1b_display_timeTemp_serial.png" alt="Task 6, Image 1" style="width: 490px; height: 670px"/>
+# <img src="Images/Lab 1/lab1b_display_timeTemp_serial.png" alt="Task 6, Image 1" style="width: 245px; height: 335px"/>
 
 The Python program interprets this data, searching for the `T:` and `Temp:` prefixes in order to find their corresponding data points and place them in seperate arrays.
 
@@ -299,9 +299,11 @@ It is important to try to understand how quickly the packet sending method of da
 
 The amount of space that the second method of data transfer takes up in RAM is also important to keep in mind. With 384 kB of RAM, a simple array of 4-byte integers used for keeping time can be more than 90,000 integers long without worrying about memory loss. However, this isn't realisting, and in an actual system more than just time data would most likely be needed. It's entirely possible that some systems might use many sensors, all of which would require their own arrays to store their data, shortening the maximum allowable length of these arrays. This relationship would become even more complicated if the arrays stored complex objects. In general, the following relationship must hold:
 
-***S = the number of bytes necessary to hold only a single element in every data array present in the the program***
-***n = length of every array in the program***
-***(S*n) for all types of arrays must be less than 394,000***
+***If: S = the number of bytes necessary to hold only a single element in every data array present in the the program***
+
+***And: n = length of every array in the program***
+
+***Then: (S*n) for all types of arrays must be less than 394,000***
 
 Or in other words:
 
