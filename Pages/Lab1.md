@@ -12,13 +12,11 @@ layout: default
 
 ### Pelab
 
-For this all following labs, being able to program the Artemis board and communicate with it with our personal lapton via Bluetooth is vital. To do this, I updated my Arduino IDE and Sparfun Appollo3 boards manager.
+For this all following labs, being able to program the Artemis board and communicate with it with our personal lapton via Bluetooth is vital. To do this, I updated my Arduino IDE and SparkFun Appollo3 boards manager.
 
 ### Task 1
 
 I connected the Artemis board to my computer using the USB C output on my laptop to connect to the USB C input on the board.
-
-**Insert images of the cord, the computer port, and the board port**
 
 ### Task 2
 
@@ -34,19 +32,31 @@ To begin programming the board, I burned Blink, from Arduino's example programs,
 
 ### Task 3
 
-**I forgot what this program does, redo and upload any necessary material**
+The purpose of this task was to become familiar with the boards serial interface. In Apollo3's Example4_Serial program, the Artemis board reads input from the serial monitor in the Arduino IDE when it is available and then prints the users input back out to the serial monitor. This was useful to better understand how to read and write to the serial monitor.
+
+To test this behavior, I sent the strings "Hello World" and "This is an ECHOOO...EChooo...Echooo...echooo......echoo" through the serial monitor, both of which the program echoed back to me.
 
 # <img src="Images/Lab 1/lab1A_task3.png" alt="Task 3!" style="width: 610px; height: 397px"/>
 
 ### Task 4
 
-To get familiar with the capabilities of the Artemis board to handle analogue data, I uploaded the Apollo3's Example2_analogRead code to the board. This program causes the board to read in data from its on-board temperature sensor. The original code prints this raw analog value, along with data about internal voltages and timing on the board. 
+To get familiar with the capabilities of the Artemis board to handle analogue data, I uploaded the Apollo3's Example2_analogRead code to the board. This program causes the board to read in data from its on-board temperature sensor. The original code prints this raw analog value, along with data about internal voltages and timing on the board, as shown in the code snippet and image below:
 
-**Add image from the output, and then change the code to output correct image and maybe include this**
+```C++
+Serial.printf("temp (counts): %d, vcc/3 (counts): %d, vss (counts): %d, time (ms) %d\n", temp_raw, vcc_3, vss, millis());
+```
+
+**Add correct image**
 
 **Also include video of temperature changing**
 
 # <img src="Images/Lab 1/lab1a_task4.png" alt="Task 3!" style="width: 671px; height: 295px"/>
+
+In order to make this data make sense, I altered the code slightly so that it printed out the actual temperature of the internal sensor in degrees Fahrenheit as an integer. 
+
+```C++
+Serial.printf("Temp in degrees F: %d\n", (int)temp_f);
+```
 
 
 ### Task 5
