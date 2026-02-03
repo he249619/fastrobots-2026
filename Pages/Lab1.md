@@ -36,7 +36,7 @@ The purpose of this task was to become familiar with the boards serial interface
 
 To test this behavior, I sent the strings "Hello World" and "This is an ECHOOO...EChooo...Echooo...echooo......echoo" through the serial monitor, both of which the program echoed back to me.
 
-# <img src="Images/Lab 1/lab1A_task3.png" alt="Task 3!" style="width: 610px; height: 397px"/>
+# <img src="Images/Lab 1/lab1a_task3.png" alt="Task 3!" style="width: 610px; height: 397px"/>
 
 ### Task 4
 
