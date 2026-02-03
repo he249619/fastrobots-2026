@@ -313,7 +313,7 @@ The amount of space that the second method of data transfer takes up in RAM is a
 
 ***Then: (S*n) for all types of arrays must be less than 394,000***
 
-Or in other words:
+Or more succinctly:
 
 ***n < (394,000)/S***
 
