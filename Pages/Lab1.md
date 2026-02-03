@@ -36,7 +36,7 @@ The purpose of this task was to become familiar with the boards serial interface
 
 To test this behavior, I sent the strings "Hello World" and "This is an ECHOOO...EChooo...Echooo...echooo......echoo" through the serial monitor, both of which the program echoed back to me.
 
-# <img src="Images/Lab 1/lab1a_task3.png" alt="Task 3!" style="width: 610px; height: 397px"/>
+# <img src="Images/Lab 1/lab1a_task3.png" alt="Task 3, Image 1" style="width: 610px; height: 397px"/>
 
 ### Task 4
 
@@ -50,13 +50,15 @@ Serial.printf("temp (counts): %d, vcc/3 (counts): %d, vss (counts): %d, time (ms
 
 **Also include video of temperature changing**
 
-# <img src="Images/Lab 1/lab1a_task4.png" alt="Task 3!" style="width: 671px; height: 295px"/>
+# <img src="Images/Lab 1/lab1a_task4.png" alt="Task 4, Image 1" style="width: 671px; height: 295px"/>
 
 In order to make this data make sense, I altered the code slightly so that it printed out the actual temperature of the internal sensor in degrees Fahrenheit as an integer. 
 
 ```C++
 Serial.printf("Temp in degrees F: %d\n", (int)temp_f);
 ```
+
+# <img src="Images/Lab 1/lab1a_task4_updated_code.png" alt="Task 4, Image 2" style="width: 630px; height: 359px"/>
 
 
 ### Task 5
