@@ -84,7 +84,7 @@ Additionally, I needed to determine the UUID associated with the board, which  w
 
 ### Task 1
 
-In order to send a string form my laptop to the Artemis board via a Bluetooth connection, an ECHO command needed to be implemented in the code burned onto the board. This command creates a list of "char" types, and then populates this list with the input from my laptop if there is input, otherwise the command does nothing. If there was an input, this input is then added to the "tx_estring_value" object, sandwiched between some formatting prefixes and suffixes. This is then printed to the serial monitor.
+In order to send a string form my laptop to the Artemis board via a Bluetooth connection, an `ECHO` command needed to be implemented in the code burned onto the board. This command creates a list of `char` types, and then populates this list with the input from my laptop if there is input, otherwise the command does nothing. If there was an input, this input is then added to the `tx_estring_value` object, sandwiched between some formatting prefixes and suffixes. This is then printed to the serial monitor.
 
 The printing of the received string is why this command is called "ECHO".
 
@@ -111,7 +111,7 @@ case ECHO:
 
 ### Task 2
 
-Another command that needed to be implemented was "SEND_THREE_FLOATS", which would allow me to send three seperate floats from my laptop to the Artemis board. Similar to the "ECHO" command, it had to be ensured that the user sent the necessary amount of parameters in order to for this command to work properly. Since this command expects three seperate floats, it needed to check to see if these parameters were provided. Given that they were, the local float variables would then be assigned the values of the floats provided form the laptop, and the board printed these floats to the serial monitor. 
+Another command that needed to be implemented was `SEND_THREE_FLOATS`, which would allow me to send three seperate floats from my laptop to the Artemis board. Similar to the `ECHO` command, it had to be ensured that the user sent the necessary amount of parameters in order to for this command to work properly. Since this command expects three seperate floats, it needed to check to see if these parameters were provided. Given that they were, the local float variables would then be assigned the values of the floats provided form the laptop, and the board printed these floats to the serial monitor. 
 
 ```cpp
 case SEND_THREE_FLOATS:
@@ -145,7 +145,7 @@ case SEND_THREE_FLOATS:
 
 ### Task 3
 
-In order to keep track of the timing of the Artemis board, the "GET_TIME_MILLIS" command was implemented to print the current number of milliseconds since the Artemis board began running the current program to the serial monitor and also append it to the "tx_estring_value" object in order to send this information to my laptop. 
+In order to keep track of the timing of the Artemis board, the `GET_TIME_MILLIS` command was implemented to print the current number of milliseconds since the Artemis board began running the current program to the serial monitor and also append it to the `tx_estring_value` object in order to send this information to my laptop. 
 
 ```cpp
 case GET_TIME_MILLIS:
@@ -160,11 +160,11 @@ case GET_TIME_MILLIS:
   break;
 ```
 
-The "T:" in the above command was used so that it was clear that any data following these characters coresponds to the timing. This was used in the Python program on my laptop to use the data set to it.
+The `T:` in the above command was used so that it was clear that any data following these characters coresponds to the timing. This was used in the Python program on my laptop to use the data set to it.
 
 ### Task 4
 
-The above commands, and all other commands that ready information to send to my laptop via Bluetooth are unable to send the data unless my laptop requests it. This can be cumbersome when we want data to be autonously sent from the Artemis board to the Python files, so a notification handler needed to be implemented in Python.
+The above commands, and all other commands that prepare information to send to my laptop, are unable to send the data unless my laptop requests it. This can be cumbersome when we want data to be autonously sent from the Artemis board to the Python files, so a notification handler needed to be implemented in Python.
 
 In the notification handler I implemented, I had the function determine if there is time data within the received data by referencing the syntax of the time data discussed in the previous task. If there is time data, it is extracted and placed in an array for use else where in the Python program. Similarly, I extract any temperature data sent to the Python program from the Artemis board.
 
@@ -188,6 +188,36 @@ ble.start_notify(ble.uuid['RX_STRING'], start_string_notifications)
 ### Task 5
 
 **Write a loop that gets the current time in milliseconds and sends it to your laptop to be received and processed by the notification handler. Collect these values for a few seconds and use the time stamps to determine how fast messages can be sent. What is the effective data transfer rate of this method?**
+
+As an alternative to sending a singular timestamp upon request, it could be useful for the user to receive timing information over a user-defined index of time. In order to do this, I impleneted a `LOOP_OVER_SET_TIME` command that returns the `millis()` for a user-defined amount of time. This was done by using the same logic as the `GET_TIME_MILLIS`, and repeating it until a user-specified amount of time has passed. The user specifies this amount of time in the Python files and sends in as part of the cocmmand.
+
+```cpp
+case LOOP_OVER_SET_TIME:
+
+    int time_length;
+
+    robot_cmd.get_next_value(time_length);
+
+    unsigned long loop_start_time;
+    loop_start_time = millis();
+    unsigned long loop_stop_time;
+    loop_stop_time = loop_start_time + time_length*1000;
+    
+    while (millis() < loop_stop_time){
+        tx_estring_value.clear();
+        tx_estring_value.append("T:");
+        tx_estring_value.append((int)millis());
+        tx_characteristic_string.writeValue(tx_estring_value.c_str());
+
+        Serial.println(tx_estring_value.c_str());
+    }
+
+    break;
+```
+
+By sending this data to Python, I can then analyze how many data points are sent via Bluetooth over a certain number of time, allowing me to determing the data transfer rate. While the exact data transfer rate changes slightly between seperate calls to this command, it tends to be around 190 data points per second.
+
+**insert image of data transfer rate and relevant data from the python file**
 
 ### Task 6
 
