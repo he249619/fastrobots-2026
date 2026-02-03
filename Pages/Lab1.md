@@ -46,8 +46,6 @@ To get familiar with the capabilities of the Artemis board to handle analogue da
 Serial.printf("temp (counts): %d, vcc/3 (counts): %d, vss (counts): %d, time (ms) %d\n", temp_raw, vcc_3, vss, millis());
 ```
 
-**Also include video of temperature changing**
-
 # <img src="Images/Lab 1/lab1a_task4.png" alt="Task 4, Image 1" style="width: 671px; height: 295px"/>
 
 To make more sense of this data, I altered the code slightly so that it printed out the actual temperature of the internal sensor in degrees Fahrenheit as an integer. 
@@ -58,11 +56,21 @@ Serial.printf("Temp in degrees F: %d\n", (int)temp_f);
 
 # <img src="Images/Lab 1/lab1a_task4_updated_code.png" alt="Task 4, Image 2" style="width: 630px; height: 359px"/>
 
+Here is a video of my showing how the temperature of the board can increase by placing your fingers on it:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/uEZnfojnviE"
+  title="ECE 4160: Lab 1A Blink" frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
+</iframe>
+
 ### Task 5
 
 Finally, I uploaded the Example1_MicrophoneOutput from the RedBoard Artemis Nano examples in order to test out the pulse density microphone (PDM) on the Artemis board. By trying to move my voice to different frequencies, I was able to change the highest recorded frequency that the PDM detected and the program printed this value to the serial monitor.
 
-**Insert video of the singing and changing frequency**
+<iframe width="560" height="315" src="https://www.youtube.com/embed/hxytNxVMLKE"
+  title="ECE 4160: Lab 1A PDM" frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
+</iframe>
 
 ## Lab 1B
 
