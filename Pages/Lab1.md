@@ -186,8 +186,6 @@ ble.start_notify(ble.uuid['RX_STRING'], start_string_notifications)
         
 ### Task 5
 
-**Write a loop that gets the current time in milliseconds and sends it to your laptop to be received and processed by the notification handler. Collect these values for a few seconds and use the time stamps to determine how fast messages can be sent. What is the effective data transfer rate of this method?**
-
 As an alternative to sending a singular time stamp upon request, it could be useful for the user to receive timing information over a user-defined index of time. In order to do this, I impleneted a `LOOP_OVER_SET_TIME` command that returns the `millis()` for a user-defined amount of time. This was done by using the same logic as the `GET_TIME_MILLIS`, and repeating it until a user-specified amount of time has passed. The user specifies this amount of time in the Python files and sends in as part of the cocmmand.
 
 ```cpp
