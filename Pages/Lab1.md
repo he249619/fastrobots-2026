@@ -42,7 +42,7 @@ To test this behavior, I sent the strings "Hello World" and "This is an ECHOOO..
 
 To get familiar with the capabilities of the Artemis board to handle analogue data, I uploaded the Apollo3's Example2_analogRead code to the board. This program causes the board to read in data from its on-board temperature sensor. The original code prints this raw analog value, along with data about internal voltages and timing on the board, as shown in the code snippet and image below:
 
-```C++
+```cpp
 Serial.printf("temp (counts): %d, vcc/3 (counts): %d, vss (counts): %d, time (ms) %d\n", temp_raw, vcc_3, vss, millis());
 ```
 
@@ -54,16 +54,15 @@ Serial.printf("temp (counts): %d, vcc/3 (counts): %d, vss (counts): %d, time (ms
 
 In order to make this data make sense, I altered the code slightly so that it printed out the actual temperature of the internal sensor in degrees Fahrenheit as an integer. 
 
-```C++
+```cpp
 Serial.printf("Temp in degrees F: %d\n", (int)temp_f);
 ```
 
 # <img src="Images/Lab 1/lab1a_task4_updated_code.png" alt="Task 4, Image 2" style="width: 630px; height: 359px"/>
 
-
 ### Task 5
 
-Finally, I uploaded the Example1_MicrophoneOutput from the RedBoard Artemis Nano examples in order to test out the pulse density microphone (PDM) on the Artemis board. By trying to move my voice to different pitches **I think, I need to double check**, I was able to change the highest recorded frequency that the PDM detected and the program output to the serial monitor.
+Finally, I uploaded the Example1_MicrophoneOutput from the RedBoard Artemis Nano examples in order to test out the pulse density microphone (PDM) on the Artemis board. By trying to move my voice to different frequencies, I was able to change the highest recorded frequency that the PDM detected and the program printed this value to the serial monitor.
 
 **Insert video of the singing and changing frequency**
 
@@ -71,18 +70,137 @@ Finally, I uploaded the Example1_MicrophoneOutput from the RedBoard Artemis Nano
 
 ### Pelab
 
+For the prelab, I updated the my version of Python, created a virtual environment to work in, and installed the necessary Python packages.
+
 ### Configuration
 
 In order to set up proper Bluetooth communication between my lapton and the board, I had to determine the MAC address of the board. as well as the UUID associated with my board, both of which are 
 
-# <img src="Images/Lab 1/lab1b_artemis_MAC_address.png" alt="Task 3!" style="width: 352px; height: 30px"/>
+# <img src="Images/Lab 1/lab1b_artemis_MAC_address.png" alt="Configuration, Image 1" style="width: 352px; height: 30px"/>
 
 Additionally, I needed to determine the UUID associated with the board, which  was done through my laptop using Jypeter Notebook.
 
-# <img src="Images/Lab 1/lab1b_more_ble_stuff.png" alt="Task 3!" style="width: 373px; height: 91px"/>
+# <img src="Images/Lab 1/lab1b_more_ble_stuff.png" alt="Configuration, Image 2" style="width: 373px; height: 91px"/>
 
 ### Task 1
 
+In order to send a string form my laptop to the Artemis board via a Bluetooth connection, an ECHO command needed to be implemented in the code burned onto the board. This command creates a list of "char" types, and then populates this list with the input from my laptop if there is input, otherwise the command does nothing. If there was an input, this input is then added to the "tx_estring_value" object, sandwiched between some formatting prefixes and suffixes. This is then printed to the serial monitor.
 
+The printing of the received string is why this command is called "ECHO".
+
+```cpp
+case ECHO:
+  char char_arr[MAX_MSG_SIZE];
+  // Extract the next value from the command string as a character array
+  success = robot_cmd.get_next_value(char_arr);
+  if (!success)
+    return;
+
+  tx_estring_value.clear();
+  tx_estring_value.append("Robot echos back: ");
+  tx_estring_value.append(char_arr);
+  tx_estring_value.append(" :)");
+  tx_characteristic_string.writeValue(tx_estring_value.c_str());
+
+  Serial.println(tx_estring_value.c_str());
+
+  break;
+```
+
+**Add image of the string form the laptop and the printed string in Arduino serial monitor**
+
+### Task 2
+
+Another command that needed to be implemented was "SEND_THREE_FLOATS", which would allow me to send three seperate floats from my laptop to the Artemis board. Similar to the "ECHO" command, it had to be ensured that the user sent the necessary amount of parameters in order to for this command to work properly. Since this command expects three seperate floats, it needed to check to see if these parameters were provided. Given that they were, the local float variables would then be assigned the values of the floats provided form the laptop, and the board printed these floats to the serial monitor. 
+
+```cpp
+case SEND_THREE_FLOATS:
+
+    float flt_a, flt_b, flt_c;
+
+    // Extract the next value from the command string as a float
+    success = robot_cmd.get_next_value(flt_a);
+    if (!success)
+        return;
+
+    success = robot_cmd.get_next_value(flt_b);
+    if (!success)
+        return;
+
+    success = robot_cmd.get_next_value(flt_c);
+    if (!success)
+        return;
+
+    Serial.print("Three Floats: ");
+    Serial.print(flt_a);
+    Serial.print(", ");
+    Serial.print(flt_b);
+    Serial.print(", ");
+    Serial.println(flt_c);
+
+    break;
+```
+
+**Add image of laptop input and the printing of the floats**
+
+### Task 3
+
+In order to keep track of the timing of the Artemis board, the "GET_TIME_MILLIS" command was implemented to print the current number of milliseconds since the Artemis board began running the current program to the serial monitor and also append it to the "tx_estring_value" object in order to send this information to my laptop. 
+
+```cpp
+case GET_TIME_MILLIS:
+
+  tx_estring_value.clear();
+  tx_estring_value.append("T:");
+  tx_estring_value.append((int)millis());
+  tx_characteristic_string.writeValue(tx_estring_value.c_str());
+  
+  Serial.println(tx_estring_value.c_str());
+  
+  break;
+```
+
+The "T:" in the above command was used so that it was clear that any data following these characters coresponds to the timing. This was used in the Python program on my laptop to use the data set to it.
+
+### Task 4
+
+The above commands, and all other commands that ready information to send to my laptop via Bluetooth are unable to send the data unless my laptop requests it. This can be cumbersome when we want data to be autonously sent from the Artemis board to the Python files, so a notification handler needed to be implemented in Python.
+
+In the notification handler I implemented, I had the function determine if there is time data within the received data by referencing the syntax of the time data discussed in the previous task. If there is time data, it is extracted and placed in an array for use else where in the Python program. Similarly, I extract any temperature data sent to the Python program from the Artemis board.
+
+After creating the notification function, the notification handler needs to be started and tied to this function, as shown below. This allows the Python program to retrieve data from the Artemis board whenever the board transmits data, as opposed to only receiving data when the Python program requests it.
+
+```python
+def start_string_notifications(uuid, string_notification):
+    # user should always have time data returned last in arduino
+    received_string = ble.bytearray_to_string(string_notification)
+    temp_index = received_string.find("Temp:")
+    time_index = received_string.find("T:")
+    if (time_index != -1):
+        if (temp_index != -1):
+            temp_array.append(received_string[temp_index+5:time_index])
+        time_array.append(received_string[time_index+2:])
+
+ble.start_notify(ble.uuid['RX_STRING'], start_string_notifications)
+```
+        
+
+### Task 5
+
+**Write a loop that gets the current time in milliseconds and sends it to your laptop to be received and processed by the notification handler. Collect these values for a few seconds and use the time stamps to determine how fast messages can be sent. What is the effective data transfer rate of this method?**
+
+### Task 6
+
+**Now create an array that can store time stamps. This array should be defined globally so that other functions can access it if need be. In the loop, rather than send each time stamp, place each time stamp into the array. (Note: you’ll need some extra logic to determine when your array is full so you don’t “over fill” the array.) Then add a command SEND_TIME_DATA which loops the array and sends each data point as a string to your laptop to be processed. (You can store these values in a list in python to determine if all the data was sent over.)**
+
+### Task 7
+
+**Add a second array that is the same size as the time stamp array. Use this array to store temperature readings. Each element in both arrays should correspond, e.e., the first time stamp was recorded at the same time as the first temperature reading. Then add a command GET_TEMP_READINGS that loops through both arrays concurrently and sends each temperature reading with a time stamp. The notification handler should parse these strings and add populate the data into two lists.**
+
+### Task 8
+
+**Discuss the differences between these two methods, the advantages and disadvantages of both and the potential scenarios that you might choose one method over the other. How “quickly” can the second method record data? The Artemis board has 384 kB of RAM. Approximately how much data can you store to send without running out of memory?**
 
 ## Discussion
+
+## Acknowledgements
