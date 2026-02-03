@@ -324,4 +324,4 @@ In this lab, I was able to establish a Bluetooth connection between my laptop an
 
 ## Acknowledgements
 
-For aide in some of the formatting of this Webpage, particularly with the images and videos, I consulted Chat GPT for advice on how to use Markdown correctly.
+For aide in some of the formatting of this webpage, particularly with the images and videos, I consulted Chat GPT for advice on how to use Markdown correctly.
