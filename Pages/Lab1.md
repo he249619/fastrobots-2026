@@ -52,7 +52,7 @@ Serial.printf("temp (counts): %d, vcc/3 (counts): %d, vss (counts): %d, time (ms
 
 # <img src="Images/Lab 1/lab1a_task4.png" alt="Task 4, Image 1" style="width: 671px; height: 295px"/>
 
-In order to make this data make sense, I altered the code slightly so that it printed out the actual temperature of the internal sensor in degrees Fahrenheit as an integer. 
+To make more sense of this data, I altered the code slightly so that it printed out the actual temperature of the internal sensor in degrees Fahrenheit as an integer. 
 
 ```cpp
 Serial.printf("Temp in degrees F: %d\n", (int)temp_f);
@@ -184,12 +184,11 @@ def start_string_notifications(uuid, string_notification):
 ble.start_notify(ble.uuid['RX_STRING'], start_string_notifications)
 ```
         
-
 ### Task 5
 
 **Write a loop that gets the current time in milliseconds and sends it to your laptop to be received and processed by the notification handler. Collect these values for a few seconds and use the time stamps to determine how fast messages can be sent. What is the effective data transfer rate of this method?**
 
-As an alternative to sending a singular timestamp upon request, it could be useful for the user to receive timing information over a user-defined index of time. In order to do this, I impleneted a `LOOP_OVER_SET_TIME` command that returns the `millis()` for a user-defined amount of time. This was done by using the same logic as the `GET_TIME_MILLIS`, and repeating it until a user-specified amount of time has passed. The user specifies this amount of time in the Python files and sends in as part of the cocmmand.
+As an alternative to sending a singular time stamp upon request, it could be useful for the user to receive timing information over a user-defined index of time. In order to do this, I impleneted a `LOOP_OVER_SET_TIME` command that returns the `millis()` for a user-defined amount of time. This was done by using the same logic as the `GET_TIME_MILLIS`, and repeating it until a user-specified amount of time has passed. The user specifies this amount of time in the Python files and sends in as part of the cocmmand.
 
 ```cpp
 case LOOP_OVER_SET_TIME:
@@ -217,20 +216,92 @@ case LOOP_OVER_SET_TIME:
 
 By sending this data to Python, I can then analyze how many data points are sent via Bluetooth over a certain number of time, allowing me to determing the data transfer rate. While the exact data transfer rate changes slightly between seperate calls to this command, it tends to be around 190 data points per second.
 
-**insert image of data transfer rate and relevant data from the python file**
+# <img src="Images/Lab 1/lab1b_data_transfer_rate.png" alt="Task 5, Image 1" style="width: 846px; height: 374px"/>
 
 ### Task 6
 
-**Now create an array that can store time stamps. This array should be defined globally so that other functions can access it if need be. In the loop, rather than send each time stamp, place each time stamp into the array. (Note: you’ll need some extra logic to determine when your array is full so you don’t “over fill” the array.) Then add a command SEND_TIME_DATA which loops the array and sends each data point as a string to your laptop to be processed. (You can store these values in a list in python to determine if all the data was sent over.)**
+Instead of sending singular data points at a time, it could be useful to send larger packets of data, or predefined size, at a time. In order to do this, I created a global array of integers that is then populated with time stamps in a command `POPULATE_TIME_ARRAY`. Additionally, this command populates a list of temperature data that is the same length as the time array. By populating both lists in the same loop iteration, it can be ensured that the temperature data corresponds with the time data. 
+
+```cpp
+case POPULATE_TIME_ARRAY:
+
+    for (int i = 0; i < length_of_array; i = i + 1){
+        time_array[i] = (int)millis();
+        temp_array[i] = (int)getTempDegF();
+    }
+
+    break;
+```
+
+In order to send all of this data over to my laptop, I then implemented at `SEND_TIME_DATA` command. This command loops over the time array and individually sends each element in it to my laptop via Bluetooth. This is then stored in a list of time data in Python.
+
+```cpp
+case SEND_TIME_DATA:
+
+    for (int i = 0; i < length_of_array; i = i + 1){
+        tx_estring_value.clear();
+        tx_estring_value.append("T:");
+        tx_estring_value.append(time_array[i]);
+        tx_characteristic_string.writeValue(tx_estring_value.c_str());
+
+        Serial.println(tx_estring_value.c_str());
+    }
+
+    break;
+```
+
+**Add image of what data looks like in serial monitor, and then what data looks like in Python**
 
 ### Task 7
 
-**Add a second array that is the same size as the time stamp array. Use this array to store temperature readings. Each element in both arrays should correspond, e.e., the first time stamp was recorded at the same time as the first temperature reading. Then add a command GET_TEMP_READINGS that loops through both arrays concurrently and sends each temperature reading with a time stamp. The notification handler should parse these strings and add populate the data into two lists.**
+As discussed above, the program is now capable of storing time data and temperature data from the same time stamp in their respective arrays. Next, the `GET_TEMP_READINGS` command needs to be implemented in order to send both the time data and the temperature data back to the laptop in chunks, as opposed to the Artemis continuously transmitting data. This is very similar to the `SEND_TIME_DATA` command.
+
+```cpp
+case GET_TEMP_READINGS:
+
+    for (int i = 0; i < length_of_array; i = i + 1){
+        tx_estring_value.clear();
+        tx_estring_value.append("Temp:");
+        tx_estring_value.append(temp_array[i]);
+        tx_estring_value.append("T:");
+        tx_estring_value.append(time_array[i]);
+        tx_characteristic_string.writeValue(tx_estring_value.c_str());
+
+        Serial.println(tx_estring_value.c_str());
+    }
+
+    break;
+```
+
+This command then sends whatever data was in the time and temperature arrays at the time of the call to the command. The notification handler is able to parse this data by looking for the `T:` and `Temp:` prefixes of the data, as shown in **Task 4**. The Python program then seperates the data and places them into their respective arrays in the Python program without their prefixes.
+
+**Add image of what data looks like in serial monitor, and then what data looks like in Python**
 
 ### Task 8
 
-**Discuss the differences between these two methods, the advantages and disadvantages of both and the potential scenarios that you might choose one method over the other. How “quickly” can the second method record data? The Artemis board has 384 kB of RAM. Approximately how much data can you store to send without running out of memory?**
+These two methods of data transfer, one continuous stream of data and bursts of large amounts of data, have different consequences. The continous transmission of data from the Artemis board is helpful for real time systems that require a constant feed of information about the state of the system, but it is also very slow compared to sending packets of data. While the second method is faster, the amount of time inbetween packets being sent could potentially be long. If the system in question is dynamic enough, it's possible that important information won't be able to get to the Python program fast enough in order to use that data appropriately.
+
+Therefore, for systems that don't change very quickly or that don't need continous data input, then sending data in packets is better. However, if the system can change quickly or if continuous information is needed, then sending singular segments of data immediately after each other with no pause is better.
+
+It is important to try to understand how quickly the packet sending method of data transmission can actually record data. For this, we can look at the amount of data in the packets and compare it to the amount of time to create the packet.
+
+**Include photo of data related to this**
+
+The amount of space that the second method of data transfer takes up in RAM is also important to keep in mind. With 384 kB of RAM, a simple array of 4-byte integers used for keeping time can be more than 90,000 integers long without worrying about memory loss. However, this isn't realisting, and in an actual system more than just time data would most likely be needed. It's entirely possible that some systems might use many sensors, all of which would require their own arrays to store their data, shortening the maximum allowable length of these arrays. This relationship would become even more complicated if the arrays stored complex objects. In general, the following relationship must hold:
+
+***S = the number of bytes necessary to hold only a single element in every data array present in the the program***
+***n = length of every array in the program***
+***(S*n) for all types of arrays must be less than 394,000***
+
+Or in other words:
+
+***n < (394,000)/S***
+
 
 ## Discussion
 
+In this lab, I was able to establish a Bluetooth connection between my laptop and the Artemis board, send data to and from both devices, and implement a notification handler in Python in order to automatically recieve transmitted data from the Artemis board. I was also able to analyze the efficiency of continuously transmitting data from the Artemis and compare it with sending arrays of data at non-continuous intervals of time.
+
 ## Acknowledgements
+
+For aide in some of the formatting of this Webpage, particularly with the images and videos, I consulted Chat GPT for advice on how to use Markdown correctly.
