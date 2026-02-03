@@ -107,6 +107,8 @@ case ECHO:
   break;
 ```
 
+These images show what is sent and received by the Python program, and what is printed in the serial monitor. Particularly, this references the last line of the serial monitor.
+
 **Add image of the string form the laptop and the printed string in Arduino serial monitor**
 
 ### Task 2
@@ -140,6 +142,8 @@ case SEND_THREE_FLOATS:
 
     break;
 ```
+
+Sending `ble.send_command(CMD.SEND_THREE_FLOATS, "3.14|2.718|1.00")` resulted in the last line of the serial monitor shown below:
 
 **Add image of laptop input and the printing of the floats**
 
@@ -212,7 +216,7 @@ case LOOP_OVER_SET_TIME:
     break;
 ```
 
-By sending this data to Python, I can then analyze how many data points are sent via Bluetooth over a certain number of time, allowing me to determing the data transfer rate. While the exact data transfer rate changes slightly between seperate calls to this command, it tends to be around 190 data points per second.
+By sending this data to Python, I can then analyze how many data points are sent via Bluetooth over a certain number of time, allowing me to determing the data transfer rate. While the exact data transfer rate changes slightly between seperate calls to this command, it tends to be between 190 and 100 data points per second.
 
 # <img src="Images/Lab 1/lab1b_data_transfer_rate.png" alt="Task 5, Image 1" style="width: 846px; height: 374px"/>
 
