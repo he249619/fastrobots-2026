@@ -307,15 +307,15 @@ It is important to try to understand how quickly the packet sending method of da
 
 The amount of space that the second method of data transfer takes up in RAM is also important to keep in mind. With 384 kB of RAM, a simple array of 4-byte integers used for keeping time can be more than 90,000 integers long without worrying about memory loss. However, this isn't realisting, and in an actual system more than just time data would most likely be needed. It's entirely possible that some systems might use many sensors, all of which would require their own arrays to store their data, shortening the maximum allowable length of these arrays. This relationship would become even more complicated if the arrays stored complex objects. In general, the following relationship must hold:
 
-***If: S = the number of bytes necessary to hold only a single element in every data array present in the the program***
+**If: S = the number of bytes necessary to hold only a single element in every data array present in the the program**
 
-***And: n = length of every array in the program***
+**And: n = length of every array in the program**
 
-***Then: (S*n) for all types of arrays must be less than 394,000***
+**Then: (S*n) for all types of arrays must be less than 394,000**
 
 Or more succinctly:
 
-***n < (394,000)/S***
+**n < (394,000)/S**
 
 
 ## Discussion
