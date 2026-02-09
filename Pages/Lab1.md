@@ -6,8 +6,6 @@ layout: default
 
 # Lab 1: The Artemis Board and Bluetooth
 
-**Add titles for all tasks**
-
 ## Lab 1A
 
 ### Pelab
