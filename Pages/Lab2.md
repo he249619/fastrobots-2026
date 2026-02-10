@@ -42,13 +42,15 @@ Here is an image when the IMU is facing downwards. Note the change of sign on th
 
 ### Accelerometer Accuracy
 
-When the accelerometer returns measurements, the precision of the measurements depends on the full-scale range of the IMU, which is programmable. In my program, the full-scale range is such that the accelerometer reports acceleration values between ±2g. This means that a value of 1g is reported as the integer value 16,384. Therefore, when the IMU flat on the table, one would expect the z-acceleration to be +16,384 when facing up, and -16,384 when facing down. However, my IMU reported about 17,114 when facing upwards, on average, and -15,782 when facing down. Assuming that any offset from the expected output of the IMU is linear with respect to its orientation, then I can determine how far away the data is from the theoretical values in the face-down and face-up position, average them, and add this offset to all of the acceleration data. Therefore, I will subtract about 660 to all acceleration data collected moving forward. This is a correction of about 0.04g's.
+When the accelerometer returns measurements, the precision of the measurements depends on the full-scale range of the IMU, which is programmable. In my program, the full-scale range is such that the accelerometer reports acceleration values between ±2g. This means that a value of 1g is reported as the integer value 16,384. 
+
+When the is IMU flat on the table, one would expect the z-acceleration to be +16,384 when facing up, and -16,384 when facing down. My IMU reported about 17,114 when facing upwards and -15,782 when facing down. Assuming that any offset from the expected output is linear, I can determine how far away the data is from the expected values in the down and up position. By averaging these differences and adding this averaged offset to all of the acceleration data, I can make is comparable with what is expected. Therefore, I will subtract about 660 to all acceleration data collected moving forward, a correction of about 0.04g.
 
 ### Roll and Pitch as Determined by the Accelerometer
 
-In order to calculate the pitch and roll of the IMU, two very simple equations are needed. By using geometry and trigonomotry on a simple model of the IMU, it can be determined that the equation to determine the pitch of the IMU is: **atan2(x-acceleration, z-acceleration)**, and the equation for roll is **atan2(y-acceleration, z-acceleration)**. As it can be seen, these two equations are both dependent on the z-acceleration, which couples them and can lead to undesireable affects. For example, whenever either the pitch or roll values are at ±90 degrees, the other angle isn't at 0 degrees like we would expect. This is because when, for example, the pitch is at +90 degrees, the x-acceleration is positive and the z-acceleration is zero. This would correspond with **atan2(infinity)**, which returns +90 degrees for the pitch and is expected. However, the 0 z-acceleration also causes the roll equation to diverege, but to -90 degrees instead. 
+In order to calculate the pitch and roll of the IMU, two very simple equations are needed. By using geometry and trigonometry on a simple model of the IMU, it can be determined that the equation to determine the pitch of the IMU is: **atan2(x-acceleration, z-acceleration)**, and the equation for roll is **atan2(y-acceleration, z-acceleration)**. 
 
-These singularities are due to the mathematical equations of the pitch and roll and is not related to the sensor itself. See below for more examples of this.
+As it can be seen, these two equations are both dependent on the z-acceleration, which couples them and can lead to undesirable effects when the z component approaches 0. This causes either the pitch or roll to diverege when the othe one approaches ±90 degrees. These singularities are due to the mathematical equations of the pitch and roll and are not related to the sensor itself. See below for more examples of this.
 
 ##### Value of Pitch and Roll when Pitch is positioned at -90 Degrees
 # <img src="Images/Lab 2/a_roll_and_pitch_pitch_at_-90.png" style="max-width:75%"/>
@@ -70,17 +72,17 @@ These singularities are due to the mathematical equations of the pitch and roll 
 
 ### Frequency Analysis
 
-It is very noticable in the previous graphs that the pitch and roll data are extremely noisy, which is due to the noisy accelerometer data. The image below shows the pitch and roll values when the IMU is flat and motionless on a table.
+It is very noticeable in the previous graphs that the pitch and roll data are extremely noisy, which is due to the noisy accelerometer data. The image below shows the pitch and roll values when the IMU is flat and motionless on a table.
 
 # <img src="Images/Lab 2/noisy_acc_angles_when_flat.png" style="max-width:75%"/>
 
-This data can be analyze to determine its frequency components by computing a fourier transform of it. The following data are the frequency components of the pitch and roll.
+This data can be analyzed to determine its frequency components by computing a fourier transform of it. The following data are the frequency components of the pitch and roll.
 
 # <img src="Images/Lab 2/noisy_acc_angles_when_flat_pitch.png" style="max-width:75%"/>
 
 # <img src="Images/Lab 2/noisy_acc_angles_when_flat_roll.png" style="max-width:75%"/>
 
-As it can be seen from the graphs, the measurements have non-zero frequency components for a large range of frequencies. This is undesireable and leads to the type of noisy data we are seeing. Therefore, I built a low-pass filter with a cutoff of about 2.5 Hz for the accelerometer data. By using such a low cut off frequency, the output of this filter is much less noisy, as can be seen below.
+As it can be seen from the graphs, the measurements have non-zero frequency components for a large range of frequencies. This is undesirable and leads to the type of noisy data we are seeing. Therefore, I built a low-pass filter with a cutoff of about 2.5 Hz for the accelerometer data. By using such a low cut off frequency, the output of this filter is much less noisy, as can be seen below.
 
 # <img src="Images/Lab 2/filtered_acc_angles_when_flat.png" style="max-width:75%"/>
 
@@ -94,13 +96,13 @@ This slightly stabilizes the values of the pitch and roll, though they are still
 
 ### Roll and Pitch as Determined by the Gyroscope
 
-In order to get information about pitch and roll from the gyroscope, it is necessary to know how it reports its data. The gyroscope returns the angular velocity, in degrees per second, of one of the three axes of the IMU. In order to turn this data into something usuable, you must multiply the angular velocity of the axis of interest by the amount of time that has passed since the sensor's last sample. This would then return a change of degree in the said axis' plain, and if you continuously sum these changes over time you will get a very stable approximation for the pitch, roll, and yaw of the IMU. 
+The gyroscope returns the angular velocity, in degrees per second, of one of the three axes of the IMU. To use this data, you must multiply the angular velocity by the amount of time since the sensor's last sample. This returns a change in degree over some axis. If you continuously sum these changes over time you will get a very stable approximation for the pitch, roll, and yaw of the IMU. 
 
-However, even though the gyroscope readings have very little noise, they will drift away from the true values that they're trying to represent. This is because in order to get the pitch, roll, or yaw, you have to continuously add upon the previous measurements, which sums the errors of each measurement. An example of this drift can be seen below, where though the IMU was motionless on a table, some of the angle measurements diverge from zero.
+However, though the gyroscope readings have very little noise, they will drift away from the true values. This is when calculating the pitch, roll, or yaw, you continuously add upon previous measurements, summing the errors of each measurement. An example of this drift can be seen below, where though the IMU was motionless on a table, some of the angle measurements diverge from zero.
 
 # <img src="Images/Lab 2/gRollPitchYawAtPitch0.png" style="max-width:75%"/>
 
-Even with this drift, the stability of the gyroscopes data is very desireable. Take the following data, for example. When the IMU is moving, the gyroscope data is not noisy, resulting in a very clear calculation of the pitch, roll, and yaw of the IMU.
+Even with this drift, the stability of the gyroscope data is very desirable. Take the following data, for example. When the IMU is moving, the gyroscope data is not noisy, resulting in a very clear calculation of the pitch, roll, and yaw of the IMU.
 
 # <img src="Images/Lab 2/gRollPitchYawAtPitch+90.png" style="max-width:75%"/>
 
@@ -112,13 +114,13 @@ But both the accelerometer and the gyroscope have benefits and costs to their us
 
 ### Complementary Filter
 
-A complementary filter must be built in order to fuse the accuracy of the accelerometer with the stability of the gyroscope. What the complementary filter will do is sum a scaled value of the accelerometer's pitch and roll, as determined by the low-pass filter, with the pitch and roll from the gyroscope data. The question then becomes how to weight the two sources properly.
+A complementary filter must be built in order to fuse the accuracy of the accelerometer with the stability of the gyroscope. What the complementary filter will do is sum a scaled value of the accelerometer's pitch and roll, as determined by the low-pass filter, with the pitch and roll from the gyroscope data. The question then becomes how to weigh the two sources properly.
 
-The desireble trait of the accelerometer is that it is very accurate, but it is also very noisy. Additionally, due to the math behind the pitch and roll calculations, when either of those angles are at ±90 degrees, the other angle will behave as if at a singularity. Therefore, we would want the complementary filter to reduce the noise and remove the singularity from the data, but keep the accuracy. From the gyroscope, the complementary should remove the drift but keep the stability.
+The desirable trait of the accelerometer is that it is very accurate, but it is also very noisy. Additionally, due to the math behind the pitch and roll calculations, when either of those angles are at ±90 degrees, the other angle will behave as if at a singularity. Therefore, we would want the complementary filter to reduce the noise and remove the singularity from the data, but keep the accuracy. From the gyroscope, the complementary should remove the drift but keep the stability.
 
 Therefore, the complementary filter should weigh the gyroscope much higher than the accelerometer. This is because by weighing the gyroscope data higher, the complementary filter will prioritize stability and non-singularity behavior more on shorter time scales. The smaller component of the accelerometer data will not change the output of the filter from one time step to another, but over long time scales the accelerometer's contribution will help to compensate for the drift of the gyroscope and will bring the filter back to an accurate value of the pitch and roll. This will produce a system that will have the same accuracy as the accelerometer, but have the non-singularity filled range of the gyroscope.
 
-After various attempts, I decided that weighting the gyroscope data with 0.99 and the accelerometer data with 0.01 got the behavior I desired. This can be seen in the first image below when the complementary filter isn't affected by the low-pass accelerometer's odd noise at around 50000 milliseconds, time step. Additionally, in the second image, the complementary filter follows the same shape as the gyroscope, and is euqally as non-noisy, but the accelerometer data is able to bring the filter's output back to an accurate value.
+After various attempts, I decided that weighting the gyroscope data with 0.99 and the accelerometer data with 0.01 was best. This can be seen in the first image below when the complementary filter isn't affected by the low-pass accelerometer's odd noise at around 50000 milliseconds, time step. In the second image, the complementary filter follows the same shape as the gyroscope, and is non-noisy, but the accelerometer data brings the filter's output back to an accurate value.
 
 # <img src="Images/Lab 2/complementaryFilterPitchAlpha0.01.png" style="max-width:75%"/>
 
@@ -128,7 +130,7 @@ After various attempts, I decided that weighting the gyroscope data with 0.99 an
 
 ### Collection and Storage of Time-Stamped IMU Data
 
-In order to achieve the highest rates of data transfer as possible, I collected the data in arrays on the Artemis Nano, filling the arrays entirely before sending any data over Bluetooth to my laptop. This was done in Arduino by looping over the arrays of fixed size and updating their entries. For example:
+In order to achieve the highest rates of data transfer possible, I collected the data in arrays on the Artemis Nano, filling the arrays entirely before sending any data over Bluetooth to my laptop. This was done in Arduino by looping over the arrays of fixed size and updating their entries. For example:
 
 ```cpp
 time_array[counter] = (int)millis();
@@ -147,11 +149,7 @@ The arrays storing the pitch, roll, and time values were 3000 indices long, and 
 
 # <img src="Images/Lab 2/10secondStoredData.png" style="max-width:50%"/>
 
-I believe that it makes most sense to store the pitch, roll, and time data in seperate arrays because this decreases any additional memory that might be required to store an array of specialized structs. Reducing the amount of memory each one of those structs might take means that there is more memory to allocate for the data arrays, allowing them to be larger and to store more data. 
-
-While storing all this different data in one large array might seem like it would save storage, this might not actually be true. Some of the data points, like time, can be stored as integers, while others have to be represented as a float. Therefore, if you stored all the data in one list, you would have to cast variables that require less storage to variables that require more storage. Additionally, storing all of the data in one large array would become harder for the Python scripts to sift through and use, adding to the computational complexity of analyzing the sensor's readings.
-
-These arrays should primarily be of floats and integers. This is because the data coming from the IMU and from the internal timing mechanisms of the Artemis Nano are themselves floats and integers, and it is not worth the time to convert all of this data to a different type of variable in order to store it. I think that it is best to store it as the type of variable it is returned as, and then cast the data to another form of variable if need be later.
+I believe that it makes most sense to store the pitch, roll, and time data in separate arrays of floats and integers. This decreases any additional memory required to store an array of specialized structs. It is not more memory efficient to store all of the data into one large array because you would have to cast all the data to the same type of variable, which can actually increase memory usage. Additionally, storing all of the data in one large array would become harder for the Python scripts to sift through and use, adding to the computational complexity of analyzing the sensor's readings.
 
 As discussed in Lab 1, the amount of memory that I can allocate to my arrays depends on the number of arrays that I have. If, for example, I only care about the pitch and roll output from the complementary filter and the time, then I would only need three arrays. Two of these arrays would be of floats, and the time associated array would be made of integers. This means that to store one element in each of these three arrays will collectively cost 10 bytes of memory, because a float is 4 bytes and an integer is 2. Given that there are 384 kB of RAM, this means that I can make my three arrays almost 39000 indices long.
 
@@ -167,7 +165,7 @@ In order to ensure that the robotic system will have enough data to work with at
 
 ## Record a Stunt
 
-The car is very responsive and very fast. It is able to change directions very quickly, as well as flip over when changing from moving forward to moving backward or vice versa. The button on the top left of the remote seems to be some sort of "go crazy" button that causes the car to move forward for a little bit, do a couple of flips, turn, move forward again, and then repeat this process until any of the buttons are pressed again. I noticed that it is a little bit difficult to turn the car accurately, and I would often overshoot the turning angle that I was trying to achieve. Similarly, it was hard to turn while moving forward or backwards, often resulting in chaotic motions.
+The car is very responsive and fast. It is able to change directions quickly, as well as flip over when changing direction. The button on the top left of the remote seems to make the car "go crazy", making it move and flip around. It is a little bit difficult to turn the car accurately. Similarly, it was hard to turn while moving, often resulting in chaotic motions.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/kv3FrmjujaU"
   title="ECE 4160: Lab 2 Car Tricks" frameborder="0"
