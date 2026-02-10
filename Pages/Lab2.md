@@ -55,6 +55,7 @@ This behavior is due to the mathematical equations of pitch and roll and is not 
 ## Sample Data
 ### Speed of sampling discussion
 ### Demonstrate collected and stored time-stamped IMU data in arrays
+**Look at actual arduino code for this**
 ### Demonstrate 5s of IMU data sent over Bluetooth
 
 ## Record a Stunt
