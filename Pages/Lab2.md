@@ -37,9 +37,19 @@ In order to calculate the pitch and roll of the IMU, two very simple equations a
 
 This behavior is due to the mathematical equations of pitch and roll and is not related to sensor itself. See below for more examples of this.
 
-**insert images here**
+# <img src="Images/Lab 2/a_roll_and_pitch_pitch_at_-90.png" style="max-width:50%"/>
+# <img src="Images/Lab 2/a_roll_and_pitch_pitch_at_0.png" style="max-width:50%"/>
+# <img src="Images/Lab 2/a_roll_and_pitch_pitch_at_90.png" style="max-width:50%"/>
+
+# <img src="Images/Lab 2/a_roll_and_pitch_roll_-90.png" style="max-width:50%"/>
+# <img src="Images/Lab 2/a_roll_and_pitch_roll_0.png" style="max-width:50%"/>
+# <img src="Images/Lab 2/a_roll_and_pitch_roll_90.png" style="max-width:50%"/>
+
 
 ### Noise in the frequency spectrum analysis
+
+**Do this discussion**
+
 #### Include graphs for your fourier transform
 
 **noisy_acc_when_flat, noisy_acc_when_flat_x_freq, noisy_acc_when_flat_y_freq, noisy_acc_when_flat_z_freq, noisy_acc_angles_when_flat, noisy_acc_angles_when_flat_pitch, noisy_acc_angles_when_flat_roll**
