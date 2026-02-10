@@ -4,7 +4,7 @@ description: "Lab Description and Report"
 layout: default
 ---
 
-# Lab 1: Inertial Measurement Unit
+# Lab 2: Inertial Measurement Unit
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/DG_8jBnNdu4"
   title="ECE 4160: Lab 1A Blink" frameborder="0"
