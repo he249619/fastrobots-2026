@@ -8,7 +8,7 @@ layout: default
 
 ## Set up the IMU
 
-### Picture of your Artemis IMU connections
+### IMU Connections
 
 The IMU connects to the Artemis Nano through a quick connect wire.
 
@@ -32,7 +32,11 @@ The accelerometer data takes on large values, comfortably ranging from 1000 mg t
 
 On the other hand, the gyroscope only reads large values when the device is rotating about one of its axes. Otherwise, the values are practically zero. This makes sense because the gyroscope measures the change in degree per second, so if the device isn't rotating then it wouldn't have an angular velocity. 
 
-### Acceleration and gyroscope data discussion (pictures recommended)
+Here is an image when the IMU is facing upwards.
+# <img src="Images/Lab 2/acc_gyro_data1.png" style="max-width:75%"/>
+
+Here is an image when the IMU is facing downwards. Note the change of sign on the z-acceleration component.
+# <img src="Images/Lab 2/acc_gyro_data2.png" style="max-width:75%"/>
 
 ## Accelerometer
 
