@@ -6,15 +6,10 @@ layout: default
 
 # Lab 2: Inertial Measurement Unit
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/DG_8jBnNdu4"
-  title="ECE 4160: Lab 1A Blink" frameborder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
-</iframe>
-
-# Lab Tasks
-
 ## Set up the IMU
+
 ### Picture of your Artemis IMU connections
+
 ### Show that the IMU example code works
 ### AD0_VAL definition discussion
 ### Acceleration and gyroscope data discussion (pictures recommended)
@@ -48,7 +43,6 @@ These singularities are due to the mathematical equations of the pitch and roll 
 
 ##### Value of Pitch and Roll when Roll is positioned at 90 Degrees
 # <img src="Images/Lab 2/a_roll_and_pitch_roll_90.png" style="max-width:75%"/>
-
 
 ### Frequency Analysis
 
@@ -106,9 +100,9 @@ After various attempts, I decided that weighting the gyroscope data with 0.99 an
 
 # <img src="Images/Lab 2/complementaryFilterRollalpha0.01.png" style="max-width:75%"/>
 
-## Sample Data
-### Speed of sampling discussion
-### Demonstrate collected and stored time-stamped IMU data in arrays
+## Sampling Data
+
+### Collection and Storage of Time-Stamped IMU Data
 
 In order to achieve the highest rates of data transfer as possible, I collected the data in arrays on the Artemis Nano, filling the arrays entirely before sending any data over Bluetooth to my laptop. This was done in Arduino by looping over the arrays of fixed size and updating their entries. For example:
 
@@ -121,13 +115,36 @@ theta_filter_rad[counter] = (theta_filter_rad[counter-1] - dy)*(1.0-alpha_compli
 phi_filter_rad[counter] = (phi_filter_rad[counter-1] + dx)*(1.0-alpha_complimentary_filter)+(((phi_a*180)/M_PI)*alpha_complimentary_filter);
 ```
 
-The above code looped through the lists, incrementing `counter` until it reached the length of the list. At this point, the entire list of data was transmitted to my laptop one index at a time. These arrays were 3000 indices long, and all of this data was stored in lists in Python on my laptop.
+The above code looped through the lists, incrementing `counter` until it reached the length of the list. At this point, the entire list of data was transmitted to my laptop and printed to the Arduino serial monitor one index at a time. Below is how this data was organized for transmission. The "CMD21:" section of the data was used on the Python end of the system in order for it to determine what data was sent with this associated command.
 
-# <img src="Images/Lab 2/10secondStoredData.png" style="max-width:75%"/>
+# <img src="Images/Lab 2/10secondGeneratedData.png" style="max-width:50%"/>
 
-### Demonstrate 5s of IMU data sent over Bluetooth
+The arrays storing the pitch, roll, and time values were 3000 indices long, and all of these data were stored in lists in Python on my laptop after being transmitted by the Artemis Nano.
+
+# <img src="Images/Lab 2/10secondStoredData.png" style="max-width:50%"/>
+
+### Duration of IMU Data Collection
+
+In order to ensure that the robotic system will have enough data to work with at a time, it is helpful to have data be collected for large amounts of time. I was able to get my system to collect data for more than 10 seconds at frequency of about 294 data points per second, as shown below.
+
+# <img src="Images/Lab 2/10secondPitch.png" style="max-width:75%"/>
+
+# <img src="Images/Lab 2/10secondRoll.png" style="max-width:75%"/>
+
+# <img src="Images/Lab 2/10secondText.png" style="max-width:50%"/>
 
 ## Record a Stunt
-### Include a video (or some videos) of you playing with the car and discuss your observations
+
+The car is very responsive and very fast. It is able to change directions very quickly, as well as flip over when changing from moving forward to moving backward or vice versa. The button on the top left of the remote seems to be some sort of "go crazy" button that causes the car to move forward for a little bit, do a couple of flips, turn, move forward again, and then repeat this process until any of the buttons are pressed again. I noticed that it is a little bit difficult to turn the car accurately, and I would often overshoot the turning angle that I was trying to achieve. Similarly, it was hard to turn while moving forward or backwards, often resulting in chaotic motions.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/kv3FrmjujaU"
+  title="ECE 4160: Lab 2 Car Tricks" frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
+</iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/6KccTDvJOws"
+  title="ECE 4160: Lab 2 Spinning Car" frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
+</iframe>
 
 
