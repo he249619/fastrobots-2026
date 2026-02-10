@@ -11,12 +11,6 @@ layout: default
   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
 </iframe>
 
-# <img src="Images/Lab 1/lab1a_task3.png" alt="Task 3, Image 1" style="width: 610px; height: 397px"/>
-
-```cpp
-Serial.printf("temp (counts): %d, vcc/3 (counts): %d, vss (counts): %d, time (ms) %d\n", temp_raw, vcc_3, vss, millis());
-```
-
 # Lab Tasks
 
 ## Set up the IMU
@@ -27,45 +21,109 @@ Serial.printf("temp (counts): %d, vcc/3 (counts): %d, vss (counts): %d, time (ms
 
 ## Accelerometer
 
-### Accelerometer accuracy discussion
+### Accelerometer Accuracy
 
 When the accelerometer returns measurements, the precision of the measurements depends on the full-scale range of the IMU, which is programmable. In my program, the full-scale range is such that the accelerometer reports acceleration values between ±2g. This means that a value of 1g is reported as the integer value 16,384. Therefore, when the IMU flat on the table, one would expect the z-acceleration to be +16,384 when facing up, and -16,384 when facing down. However, my IMU reported about 17,114 when facing upwards, on average, and -15,782 when facing down. Assuming that any offset from the expected output of the IMU is linear with respect to its orientation, then I can determine how far away the data is from the theoretical values in the face-down and face-up position, average them, and add this offset to all of the acceleration data. Therefore, I will subtract about 660 to all acceleration data collected moving forward. This is a correction of about 0.04g's.
 
-### Image of output at {-90, 0, 90} degrees for pitch and roll (include equations)
+### Roll and Pitch as Determined by the Accelerometer
 
 In order to calculate the pitch and roll of the IMU, two very simple equations are needed. By using geometry and trigonomotry on a simple model of the IMU, it can be determined that the equation to determine the pitch of the IMU is: **atan2(x-acceleration, z-acceleration)**, and the equation for roll is **atan2(y-acceleration, z-acceleration)**. As it can be seen, these two equations are both dependent on the z-acceleration, which couples them and can lead to undesireable affects. For example, whenever either the pitch or roll are at ±90 degrees, the other measurement isn't at 0 degrees like we would expect. This is because when, for example, pitch is a +90 degrees, the x-acceleration is positive and the z-acceleration is zero. This would correspond with **atan2(infinity)**, which returns +90 degrees. However, the 0 z-acceleration also causes the roll equation to diverege, but to -90 degrees instead. 
 
-This behavior is due to the mathematical equations of pitch and roll and is not related to sensor itself. See below for more examples of this.
+These singularities are due to the mathematical equations of the pitch and roll and is not related to the sensor itself. See below for more examples of this.
 
-# <img src="Images/Lab 2/a_roll_and_pitch_pitch_at_-90.png" style="max-width:50%"/>
-# <img src="Images/Lab 2/a_roll_and_pitch_pitch_at_0.png" style="max-width:50%"/>
-# <img src="Images/Lab 2/a_roll_and_pitch_pitch_at_90.png" style="max-width:50%"/>
+##### Value of Pitch and Roll when Pitch is positioned at -90 Degrees
+# <img src="Images/Lab 2/a_roll_and_pitch_pitch_at_-90.png" style="max-width:75%"/>
 
-# <img src="Images/Lab 2/a_roll_and_pitch_roll_-90.png" style="max-width:50%"/>
-# <img src="Images/Lab 2/a_roll_and_pitch_roll_0.png" style="max-width:50%"/>
-# <img src="Images/Lab 2/a_roll_and_pitch_roll_90.png" style="max-width:50%"/>
+##### Value of Pitch and Roll when Pitch is positioned at 0 Degrees
+# <img src="Images/Lab 2/a_roll_and_pitch_pitch_at_0.png" style="max-width:75%"/>
+
+##### Value of Pitch and Roll when Pitch is positioned at 90 Degrees
+# <img src="Images/Lab 2/a_roll_and_pitch_pitch_at_90.png" style="max-width:75%"/>
+
+##### Value of Pitch and Roll when Roll is positioned at -90 Degrees
+# <img src="Images/Lab 2/a_roll_and_pitch_roll_-90.png" style="max-width:75%"/>
+
+##### Value of Pitch and Roll when Roll is positioned at 0 Degrees
+# <img src="Images/Lab 2/a_roll_and_pitch_roll_0.png" style="max-width:75%"/>
+
+##### Value of Pitch and Roll when Roll is positioned at 90 Degrees
+# <img src="Images/Lab 2/a_roll_and_pitch_roll_90.png" style="max-width:75%"/>
 
 
 ### Noise in the frequency spectrum analysis
 
-**Do this discussion**
+It is very noticable in the previous graphs that the pitch and roll data are very noisy, which is due to the noisy accelerometer data. The image below shows the pitch and roll values when the IMU is flat and motionless on a table.
 
-#### Include graphs for your fourier transform
+# <img src="Images/Lab 2/noisy_acc_angles_when_flat.png" style="max-width:75%"/>
 
-**noisy_acc_when_flat, noisy_acc_when_flat_x_freq, noisy_acc_when_flat_y_freq, noisy_acc_when_flat_z_freq, noisy_acc_angles_when_flat, noisy_acc_angles_when_flat_pitch, noisy_acc_angles_when_flat_roll**
+This data can be analyze to determine its frequency components by computing a fourier transform of it. The following data are the frequency components of the pitch and roll data.
 
-**filtered_acc_when_flat, filtered_acc_when_flat_x, filtered_acc_when_flat_y, filtered_acc_when_flat_z, filtered_acc_angles_when_flat, filtered_acc_angles_when_flat_pitch, filtered_acc_angles_when_flat_roll**
+# <img src="Images/Lab 2/noisy_acc_angles_when_flat_pitch.png" style="max-width:75%"/>
 
-#### Discuss the results
+# <img src="Images/Lab 2/noisy_acc_angles_when_flat_roll.png" style="max-width:75%"/>
+
+As it can be seen from the graphs, the measurements have non-zero frequency components for a large range of frequencies. This is undesireable because it can lead to they type of noisy data show previously. Therefore, I built a low pass filter for the acceleration data with a cutoff of about 2.5 Hz. The output of this filter is much less noisy, as can be seen below.
+
+# <img src="Images/Lab 2/filtered_acc_angles_when_flat.png" style="max-width:75%"/>
+
+# <img src="Images/Lab 2/filtered_acc_angles_when_flat_pitch.png" style="max-width:75%"/>
+
+# <img src="Images/Lab 2/filtered_acc_angles_when_flat_roll.png" style="max-width:75%"/>
+
+This seems to stabilize the values of the pitch and roll more, even though it is still noisy. A complementary filter might be able to reduce this noise even more, and to implement that I will data from the gyroscope within the IMU as well.
 
 ## Gyroscope
-### Include documentation for pitch, roll, and yaw with images of the results of different IMU positions
-###  Demonstrate the accuracy and range of the complementary filter, and discuss any design choices
+
+### Roll and Pitch as Determined by the Gyroscope
+
+In order to get information about pitch and roll from the gyroscope, it is necessary to know how it reports its data. The gyroscope returns data as an angular velocity, in degrees per second, of one of the three axes of the IMU. In order to turn this data into something usuable, you must multiply the angular velocity of the axis of interest by the amount of time that has passed since the sensors last sample. This would then return a change of degree in the said axis' plain, and if you continuously sum these changes over time you will get a very stable approximation for the pitch, roll, and yaw of the IMU. However, even though the gyroscope readings have very little noise, they will drift away from the true values that they're trying to represent. This is because in order to get the pitch, roll, and yaw, you have to continuously add upon the previous measurements, which additionally sums the errors of each measurement. An example of this drift can be seen below, where even though the IMU was held motionless against a table, some of the angle measurements continue to rise.
+
+# <img src="Images/Lab 2/gRollPitchYawAtPitch0.png" style="max-width:75%"/>
+
+Even with this drift, the stability of the gyroscopes data is very desireable. Take the following data, for example. When the IMU is moving, the gyroscope data is not noisy, resulting in a very clear calculation of the pitch, roll, and yaw of the IMU.
+
+# <img src="Images/Lab 2/gRollPitchYawAtPitch+90.png" style="max-width:75%"/>
+
+So far, we have the raw acceleration data, the low-passed acceleration data, and the gyroscope data to calculate the pitch and roll.
+
+# <img src="Images/Lab 2/allThreeMethodsWithChangingPitch.png" style="max-width:75%"/>
+
+But both the accelerometer and the gyroscope have benefits and costs to their usage, so we need to implement a way to somehow combine their data.
+
+### Complementary Filter
+
+A complementary filter must be built in order to fuse the accuracy of the accelerometer with the stability of the gyroscope. What the complementary filter will do is sum a scaled value of the accelerometer's pitch and roll, as determined by the low pass filter, with the pitch and roll from the gyroscope data. The question then becomes how to weight the two sources properly.
+
+The desireble trait of the accelerometer is that it is very accurate, but it is also very noisy. Additionally, due to the math behind the pitch and roll calculations, when either of those angles are at ±90 degrees, the other angle will behave as if at a singularity. Therefore, we would want the complementary filter to reduce the noise and remove the singularity from the data, but keep the accuracy. From the gyroscope, the complementary should remove the drift but keep the stability.
+
+Therefore, a good intuition for how to build the complementary filter would indicate that we want the gyroscope to be weighed much higher than the accelerometer. This is because by weighing the gyroscope data higher, the complementary filter will prioritize stability and non-singularity behavior more on shorter time scales. The smaller component of the accelerometer data will not change the output of the filter from one time step to another, but over long time scales the accelerometer's contribution will help to compensate for the drift of the gyroscope and will bring the filter back to an accurate value of the pitch and roll. This will produce a system that will have the same accuracy as the accelerometer, but have the non-singularity filled range of the gyroscope.
+
+After various attempts, I decided that weighting the gyroscope data with 0.99 and the accelerometer data with 0.01 got the behavior I desired. This can be seen in the first image below when the complementary filter isn't affected by the low-pass accelerometer's odd noise at around 50000 milliseconds, time step. Additionally, in the second image, the complementary filter follows the same shape as the gyroscope, and is euqally as non-noisy, but the accelerometer data is able to bring the filter's output back to an accurate value.
+
+# <img src="Images/Lab 2/complementaryFilterPitchAlpha0.01.png" style="max-width:75%"/>
+
+# <img src="Images/Lab 2/complementaryFilterRollalpha0.01.png" style="max-width:75%"/>
 
 ## Sample Data
 ### Speed of sampling discussion
 ### Demonstrate collected and stored time-stamped IMU data in arrays
-**Look at actual arduino code for this**
+
+In order to achieve the highest rates of data transfer as possible, I collected the data in arrays on the Artemis Nano, filling the arrays entirely before sending any data over Bluetooth to my laptop. This was done in Arduino by looping over the arrays of fixed size and updating their entries. For example:
+
+```cpp
+time_array[counter] = (int)millis();
+
+...
+
+theta_filter_rad[counter] = (theta_filter_rad[counter-1] - dy)*(1.0-alpha_complimentary_filter)+(((theta_a*180)/M_PI)*alpha_complimentary_filter);
+phi_filter_rad[counter] = (phi_filter_rad[counter-1] + dx)*(1.0-alpha_complimentary_filter)+(((phi_a*180)/M_PI)*alpha_complimentary_filter);
+```
+
+The above code looped through the lists, incrementing `counter` until it reached the length of the list. At this point, the entire list of data was transmitted to my laptop one index at a time. These arrays were 3000 indices long, and all of this data was stored in lists in Python on my laptop.
+
+**Updated image**
+# <img src="Images/Lab 2/complementaryFilterRollalpha0.01.png" style="max-width:75%"/>
+
 ### Demonstrate 5s of IMU data sent over Bluetooth
 
 ## Record a Stunt
