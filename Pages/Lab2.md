@@ -18,7 +18,7 @@ The IMU connects to the Artemis Nano through a quick connect wire.
 
 In the ICM 20948 example code, the IMU's raw values are scaled so that it has proper units with which calculations can be done on. This scaling is necessary because the IMU outputs integer values representing the acceleration, angular velocity, and magnetic field magnitude for all of x, y, and z axes, and without knowing how these seemingly random raw integer values scale to values with units the data is useless.
 
-**insert image**
+# <img src="Images/Lab 2/IMUdemo.png" style="max-width:75%"/>
 
 ### AD0_VAL Discussion
 
@@ -80,7 +80,7 @@ This data can be analyze to determine its frequency components by computing a fo
 
 # <img src="Images/Lab 2/noisy_acc_angles_when_flat_roll.png" style="max-width:75%"/>
 
-As it can be seen from the graphs, the measurements have non-zero frequency components for a large range of frequencies. This is undesireable and leads to the type of noisy data we are seeing. Therefore, I built a low-pass filter with a cutoff of about 2.5 Hz for the accelerometer data. The output of this filter is much less noisy, as can be seen below.
+As it can be seen from the graphs, the measurements have non-zero frequency components for a large range of frequencies. This is undesireable and leads to the type of noisy data we are seeing. Therefore, I built a low-pass filter with a cutoff of about 2.5 Hz for the accelerometer data. By using such a low cut off frequency, the output of this filter is much less noisy, as can be seen below.
 
 # <img src="Images/Lab 2/filtered_acc_angles_when_flat.png" style="max-width:75%"/>
 
@@ -146,6 +146,14 @@ The above code looped through the lists, incrementing `counter` until it reached
 The arrays storing the pitch, roll, and time values were 3000 indices long, and all of these data were stored in lists in Python on my laptop after being transmitted by the Artemis Nano.
 
 # <img src="Images/Lab 2/10secondStoredData.png" style="max-width:50%"/>
+
+I believe that it makes most sense to store the pitch, roll, and time data in seperate arrays because this decreases any additional memory that might be required to store an array of specialized structs. Reducing the amount of memory each one of those structs might take means that there is more memory to allocate for the data arrays, allowing them to be larger and to store more data. 
+
+While storing all this different data in one large array might seem like it would save storage, this might not actually be true. Some of the data points, like time, can be stored as integers, while others have to be represented as a float. Therefore, if you stored all the data in one list, you would have to cast variables that require less storage to variables that require more storage. Additionally, storing all of the data in one large array would become harder for the Python scripts to sift through and use, adding to the computational complexity of analyzing the sensor's readings.
+
+These arrays should primarily be of floats and integers. This is because the data coming from the IMU and from the internal timing mechanisms of the Artemis Nano are themselves floats and integers, and it is not worth the time to convert all of this data to a different type of variable in order to store it. I think that it is best to store it as the type of variable it is returned as, and then cast the data to another form of variable if need be later.
+
+As discussed in Lab 1, the amount of memory that I can allocate to my arrays depends on the number of arrays that I have. If, for example, I only care about the pitch and roll output from the complementary filter and the time, then I would only need three arrays. Two of these arrays would be of floats, and the time associated array would be made of integers. This means that to store one element in each of these three arrays will collectively cost 10 bytes of memory, because a float is 4 bytes and an integer is 2. Given that there are 384 kB of RAM, this means that I can make my three arrays almost 39000 indices long.
 
 ### Duration of IMU Data Collection
 
