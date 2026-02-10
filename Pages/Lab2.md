@@ -10,8 +10,28 @@ layout: default
 
 ### Picture of your Artemis IMU connections
 
-### Show that the IMU example code works
-### AD0_VAL definition discussion
+The IMU connects to the Artemis Nano through a quick connect wire.
+
+# <img src="Images/Lab 2/IMUconnection.png" style="max-width:75%"/>
+
+### IMU Example Code
+
+In the ICM 20948 example code, the IMU's raw values are scaled so that it has proper units with which calculations can be done on. This scaling is necessary because the IMU outputs integer values representing the acceleration, angular velocity, and magnetic field magnitude for all of x, y, and z axes, and without knowing how these seemingly random raw integer values scale to values with units the data is useless.
+
+**insert image**
+
+### AD0_VAL Discussion
+
+The value of `AD0_VAL` is what determines the final address of the IMU. By setting this value either high or low, you can change the address of this device. This is important to know about because this IMU is an I2C device, and every device on the same I2C bus must have a unique address associated with it. This means that you can have two different ICM 20948's on the same I2C bus because each one can be configured to have different addresses if the `AD0_VAL` is different for each device. By default, the `AD0_VAL` should be 1.
+
+### Accelerometer and Gyroscope Data Discussion
+
+While running the example code, I noticed that the accelerometer and gyroscope data behaves differently.
+
+The accelerometer data takes on large values, comfortably ranging from 1000 mg to -1000 mg when not moving and facing upwards or downwards, respectively. When the device stays still, the accelerometer data seems to be a little bit noisy, but the noise is concentrated about some mean value. 
+
+On the other hand, the gyroscope only reads large values when the device is rotating about one of its axes. Otherwise, the values are practically zero. This makes sense because the gyroscope measures the change in degree per second, so if the device isn't rotating then it wouldn't have an angular velocity. 
+
 ### Acceleration and gyroscope data discussion (pictures recommended)
 
 ## Accelerometer
@@ -131,7 +151,7 @@ In order to ensure that the robotic system will have enough data to work with at
 
 # <img src="Images/Lab 2/10secondRoll.png" style="max-width:75%"/>
 
-# <img src="Images/Lab 2/10secondText.png" style="max-width:50%"/>
+# <img src="Images/Lab 2/10secondText.png" style="max-width:75%"/>
 
 ## Record a Stunt
 
