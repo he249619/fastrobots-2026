@@ -18,7 +18,7 @@ The IMU connects to the Artemis Nano through a quick connect wire.
 
 In the ICM 20948 example code, the IMU's raw values are scaled so that it has proper units with which calculations can be done on. This scaling is necessary because the IMU outputs integer values representing the acceleration, angular velocity, and magnetic field magnitude for all of x, y, and z axes, and without knowing how these seemingly random raw integer values scale to values with units the data is useless.
 
-# <img src="Images/Lab 2/IMUdemo.png" style="max-width:75%"/>
+# <img src="Images/Lab 2/IMUdemo.png" style="max-width:90%"/>
 
 ### AD0_VAL Discussion
 
@@ -33,10 +33,10 @@ The accelerometer data takes on large values, comfortably ranging from 1000 mg t
 On the other hand, the gyroscope only reads large values when the device is rotating about one of its axes. Otherwise, the values are practically zero. This makes sense because the gyroscope measures the change in degree per second, so if the device isn't rotating then it wouldn't have an angular velocity. 
 
 Here is an image when the IMU is facing upwards.
-# <img src="Images/Lab 2/acc_gyro_data1.png" style="max-width:75%"/>
+# <img src="Images/Lab 2/acc_gyro_data1.png" style="max-width:85%"/>
 
 Here is an image when the IMU is facing downwards. Note the change of sign on the z-acceleration component.
-# <img src="Images/Lab 2/acc_gyro_data2.png" style="max-width:75%"/>
+# <img src="Images/Lab 2/acc_gyro_data2.png" style="max-width:85%"/>
 
 ## Accelerometer
 
