@@ -92,7 +92,8 @@ Our robot is supposed to be fast. The actual car can be very fast, stoping and t
 In order to use both ToF sensors at the same time, there are two options. 
 1. We change one of the addresses of the ToF sensors so that they have different ones. To do this, use the Xshut pin on the sensor whose addres you're not changing (to turn it "off"), and then use the set.I2CAddress() function from the Sparkfun library to change the address (the default address of the Tof is 0x52/0x53 (for read/write), and the default addres of the I2C is 0x69, so I would just need to pick an address that is different than those. Then I can turn on the other ToF sensor, and it has the default address. I am not sure how this would affect the I2C address of the IMU device, but I think it will be okay)
 2. We ignore the data from one of the ToF sensors whenever we want data from the other, by turning the one we don't want "off" (turning on the Xshut pin). This might be easier programming wise, but I like the other way better.
-**1. Don’t use the Example05_wire code to do this, it works poorly when multiple sensors are attached.**
+
+I chose the first method. It works well. I haven't tried it with the IMU as well yet.
 
 ## Speed it up
 **In future labs, it is essential that the code executes quickly, therefore you cannot let your code hang while it waits for the sensor to finish a measurement. Write a piece of code that prints the Artemis clock to the Serial as fast as possible, continuously, and prints new ToF sensor data from both sensors only when available.**
