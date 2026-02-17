@@ -19,3 +19,4 @@ This will be updated as the labs are finished.
 
 1. [Lab 1: The Artemis Board and Bluetooth](Pages/Lab1.md)
 2. [Lab 2: IMU](Pages/Lab2.md)
+3. [Lab 3: Time of Flight Sensor](Pages/Lab3.md)
