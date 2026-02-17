@@ -1,6 +1,4 @@
 
-1. I think that I will try to change the address of the ToF sensors upon boot up in the void setup(). If I can't get that to work then I will use the Xshut pins
-
 # Instructions
 ## Power up your Artemis with a battery!
 **1. You will need a JST connector and one of the 650mAh batteries from your RC car.**
