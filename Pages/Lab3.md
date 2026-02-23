@@ -95,8 +95,14 @@ I chose the first method. It works well. I haven't tried it with the IMU as well
 
 ## Speed it up
 **In future labs, it is essential that the code executes quickly, therefore you cannot let your code hang while it waits for the sensor to finish a measurement. Write a piece of code that prints the Artemis clock to the Serial as fast as possible, continuously, and prints new ToF sensor data from both sensors only when available.**
+
 **1. The distanceSensor.checkForDataReady() routine can be called to check when new data is available.**
+
+Done.
+
 **2. How fast does your loop execute, and what is the current limiting factor?**
+
+Based on the times reported at the end of each void loop() iteration, my for loop ran at about 700 Hz (from data collected during experimentation). The time of flight sensors, however, ran much slower. Both time of flight sensors only updated six times in a 407 millisecond period, averaging at about 14.7 Hz when both sensors run simultaneously. Currently, the limiting factor is how long it takes for the ToF sensors to be ready to give new data measurements.
 
 ## Edit Lab 1 Stuff
 **Finally, edit your work from Lab 1, such that you can record time-stamped ToF data and IMU data for a set period of time, and then send it over Bluetooth to your computer.**
