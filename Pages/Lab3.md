@@ -107,6 +107,8 @@ Based on the times reported at the end of each void loop() iteration, my for loo
 ## Edit Lab 1 Stuff
 **Finally, edit your work from Lab 1, such that you can record time-stamped ToF data and IMU data for a set period of time, and then send it over Bluetooth to your computer.**
 
+Done.
+
 ## Include a plot of the ToF data against time.
 
 ## Include a plot of the IMU data against time.
@@ -126,3 +128,7 @@ Discussion and pictures of sensor data with chosen mode**
 **4. Tof sensor speed: Discussion on speed and limiting factor; include code snippet of how you do this**
 **5. Time v Distance: Include graph of data sent over bluetooth (2 sensors)**
 **6. Time v Angle: Include graph of data sent over bluetooth**
+
+This is not a strict requirement, but may be helpful in understanding what should be included in your webpage. It also helps with the flow of your report to show your understanding to the lab graders.
+
+
