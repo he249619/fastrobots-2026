@@ -240,30 +240,41 @@ Serial.println(millis()); // print the time since bootup to measure speed of the
 
 The execution of the above program outputs a lot of data, a snippet of which is shown below:
 
-# <img src="Images/Lab 3/timing.png" style="max-width:50%"/>
+# <img src="Images/Lab 3/timing.png" style="max-width:20%"/>
 
 Based on this data, the for loop ran at about 570 Hz, and the ToF sensors reported values at a rate of about 31 Hz. Clearly, the ToF sensors effectively opperate at a much slower frequency and is the limiting factor in this system. 
 
-
-Based on the times reported at the end of each void loop() iteration, my for loop ran at about 700 Hz (from data collected during experimentation). The time of flight sensors, however, ran much slower. Both time of flight sensors only updated six times in a 407 millisecond period, averaging at about 14.7 Hz when both sensors run simultaneously. Currently, the limiting factor is how long it takes for the ToF sensors to be ready to give new data measurements.
-
-**Include some of the data collected, it is in the Notes app**
+Additional testing was done to determine the sampling speed of the ToF sensors when operating in the short distance method within a Bluetooth command in order to determine the timing effects of the .stopRanging() method. This call, operated on both of the sensors after they make a measurement, stops the sensors from measuring data. After it is called, the sensor that it was called for stops sensing its environment until the .startRanging() method is called again. I found that using the .stopRanging() function sped up the system, as shown in the results of my test below. I will therefore continue to use the .stopRanging() method.
 
 Sample Rate with .stopRanging() | Sample Rate without .stopRanging()
 :---: | :---:
-*Still* | `renders`
+50.733 ms | 99.88 ms
 
 **5. 2 ToF sensors and the IMU: Discussion and screenshot/video of sensors working in parallel**
 
 With both ToF sensors and the IMU working in parallel, the limiting factor is definitely the rate at which the ToF sensors report new data, as discussed above. Therefore, if the goal is to run the data aquisition loop as fast as possible, then it would be best to not wait for the ToF sensors to be ready to report data. The question then becomes what to do with the data arrays corresponding with the ToF sensors when they are not providing any new data, while the arrays corresponding to the IMU readings and the timing are being populated with new data. 
 
-I found that when a ToF sensor isn't ready to report new data, but the data aquisition loop is still requesting new data, it is best to simply set the new distance data equal to the previous value. While this may not accurately represent the true distances in the ToF sensors, it is a better approximation given the recent history of the system than what may happen if the contents of the distance arrays are not updated at the same time as the IMU and timing arrays are. For example, if you don't update these intermediate array values, they can continue to hold the data from older sets measurements, which can be completely different than the new range of distances being measured. This can cause confusion for the user and controller, so it is best to avoid these odd jumps in data by keeping the distance data more stable.
+I found that when a ToF sensor isn't ready to report new data, but the data aquisition loop is still requesting new data, it is best to simply set the new distance data equal to the previous value. While this may not accurately represent the true distances in the ToF sensors, it is a better approximation given the recent history of the system than what may happen if the contents of the distance arrays are not updated at the same time as the IMU and timing arrays are. For example, if you don't update these intermediate array values, they can continue to hold the data from older sets of measurements, which can be completely different than the new range of distances being measured. This can cause confusion for the user and controller, so it is best to avoid these odd jumps in data by keeping the distance data more stable.
+
+In the video below, you can see me command the Artemis to begin collecting data from the IMU and both ToF sensors. After starting the data acquisition, I change the data each sensor will report. This can be seen by how I move my hand infront of the ToF sensors to change the distances they read, as well as rotating the IMU to chagne the calculated pitch and roll.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/GvxiH4N6ic4" title="ECE 4160: Lab 3 Three Sensors in Parallel" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
+
+The results of the above video can included in the pitcures below. As it can be seen, all of the data is collected on the same timescale, and the disturbances that I made to any of the sensors are represented in appropriate chagnes of data reported. I would like to note that when moving the IMU, I accidently pulled on both of the ToF sensors, changing their orientation and therefore changing the data that they would report. That is why the distance data becomes noisier when the pitch and roll changes.
+
+# <img src="Images/Lab 3/all_data.png" style="max-width:20%"/>
 
 **6. Time v Distance: Include graph of data sent over bluetooth (2 sensors)**
 
+Here is a graph of just the pitch and roll data:
+
+# <img src="Images/Lab 3/orientation_data.png" style="max-width:20%"/>
 
 **7. Time v Angle: Include graph of data sent over bluetooth**
 
+Here is a graph of just the distances measured by the ToF sensors:
+
+# <img src="Images/Lab 3/nice_tof_data.png" style="max-width:20%"/>
 
 
 
