@@ -18,6 +18,8 @@ The polarity was actually oposite to how the board wanted it, so I soldered blac
 
 **6. Power up your Artemis using only the battery and no connection through the USB C port. Try sending BLE messages back and forth from your laptop to ensure that the Artemis is powered on correctly and can send messages completely untethered.**
 Insert video showing connection and data transfer.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/IdEWK477Lec" title="ECE 4160: Lab 3 Remote Connection" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
    
 ## Using the Arduino library manager, install the SparkFun VL53L1X 4m laser distance sensor library.
 Done
