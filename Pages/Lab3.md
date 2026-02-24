@@ -1,4 +1,8 @@
-
+--- 
+title: "Lab 3"
+description: "Lab Description and Report"
+layout: default
+---
 
 # <img src="Images/Lab 3/distance_test_1.jpg" style="max-width:75%"/>
 # <img src="Images/Lab 3/distance_test_2.jpg" style="max-width:75%"/>
