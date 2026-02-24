@@ -53,7 +53,7 @@ This setup, however, will not allow the robot to detect objects on at least two 
 
 Here is the wiring diagram, as well as the finished wiring connections.
 
-# <img src="Images/Lab 3/diagram.jpg" style="max-width:75%"/>
+# <img src="Images/Lab 3/diagram.png" style="max-width:75%"/>
 
 # <img src="Images/Lab 3/all_sensors_connected.jpg" style="max-width:75%"/>
 
