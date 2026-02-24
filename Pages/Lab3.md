@@ -62,9 +62,15 @@ Here is the wiring diagram, as well as the finished wiring connections.
 
 ### I2C Addressing 
 
+When the Artemis scans for I2C addresses from devices connected to it, it prints the following output when one IMU and one ToF sensor are present in the system.
+
+# <img src="Images/Lab 3/scanning_i2c.png" style="max-width:75%"/>
+
+This output shows that on the first I2C bus, there are no I2C devices connected to the board. This makes sense, as we are connecting both the IMU and the ToF sensors to the same port. The output shows that the second I2C bus has two devices on it, with addresses 0x29 and 0x69. The device with address 0x69 is the IMU, which can be determined by looking through the IMU datasheet. But what is the device with address 0x29?
+
 The documentation for the ToF sensor indicates that default I2C address is either 0x52 or 0x53, depending on if the controller is writing or reading from the sensor. However, when scanning for I2C devices connected to the Artemis board, the program reported that the address of the ToF sensor was actually 0x29. These are very different addresses, and at first glance they do not look remotely similar in neither hexadecimal nor decimal.
 
-However, when these addresses are represented in binary, they look more similar. In binary, 0x52 becomes 0b1010010, 0x53 becomes 0b1010011, and 0x29 becomes 0b101001. These are very similar, with 0x29 being 0x52/0x53 shifted one bit to the right. While this might initially seem odd, it makes sense when thinking about these numbers as digital addresses and commands used on the I2C bus. The controller outputs a sequence of binary signals in order to indicate what device that it would like to communicate with on the bus. This would be 0b101001. But then why would the addresses be reported as 0x52/0x53 in the documentation?
+When these addresses are represented in binary, they look more similar. In binary, 0x52 becomes 0b1010010, 0x53 becomes 0b1010011, and 0x29 becomes 0b101001. These are very similar, with 0x29 being 0x52/0x53 shifted one bit to the right. While this might initially seem odd, it makes sense when thinking about these numbers as digital addresses and commands used on the I2C bus. The controller outputs a sequence of binary signals in order to indicate what device that it would like to communicate with on the bus. This would be 0b101001. But then why would the addresses be reported as 0x52/0x53 in the documentation?
 
 By further looking into the sensor's documentation, it can be seen that if the least significant bit of the address is low, then the controller is indicating that it wants to write to the sensor. If the least significant bit is high, then the controller wants to read from the sensor. But the true address of the ToF sensor is 0x29, and this shouldn't automatically change depending on if the controller is executing a read or write command. Therefore, it seems that the true address of the sensor was shifted left by one, creating a new least significant bit that did not contain address information, and could be changed to indicate how the controller wants to interact with the sensor. 
 
