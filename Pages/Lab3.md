@@ -4,10 +4,6 @@ description: "Lab Description and Report"
 layout: default
 ---
 
-# <img src="Images/Lab 3/distance_test_1.jpg" style="max-width:75%"/>
-# <img src="Images/Lab 3/distance_test_2.jpg" style="max-width:75%"/>
-
-
 # Instructions
 
 ## Power up your Artemis with a battery!
@@ -210,28 +206,52 @@ To test the accuracy and range of the ToF sensor when operating in the short dis
 
 The first two graphs below depict the average measured data from the ToF sensor at various fixed distances from a wall, as well as the error between the true distance from the wall and the measured distance. Notice how the accuracy of the sensor dramaticaly decreases past the maximum ranging point for the short distance method, which is 1.3 m.
 
-# <img src="Images/Lab 3/tof_data.png" style="max-width:75%"/>
-# <img src="Images/Lab 3/tof_error.png" style="max-width:75%"/>
-
-These two graphs show the same data as above, but zoomed in on the operating range of the ToF sensor when in the short distance measuring mode.
-
 # <img src="Images/Lab 3/tot_tof_data.png" style="max-width:75%"/>
 # <img src="Images/Lab 3/tot_tof_error.png" style="max-width:75%"/>
 
+These two graphs show the same data as above, but zoomed in on the operating range of the ToF sensor when in the short distance measuring mode.
+
+# <img src="Images/Lab 3/tof_data.png" style="max-width:75%"/>
+# <img src="Images/Lab 3/tof_error.png" style="max-width:75%"/>
 
 **4. Tof sensor speed: Discussion on speed and limiting factor; include code snippet of how you do this** 
+
+```cpp
+if (distanceSensor0.checkForDataReady()) { // Checks if ToF sensor is ready to report data
+ distance = distanceSensor0.getDistance(); //Get the result of the measurement from the sensor
+ distanceSensor0.clearInterrupt();
+ distanceSensor0.stopRanging();
+ distanceSensor0.startRanging(); // start sensing again
+ Serial.print("0: "); // print data from sensor 0
+ Serial.println(distance);
+}
+
+if (distanceSensor1.checkForDataReady()) {
+ distance = distanceSensor1.getDistance(); //Get the result of the measurement from the sensor
+ distanceSensor1.clearInterrupt();
+ distanceSensor1.stopRanging();
+ distanceSensor1.startRanging(); // start sensing again
+ Serial.print("1: ");  // print data from sensor 0
+ Serial.println(distance);
+}
+
+Serial.println(millis()); // print the time since bootup to measure speed of the loop
+```
+
 
 Based on the times reported at the end of each void loop() iteration, my for loop ran at about 700 Hz (from data collected during experimentation). The time of flight sensors, however, ran much slower. Both time of flight sensors only updated six times in a 407 millisecond period, averaging at about 14.7 Hz when both sensors run simultaneously. Currently, the limiting factor is how long it takes for the ToF sensors to be ready to give new data measurements.
 
 **Include some of the data collected, it is in the Notes app**
 
-# <img src="Images/Lab 3/tof_with_stopRanging.png" style="max-width:75%"/>
-# <img src="Images/Lab 3/tof_without_stopRanging.png" style="max-width:75%"/>
+Sample Rate with .stopRanging() | Sample Rate without .stopRanging()
+:---: | :---:
+*Still* | `renders`
 
 **5. 2 ToF sensors and the IMU: Discussion and screenshot/video of sensors working in parallel**
 
+With both ToF sensors and the IMU working in parallel, the limiting factor is definitely the rate at which the ToF sensors report new data, as discussed above. Therefore, if the goal is to run the data aquisition loop as fast as possible, then it would be best to not wait for the ToF sensors to be ready to report data. The question then becomes what to do with the data arrays corresponding with the ToF sensors when they are not providing any new data, while the arrays corresponding to the IMU readings and the timing are being populated with new data. 
 
-
+I found that when a ToF sensor isn't ready to report new data, but the data aquisition loop is still requesting new data, it is best to simply set the new distance data equal to the previous value. While this may not accurately represent the true distances in the ToF sensors, it is a better approximation given the recent history of the system than what may happen if the contents of the distance arrays are not updated at the same time as the IMU and timing arrays are. For example, if you don't update these intermediate array values, they can continue to hold the data from older sets measurements, which can be completely different than the new range of distances being measured. This can cause confusion for the user and controller, so it is best to avoid these odd jumps in data by keeping the distance data more stable.
 
 **6. Time v Distance: Include graph of data sent over bluetooth (2 sensors)**
 
@@ -239,7 +259,5 @@ Based on the times reported at the end of each void loop() iteration, my for loo
 **7. Time v Angle: Include graph of data sent over bluetooth**
 
 
-
-This is not a strict requirement, but may be helpful in understanding what should be included in your webpage. It also helps with the flow of your report to show your understanding to the lab graders.
 
 
