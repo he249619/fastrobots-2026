@@ -142,7 +142,7 @@ There are different types of communication protocols between sensors and microco
 
 Due to the fact that many devices can share one I2C bus, each of these devices must be uniquely addressible by the microcontroller. This allows the contorller to indicate which device it wants to write/read data to/from, and then that particular device can acknowledge that it is ready to receive/send data. Then communication between the controller and device can take place. However, it is common to have multiple sensors with the same address. For example, in this lab, the IMU has an I2C address of 0x69.
 
-Interestingly, while the documentation for the Time of Flight, ToF, sensors says that they have an I2C address of 0x52/0x53, their actual defualt I2C address is 0x29. This will be explained in the "**insert section title here**" section below. Both ToF sensors sharing the same address presents an issue when wanting to create a system that uses them concurrently. Solutions to this problem are discussed below.
+Interestingly, while the documentation for the Time of Flight, ToF, sensors says that they have an I2C address of 0x52/0x53, their actual defualt address is 0x29. This will be explained in the "**insert section title here**" section below. Both ToF sensors sharing the same address presents an issue when wanting to create a system that uses them concurrently. Solutions to this problem are discussed below.
 
 **2. Briefly discuss the approach to using 2 ToF sensors**
 
@@ -159,7 +159,7 @@ In order to turn the second ToF sensor off while changing the address of the fir
 ```cpp
 digitalWrite(SHUTDOWN_PIN, LOW); // turns ToF sensor 1 off
 int add;
-add = distanceSensor0.getI2CAddress(); // get's the original I2C address
+add = distanceSensor0.getI2CAddress(); // gets the original I2C address
 Serial.print("The old address of sensor 0 is: ");
 Serial.println(add);
 distanceSensor0.setI2CAddress(0x40); // sets a new I2C address
@@ -187,47 +187,36 @@ I thought that the accelerometer should be as close to the center of the robot a
 
 
 **2. Screenshot of Artemis scanning for I2C device (and discussion on I2C address)**
-This does not match what I expected. In the documentation for this sensor, it says that the default address of the ToF is 0x52, but the example code is returning 0x29. These are very different addresses, resulting in decimal values of 82 and 41, respectively.
 
-However, in binary, these addresses look more similar. In binary, 0x52 becomes 0b1010010, and 0x29 becomes 0b101001. These are very similar, with 0x29 being 0x52 shifted one bit to the right. This makes sense when looking more carefully in the documentation of the sensor, where it says "If the least significant bit is low (that is, 0x52) the message is a
-master-write-to-the-slave. If the LSB is set (that is, 0x53) then the message is a masterread-from-the-slave". This means that the least significant bit just determines the action that the board does with the sensor, and that the rest of the bits are the true address. Therefore, this address is what is expected.
+The documentation for the ToF sensor indicates that default I2C address is either 0x52 or 0x53, depending on if the controller is writing or reading from sensor. However, when scanning for I2C devices connected to the Artemis board, the program reported that the address of the ToF sensor was actually 0x29. These are very different addresses, and at first glance they do not look remotely similary in neither hexidecimal nor decimal.
+
+However, when these addresses are represented in binary, they look more similar. In binary, 0x52 becomes 0b1010010, 0x53 becomes 0b1010011, and 0x29 becomes 0b101001. These are very similar, with 0x29 being 0x52/0x53 shifted one bit to the right. While this might initially seem odd, it makes sense when thinking about these numbers as digital addresses and commands used on the I2C bus. The controller outputs a sequence of binary signals in order to indicate what device that it would like to communicate with on the bus. This would 0b101001. But then why would the addresses be reported as 0x52/0x53 in the documentation?
+
+By further looking into the sensor's documentation, it can be seen that if the least significant bit of the address is low, then the controller is indicating that it wants to write to the sensor. If the least significant bit is high, then the controller wants to read from the sensor. But the true address of the ToF sensor is 0x29, and this can't shouldn't automatically change depending on if the controlelr is executing a read or write command. Therefore, it seems that the true address of the sensor was shifted left by one, creating a new least significant bit that did not contain address information, and could be changed to indicate how the controller wants to interact with the sensor. 
+
+**add screenshots??**
 
 **3. Discussion and pictures of sensor data with chosen mode**
 
-Short:
+The ToF sensor comes with two available sensing methods: short distance mode and long distance mode. The short distance method focuses on accurately measuring distance up to 1.3 meters away from the sensor, and the long distance mode tries to accurately measure up to 4 meters away. Whichever mode the sensors are placed in is completely up to the programmer, creating a need to compare their benefits and costs.
 
-### Pros
-1. It can be more accurate and precise --> less error
+The short distance sensing mode can be more accurate, as it is discretizing a smaller allowable range of data. However, this accuracy is only applicable for distances close to the sensor, meaning that the sensor may miss important data coming from obstacles or objects that are outside of its range of accurate detecting. This can causes systems using the short distance method to not be able to plan much in advance to avoid obstacles, and they will need to be able to adapt to data faster as they will have to get physically closer to objects to accurately detect them.
 
-### Cons
-1. It doesn't give as much range, so the system would have to adapt more quickly
-2. System might not be able to adapt quick enough to incoming information depending on how fast the car is moving
+The long distance sensing mode has a larger range, allowing for systems using it to more quickly react to events that are farthe away from it. This could be good for the car robot developed in this lab because it would allow it to detect obstacles or walls sooner. However, this increased range corresponds with a less accurate measurement, and any increased error in measurement could have negative effects on the state estimation and controls of the robot. Additionally, ranging over a larger distance means that it would take more time to make measurements, slowing down the sampling rate.
 
-Long:
+Since the goal of this class is to develop a fast robot car, speed and accuracy is paramount. The car has very fast dynamics, being able to change heading, direction, and speed incredibly quickly. Therefore, this system should be quick enough to adapt to rapibly incoming data about its environment, so I will use the short distance measurement mode for the ToF sensors. While this mode is only optimal in a smaller range of distances, it is very accurate and also faster than the long distance mode, allowing for the system to get more reliable data.
 
-### Pros
-1. It can give a larger range of data --> good for developing a wider field of view in order to understand more of the car's environment
+To test the accuracy and range of the ToF sensor when operating in the short distance mode, I created an experiment that took many ToF measurements at various distances from a wall and then looked at the results of these measurements. To do this, I taped a single ToF sensor to the front of a box, such that it was perpendicular to the floor and was pointing directly at the wall in front of the box. Using a tape measure, I placed the box with the ToF sensor taped to it and various, controlled distances from the wall. Once the box had been placed in position, I took thousands of ToF sensor readings without moving the box. I averaged these values, found their standard deviation, moved the box a little bit further away from the wall, and repeated the whole process from 0 m to 2.5 m away from the wall in 0.1 m intervals.
 
-### Cons
-1. Can be less accurate and prone to more error
-
-Medium:
-
-### Pros
-1. It has a longer range than short
-2. It can be more accurate than long
-
-### Cons
-1. It isn't as accurate as short
-2. It doesn't have as long of a range as long
-
-Our robot is supposed to be fast. The actual car can be very fast, stoping and turning very quickly as a response into the input of the system. Therefore, I do not beleive that the car will need a larger range of data in advance in order to avoid obstacles, so I think that I will use the short sensing mode.
+The first two graphs below depict the average measured data from the ToF sensor at various fixed distances from a wall, as well as the error between the true distance from the wall and the measured distance. Notice how the accuracy of the sensor dramaticaly decreases past the maximum ranging point for the short distance method, which is 1.3 m.
 
 # <img src="Images/Lab 3/tof_data.png" style="max-width:75%"/>
-# <img src="Images/Lab 3/tot_tof_data.png" style="max-width:75%"/>
-
 # <img src="Images/Lab 3/tof_error.png" style="max-width:75%"/>
-# <img src="Images/Lab 3/tot_tot_tof_data.png" style="max-width:75%"/>
+
+These two graphs show the same data as above, but zoomed in on the operating range of the ToF sensor when in the short distance measuring mode.
+
+# <img src="Images/Lab 3/tot_tof_data.png" style="max-width:75%"/>
+# <img src="Images/Lab 3/tot_tof_error.png" style="max-width:75%"/>
 
 
 **4. Tof sensor speed: Discussion on speed and limiting factor; include code snippet of how you do this** 
@@ -240,6 +229,8 @@ Based on the times reported at the end of each void loop() iteration, my for loo
 # <img src="Images/Lab 3/tof_without_stopRanging.png" style="max-width:75%"/>
 
 **5. 2 ToF sensors and the IMU: Discussion and screenshot/video of sensors working in parallel**
+
+
 
 
 **6. Time v Distance: Include graph of data sent over bluetooth (2 sensors)**
