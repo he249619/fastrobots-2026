@@ -4,135 +4,9 @@ description: "Lab Description and Report"
 layout: default
 ---
 
-# Instructions
-
-## Power up your Artemis with a battery!
-
-**1. You will need a JST connector and one of the 650mAh batteries from your RC car.**
-Done
-
-**2. Separate the wires on your battery and cut them one at a time. Cutting both wires at the same time will short the terminals and destroy your battery. If you do short your battery, please inform one of the TAs.**
-Done
-
-**3. Solder the battery wires to the JST jumper wires. If you are unsure how to do this, please ask one of the TAs.**
-Done
-
-**4. Use heat shrink to insulate the exposed portion of wire. Electrical tape can fall off over time and leave a sticky residue on your robot.**
-Insert Image of Battery
-
-# <img src="Images/Lab 3/battery_in_board.jpg" style="max-width:75%"/>
-
-**5. Check the polarity of these wires (positive on the battery should be connected to the positive terminal on your Artemis – this may mean that you need to connect opposite color wires).**
-The polarity was actually oposite to how the board wanted it, so I soldered black to red and red to black. (refer to image)
-
-**6. Power up your Artemis using only the battery and no connection through the USB C port. Try sending BLE messages back and forth from your laptop to ensure that the Artemis is powered on correctly and can send messages completely untethered.**
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/IdEWK477Lec" title="ECE 4160: Lab 3 Remote Connection" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
-   
-## Using the Arduino library manager, install the SparkFun VL53L1X 4m laser distance sensor library.
-Done
-
-## Connect the QWIIC break-out board to the Artemis
-Done
-
-## Connect the first ToF sensor to the QWIIC breakout board.
-**1. You will have to cut one end of a QWIIC cable and solder the other to your sensor. You have two long cables and two short ones, choose wisely.**
-Done. Discuss choice for wire lengths, add image of setup next to the car
-
-# <img src="Images/Lab 3/sensor_layout.jpg" style="max-width:75%"/>
-# <img src="Images/Lab 3/sensor_layout_with_car.jpg" style="max-width:75%"/>
-
-**2. Think about which color attaches to SDA/SCL?**
-blue = sda, yellow = scl
-
-## Scan the I2C channel to find the sensor
-**1. Go to File->Examples->Apollo3->Wire and open Example05_wire_I2C**
-Done
-
-**2. Browse through the code to see how to use i2c commands.**
-Done
-
-**3. Run the code. Does the address match what you expected? If not, explain why.**
-This does not match what I expected. In the documentation for this sensor, it says that the default address of the ToF is 0x52, but the example code is returning 0x29. These are very different addresses, resulting in decimal values of 82 and 41, respectively.
-
-However, in binary, these addresses look more similar. In binary, 0x52 becomes 0b1010010, and 0x29 becomes 0b101001. These are very similar, with 0x29 being 0x52 shifted one bit to the right. This makes sense when looking more carefully in the documentation of the sensor, where it says "If the least significant bit is low (that is, 0x52) the message is a
-master-write-to-the-slave. If the LSB is set (that is, 0x53) then the message is a masterread-from-the-slave". This means that the least significant bit just determines the action that the board does with the sensor, and that the rest of the bits are the true address. Therefore, this address is what is expected.
-
-## ToF sensor modes
-**The ToF sensor has three modes (Short, Medium, and Long) that optimize the ranging performance given the maximum expected range. Discuss the pros/cons of each mode, and think about which one could work on the final robot. (Note: medium mode is only available with the Polulu VL53L1X Library).**
-
-**<pre> .setDistanceModeShort(); //1.3m .setDistanceModeMedium(); //3m .setDistanceModeLong(); //4m, Default </pre>**
-
-Short:
-
-### Pros
-1. It can be more accurate and precise --> less error
-
-### Cons
-1. It doesn't give as much range, so the system would have to adapt more quickly
-2. System might not be able to adapt quick enough to incoming information depending on how fast the car is moving
-
-Long:
-
-### Pros
-1. It can give a larger range of data --> good for developing a wider field of view in order to understand more of the car's environment
-
-### Cons
-1. Can be less accurate and prone to more error
-
-Medium:
-
-### Pros
-1. It has a longer range than short
-2. It can be more accurate than long
-
-### Cons
-1. It isn't as accurate as short
-2. It doesn't have as long of a range as long
-
-Our robot is supposed to be fast. The actual car can be very fast, stoping and turning very quickly as a response into the input of the system. Therefore, I do not beleive that the car will need a larger range of data in advance in order to avoid obstacles, so I think that I will use the short sensing mode.
-
-## Test your chosen mode
-**1. Use the “..\Arduino\libraries\SparkFun_VL53L1X_4m_Laser_Distance_Sensor\examples\Example1_ReadDistance” example**
-**2. Document your ToF sensor range, accuracy, repeatability, and ranging time**
-
-
-## Connect to Prelab
-**Using notes from the pre-lab, hook up both ToF sensors simultaneously and demonstrate that both work.**
-
-In order to use both ToF sensors at the same time, there are two options. 
-1. We change one of the addresses of the ToF sensors so that they have different ones. To do this, use the Xshut pin on the sensor whose addres you're not changing (to turn it "off"), and then use the set.I2CAddress() function from the Sparkfun library to change the address (the default address of the Tof is 0x52/0x53 (for read/write), and the default addres of the I2C is 0x69, so I would just need to pick an address that is different than those. Then I can turn on the other ToF sensor, and it has the default address. I am not sure how this would affect the I2C address of the IMU device, but I think it will be okay)
-2. We ignore the data from one of the ToF sensors whenever we want data from the other, by turning the one we don't want "off" (turning on the Xshut pin). This might be easier programming wise, but I like the other way better.
-
-I chose the first method. It works well. I haven't tried it with the IMU as well yet.
-
-## Speed it up
-**In future labs, it is essential that the code executes quickly, therefore you cannot let your code hang while it waits for the sensor to finish a measurement. Write a piece of code that prints the Artemis clock to the Serial as fast as possible, continuously, and prints new ToF sensor data from both sensors only when available.**
-
-**1. The distanceSensor.checkForDataReady() routine can be called to check when new data is available.**
-
-Done.
-
-**2. How fast does your loop execute, and what is the current limiting factor?**
-
-Based on the times reported at the end of each void loop() iteration, my for loop ran at about 700 Hz (from data collected during experimentation). The time of flight sensors, however, ran much slower. Both time of flight sensors only updated six times in a 407 millisecond period, averaging at about 14.7 Hz when both sensors run simultaneously. Currently, the limiting factor is how long it takes for the ToF sensors to be ready to give new data measurements.
-
-## Edit Lab 1 Stuff
-**Finally, edit your work from Lab 1, such that you can record time-stamped ToF data and IMU data for a set period of time, and then send it over Bluetooth to your computer.**
-
-Done.
-
-## Include a plot of the ToF data against time.
-
-## Include a plot of the IMU data against time.
-
-
-
-
-# Write-up
-
+# Lab 3: Time of Flight Sensors
 ## Prelab
-**1. Note the I2C sensor address**
+### I2C Communication Overview
 
 There are different types of communication protocols between sensors and microcontrollers like the Artemis Nano, but a major one is the I2C protocol. In I2C, all sensing devices share a serial clock line, a serial data line, power, and ground. All of the connected devices send and receive data from the controller along the shared data line, which greatly decreases the number of physical connections the sensors need to make with the microcontroller, as opposed to a SPI communication protocol where every sensor needs its own communication lines.
 
@@ -140,7 +14,7 @@ Due to the fact that many devices can share one I2C bus, each of these devices m
 
 Interestingly, while the documentation for the Time of Flight, ToF, sensors says that they have an I2C address of 0x52/0x53, their actual defualt address is 0x29. This will be explained in the "**insert section title here**" section below. Both ToF sensors sharing the same address presents an issue when wanting to create a system that uses them concurrently. Solutions to this problem are discussed below.
 
-**2. Briefly discuss the approach to using 2 ToF sensors**
+### Using Two Time of Flight Sensors
 
 The Time of Flight, ToF, sensors, communicate with the Artemis board through an I2C communication protocol. As mentioned above, in order for the microcontroller to communicate with all powered, connected devices, each sensor must have a unique I2C address. This becomes an issue when using two ToF sensors that have the default address, and there are two ways of overcoming this communication obstacle.
 
@@ -165,7 +39,7 @@ Serial.println(add);
 digitalWrite(SHUTDOWN_PIN, HIGH); // turns ToF sensor 1 back on
 ```
 
-**3. Briefly discuss placement of sensors on robot and scenarios where you will miss obstacles**
+### Sensor Placement
 
 In our lab kit, we were given four QWIIC connectors, two of them almost twice the length of the other two. This prompted me think about how the sensors would be laid out on the robot befor cutting the end off of two of the connectors and soldering them to the ToF sensors, which do not have QWIIC connect ports. With an understanding that the robot car has to avoid obstacles that are approaching it from the front, and at some point will have to maintain a specified distance from a wall to its side while driving forward, I thought that the optimal placements of the ToF sensors would be on the front and side. 
 
@@ -173,14 +47,20 @@ I thought that the accelerometer should be as close to the center of the robot a
 
 # <img src="Images/Lab 3/sensor_layout_with_car.jpg" style="max-width:75%"/>
 
+This set up, however, will not allow the robot to detect objects on at least two sides of its chassis. This could make it possible that the robot could turn or back into an object it had not previously detected, so this will have to be kept in mind when developing the control algorithm for this car. 
+
 **4. Sketch of wiring diagram (with brief explanation if you want)**
+
+Here is the wiring diagram, as well as the finished wiring connections.
+
+**still need diagram**
+
+# <img src="Images/Lab 3/all_sensors_connected.jpg" style="max-width:75%"/>
 
 
 ## Lab Tasks
 
-
-**1. Picture of your ToF sensor connected to your QWIIC breakout board**
-
+### I2C Addressing 
 
 **2. Screenshot of Artemis scanning for I2C device (and discussion on I2C address)**
 
@@ -192,9 +72,9 @@ By further looking into the sensor's documentation, it can be seen that if the l
 
 **add screenshots??**
 
-**3. Discussion and pictures of sensor data with chosen mode**
+### ToF Sensing Characteristics
 
-The ToF sensor comes with two available sensing methods: short distance mode and long distance mode. The short distance method focuses on accurately measuring distance up to 1.3 meters away from the sensor, and the long distance mode tries to accurately measure up to 4 meters away. Whichever mode the sensors are placed in is completely up to the programmer, creating a need to compare their benefits and costs.
+The ToF sensor comes with two available sensing modes: short distance and long distance. The short distance method focuses on accurately measuring distance up to 1.3 meters away from the sensor, and the long distance mode tries to accurately measure up to 4 meters away. Whichever mode the sensors are placed in is completely up to the programmer, creating a need to compare their benefits and costs.
 
 The short distance sensing mode can be more accurate, as it is discretizing a smaller allowable range of data. However, this accuracy is only applicable for distances close to the sensor, meaning that the sensor may miss important data coming from obstacles or objects that are outside of its range of accurate detecting. This can causes systems using the short distance method to not be able to plan much in advance to avoid obstacles, and they will need to be able to adapt to data faster as they will have to get physically closer to objects to accurately detect them.
 
@@ -214,7 +94,9 @@ These two graphs show the same data as above, but zoomed in on the operating ran
 # <img src="Images/Lab 3/tof_data.png" style="max-width:75%"/>
 # <img src="Images/Lab 3/tof_error.png" style="max-width:75%"/>
 
-**4. Tof sensor speed: Discussion on speed and limiting factor; include code snippet of how you do this** 
+### ToF Speed Characteristics
+
+In order to determine how fast microcontroller can collect data from the robot's environment, it is important to determine how fast the ToF sensors can report new distances measurements. This can be tested by running a continuous loop that constantly prints the time, and prints the distance data whenever it is available from either sensor. For clarity, this is shown below.
 
 ```cpp
 if (distanceSensor0.checkForDataReady()) { // Checks if ToF sensor is ready to report data
@@ -238,19 +120,15 @@ if (distanceSensor1.checkForDataReady()) {
 Serial.println(millis()); // print the time since bootup to measure speed of the loop
 ```
 
-The execution of the above program outputs a lot of data, a snippet of which is shown below:
+The execution of the above program outputs a lot of data. By analyzing the timing of this data, I found that the for loop ran at about 570 Hz, and that the ToF sensors reported values at a rate of about 31 Hz. Clearly, the ToF sensors opperate at a much slower frequency than the larger loop logic and is the limiting factor in this system. 
 
-# <img src="Images/Lab 3/timing.png" style="max-width:20%"/>
-
-Based on this data, the for loop ran at about 570 Hz, and the ToF sensors reported values at a rate of about 31 Hz. Clearly, the ToF sensors effectively opperate at a much slower frequency and is the limiting factor in this system. 
-
-Additional testing was done to determine the sampling speed of the ToF sensors when operating in the short distance method within a Bluetooth command in order to determine the timing effects of the .stopRanging() method. This call, operated on both of the sensors after they make a measurement, stops the sensors from measuring data. After it is called, the sensor that it was called for stops sensing its environment until the .startRanging() method is called again. I found that using the .stopRanging() function sped up the system, as shown in the results of my test below. I will therefore continue to use the .stopRanging() method.
+Additional testing was done to determine the sampling speed of the ToF sensors when operating in the short distance mode within a Bluetooth command in order to determine the timing effects of the stopRanging() method. This call, operated on both of the sensors after they make a measurement, stops the sensors from taking measurements. After it is called, the sensor stops sensing its environment until the startRanging() method is called again. I found that using the stopRanging() function sped up the sensor's sampling speed, as shown in the results below. I will therefore continue to use the stopRanging() method.
 
 Sample Rate with .stopRanging() | Sample Rate without .stopRanging()
 :---: | :---:
 50.733 ms | 99.88 ms
 
-**5. 2 ToF sensors and the IMU: Discussion and screenshot/video of sensors working in parallel**
+### Sensors in Parallel
 
 With both ToF sensors and the IMU working in parallel, the limiting factor is definitely the rate at which the ToF sensors report new data, as discussed above. Therefore, if the goal is to run the data aquisition loop as fast as possible, then it would be best to not wait for the ToF sensors to be ready to report data. The question then becomes what to do with the data arrays corresponding with the ToF sensors when they are not providing any new data, while the arrays corresponding to the IMU readings and the timing are being populated with new data. 
 
@@ -262,19 +140,15 @@ In the video below, you can see me command the Artemis to begin collecting data 
 
 The results of the above video can included in the pitcures below. As it can be seen, all of the data is collected on the same timescale, and the disturbances that I made to any of the sensors are represented in appropriate chagnes of data reported. I would like to note that when moving the IMU, I accidently pulled on both of the ToF sensors, changing their orientation and therefore changing the data that they would report. That is why the distance data becomes noisier when the pitch and roll changes.
 
-# <img src="Images/Lab 3/all_data.png" style="max-width:20%"/>
-
-**6. Time v Distance: Include graph of data sent over bluetooth (2 sensors)**
+# <img src="Images/Lab 3/all_data.png" style="max-width:75%"/>
 
 Here is a graph of just the pitch and roll data:
 
-# <img src="Images/Lab 3/orientation_data.png" style="max-width:20%"/>
-
-**7. Time v Angle: Include graph of data sent over bluetooth**
+# <img src="Images/Lab 3/oreintation_data.png" style="max-width:75%"/>
 
 Here is a graph of just the distances measured by the ToF sensors:
 
-# <img src="Images/Lab 3/nice_tof_data.png" style="max-width:20%"/>
+# <img src="Images/Lab 3/nice_tof_data.png" style="max-width:75%"/>
 
 
 
