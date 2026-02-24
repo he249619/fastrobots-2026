@@ -126,21 +126,124 @@ Done.
 
 ## Include a plot of the IMU data against time.
 
+
+
+
 # Write-up
 
 ## Prelab
 **1. Note the I2C sensor address**
+
+There are different types of communication protocols between sensors and microcontrollers like the Artemis Nano, but a major one is the I2C protocol. In I2C, all sensing devices share a serial clock line, a serial data line, power, and ground. All of the connected devices send and receive data from the controller along the shared data line, which greatly decreases the number of physical connections the sensors need to make with the microcontroller, as opposed to a SPI communication protocol where every sensor needs its own communication lines.
+
+Due to the fact that many devices can share one I2C bus, each of these devices must be uniquely addressible by the microcontroller. This allows the contorller to indicate which device it wants to write/read data to/from, and then that particular device can acknowledge that it is ready to receive/send data. Then communication between the controller and device can take place. However, it is common to have multiple sensors with the same address. For example, in this lab, the IMU has an I2C address of 0x69.
+
+Interestingly, while the documentation for the Time of Flight, ToF, sensors says that they have an I2C address of 0x52/0x53, their actual defualt I2C address is 0x29. This will be explained in the "**insert section title here**" section below. Both ToF sensors sharing the same address presents an issue when wanting to create a system that uses them concurrently. Solutions to this problem are discussed below.
+
 **2. Briefly discuss the approach to using 2 ToF sensors**
+
+The Time of Flight, ToF, sensors, communicate with the Artemis board through an I2C communication protocol. As mentioned above, in order for the microcontroller to communicate with all powered, connected devices, each sensor must have a unique I2C address. This becomes an issue when using two ToF sensors that have the default address, and there are two ways of overcoming this communication obstacle.
+
+The first method to provide stable communication to both of the ToF sensors doesn't require the devices to have unique addresses. Devices only need to have unique addresses on an I2C bus if the controller is trying to communicate with said device, and this communication can only take place if the that sensor is also powered. Therefore, if the controller powered down one of the sensors with duplicate addresses when trying to read from the other sensor, there will be no issues with addressing. Then, after collecting the data of interest, the contorller can turn both devices on until it has to read from one of them again, at which time it would turn the other device off while taking the measurement.
+
+The second method only requires you to turn a sensor off once. During the setup of the program, if one of the sensors are turned off and can't communicate with the controller, then the program can actually chagne the address of the device that it can communicate with. By changing the addresses of one of the ToF sensors, there will no longer be an address issue, and both devices can continuously be powered through the duration of the program.
+
+I chose to implement the second solution, as it only required a little bit of computation at the setup of the program to fix the communication issue with the I2C devices, as opposed to constantly needed to turn devices off and on at a high pace.
+
+In order to turn the second ToF sensor off while changing the address of the first, I set the XSHUT pin on the second ToF sensor high. This pin places the sensor into hardware-shutdown, making it "invisible" to the controller, and now there is only one device with the original duplicated address alive on the I2C bus. This allows me to set a new address for the sensor the first sensor, and this new address should be different than the IMU address and the default ToF address. This is shown in the code snippet below:
+
+```cpp
+digitalWrite(SHUTDOWN_PIN, LOW); // turns ToF sensor 1 off
+int add;
+add = distanceSensor0.getI2CAddress(); // get's the original I2C address
+Serial.print("The old address of sensor 0 is: ");
+Serial.println(add);
+distanceSensor0.setI2CAddress(0x40); // sets a new I2C address
+add = distanceSensor0.getI2CAddress();
+Serial.print("The new address of sensor 0 is: ");
+Serial.println(add);
+digitalWrite(SHUTDOWN_PIN, HIGH); // turns ToF sensor 1 back on
+```
+
 **3. Briefly discuss placement of sensors on robot and scenarios where you will miss obstacles**
+
+In our lab kit, we were given four QWIIC connectors, two of them almost twice the length of the other two. This prompted me think about how the sensors would be laid out on the robot befor cutting the end off of two of the connectors and soldering them to the ToF sensors, which do not have QWIIC connect ports. With an understanding that the robot car has to avoid obstacles that are approaching it from the front, and at some point will have to maintain a specified distance from a wall to its side while driving forward, I thought that the optimal placements of the ToF sensors would be on the front and side. 
+
+I thought that the accelerometer should be as close to the center of the robot as possible, since the car implements differential drive, and this would be the center of the car's rotation. The picture below shows a sensor layout next to the robot car to illustrate their relative sizes. The two green sensors are the ToF sensors. I decided to connect one of the ToF sensors to a longer QWIIC connector and the other to a short one so that the ToF sensor in the front of the car has a farther reach. The ToF sensor on the side of the car is closer to the center of the car, where the IMU will also be, so both of those sensors can use the shorter QWIIC connectors.
+
+# <img src="Images/Lab 3/sensor_layout_with_car.jpg" style="max-width:75%"/>
+
 **4. Sketch of wiring diagram (with brief explanation if you want)**
+
+
 ## Lab Tasks
+
+
 **1. Picture of your ToF sensor connected to your QWIIC breakout board**
-**2. Screenshot of Artemis scanning for I2C device (and discussion on I2C address)
-Discussion and pictures of sensor data with chosen mode**
-**3. 2 ToF sensors and the IMU: Discussion and screenshot/video of sensors working in parallel**
-**4. Tof sensor speed: Discussion on speed and limiting factor; include code snippet of how you do this**
-**5. Time v Distance: Include graph of data sent over bluetooth (2 sensors)**
-**6. Time v Angle: Include graph of data sent over bluetooth**
+
+
+**2. Screenshot of Artemis scanning for I2C device (and discussion on I2C address)**
+This does not match what I expected. In the documentation for this sensor, it says that the default address of the ToF is 0x52, but the example code is returning 0x29. These are very different addresses, resulting in decimal values of 82 and 41, respectively.
+
+However, in binary, these addresses look more similar. In binary, 0x52 becomes 0b1010010, and 0x29 becomes 0b101001. These are very similar, with 0x29 being 0x52 shifted one bit to the right. This makes sense when looking more carefully in the documentation of the sensor, where it says "If the least significant bit is low (that is, 0x52) the message is a
+master-write-to-the-slave. If the LSB is set (that is, 0x53) then the message is a masterread-from-the-slave". This means that the least significant bit just determines the action that the board does with the sensor, and that the rest of the bits are the true address. Therefore, this address is what is expected.
+
+**3. Discussion and pictures of sensor data with chosen mode**
+
+Short:
+
+### Pros
+1. It can be more accurate and precise --> less error
+
+### Cons
+1. It doesn't give as much range, so the system would have to adapt more quickly
+2. System might not be able to adapt quick enough to incoming information depending on how fast the car is moving
+
+Long:
+
+### Pros
+1. It can give a larger range of data --> good for developing a wider field of view in order to understand more of the car's environment
+
+### Cons
+1. Can be less accurate and prone to more error
+
+Medium:
+
+### Pros
+1. It has a longer range than short
+2. It can be more accurate than long
+
+### Cons
+1. It isn't as accurate as short
+2. It doesn't have as long of a range as long
+
+Our robot is supposed to be fast. The actual car can be very fast, stoping and turning very quickly as a response into the input of the system. Therefore, I do not beleive that the car will need a larger range of data in advance in order to avoid obstacles, so I think that I will use the short sensing mode.
+
+# <img src="Images/Lab 3/tof_data.png" style="max-width:75%"/>
+# <img src="Images/Lab 3/tot_tof_data.png" style="max-width:75%"/>
+
+# <img src="Images/Lab 3/tof_error.png" style="max-width:75%"/>
+# <img src="Images/Lab 3/tot_tot_tof_data.png" style="max-width:75%"/>
+
+
+**4. Tof sensor speed: Discussion on speed and limiting factor; include code snippet of how you do this** 
+
+Based on the times reported at the end of each void loop() iteration, my for loop ran at about 700 Hz (from data collected during experimentation). The time of flight sensors, however, ran much slower. Both time of flight sensors only updated six times in a 407 millisecond period, averaging at about 14.7 Hz when both sensors run simultaneously. Currently, the limiting factor is how long it takes for the ToF sensors to be ready to give new data measurements.
+
+**Include some of the data collected, it is in the Notes app**
+
+# <img src="Images/Lab 3/tof_with_stopRanging.png" style="max-width:75%"/>
+# <img src="Images/Lab 3/tof_without_stopRanging.png" style="max-width:75%"/>
+
+**5. 2 ToF sensors and the IMU: Discussion and screenshot/video of sensors working in parallel**
+
+
+**6. Time v Distance: Include graph of data sent over bluetooth (2 sensors)**
+
+
+**7. Time v Angle: Include graph of data sent over bluetooth**
+
+
 
 This is not a strict requirement, but may be helpful in understanding what should be included in your webpage. It also helps with the flow of your report to show your understanding to the lab graders.
 
