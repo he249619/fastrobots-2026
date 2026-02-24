@@ -238,6 +238,12 @@ if (distanceSensor1.checkForDataReady()) {
 Serial.println(millis()); // print the time since bootup to measure speed of the loop
 ```
 
+The execution of the above program outputs a lot of data, a snippet of which is shown below:
+
+# <img src="Images/Lab 3/timing.png" style="max-width:50%"/>
+
+Based on this data, the for loop ran at about 570 Hz, and the ToF sensors reported values at a rate of about 31 Hz. Clearly, the ToF sensors effectively opperate at a much slower frequency and is the limiting factor in this system. 
+
 
 Based on the times reported at the end of each void loop() iteration, my for loop ran at about 700 Hz (from data collected during experimentation). The time of flight sensors, however, ran much slower. Both time of flight sensors only updated six times in a 407 millisecond period, averaging at about 14.7 Hz when both sensors run simultaneously. Currently, the limiting factor is how long it takes for the ToF sensors to be ready to give new data measurements.
 
