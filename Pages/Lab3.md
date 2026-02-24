@@ -1,6 +1,13 @@
 
+
+# <img src="Images/Lab 3/distance_test_1.jpg" style="max-width:75%"/>
+# <img src="Images/Lab 3/distance_test_2.jpg" style="max-width:75%"/>
+
+
 # Instructions
+
 ## Power up your Artemis with a battery!
+
 **1. You will need a JST connector and one of the 650mAh batteries from your RC car.**
 Done
 
@@ -13,11 +20,12 @@ Done
 **4. Use heat shrink to insulate the exposed portion of wire. Electrical tape can fall off over time and leave a sticky residue on your robot.**
 Insert Image of Battery
 
+# <img src="Images/Lab 3/battery_in_board.jpg" style="max-width:75%"/>
+
 **5. Check the polarity of these wires (positive on the battery should be connected to the positive terminal on your Artemis – this may mean that you need to connect opposite color wires).**
 The polarity was actually oposite to how the board wanted it, so I soldered black to red and red to black. (refer to image)
 
 **6. Power up your Artemis using only the battery and no connection through the USB C port. Try sending BLE messages back and forth from your laptop to ensure that the Artemis is powered on correctly and can send messages completely untethered.**
-Insert video showing connection and data transfer.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/IdEWK477Lec" title="ECE 4160: Lab 3 Remote Connection" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
    
@@ -30,6 +38,9 @@ Done
 ## Connect the first ToF sensor to the QWIIC breakout board.
 **1. You will have to cut one end of a QWIIC cable and solder the other to your sensor. You have two long cables and two short ones, choose wisely.**
 Done. Discuss choice for wire lengths, add image of setup next to the car
+
+# <img src="Images/Lab 3/sensor_layout.jpg" style="max-width:75%"/>
+# <img src="Images/Lab 3/sensor_layout_with_car.jpg" style="max-width:75%"/>
 
 **2. Think about which color attaches to SDA/SCL?**
 blue = sda, yellow = scl
@@ -84,11 +95,11 @@ Our robot is supposed to be fast. The actual car can be very fast, stoping and t
 ## Test your chosen mode
 **1. Use the “..\Arduino\libraries\SparkFun_VL53L1X_4m_Laser_Distance_Sensor\examples\Example1_ReadDistance” example**
 **2. Document your ToF sensor range, accuracy, repeatability, and ranging time**
-**3. The figure below is an example from 2020, when students measured the accuracy and repeatability in different lighting conditions, and timing for various code setups (these are not all required tasks for this year), however, we highly recommend generating your plots in the Jupyter notebook to gain more familiarity with the environment, e.g. using matplotlib.**
 
 
 ## Connect to Prelab
 **Using notes from the pre-lab, hook up both ToF sensors simultaneously and demonstrate that both work.**
+
 In order to use both ToF sensors at the same time, there are two options. 
 1. We change one of the addresses of the ToF sensors so that they have different ones. To do this, use the Xshut pin on the sensor whose addres you're not changing (to turn it "off"), and then use the set.I2CAddress() function from the Sparkfun library to change the address (the default address of the Tof is 0x52/0x53 (for read/write), and the default addres of the I2C is 0x69, so I would just need to pick an address that is different than those. Then I can turn on the other ToF sensor, and it has the default address. I am not sure how this would affect the I2C address of the IMU device, but I think it will be okay)
 2. We ignore the data from one of the ToF sensors whenever we want data from the other, by turning the one we don't want "off" (turning on the Xshut pin). This might be easier programming wise, but I like the other way better.
