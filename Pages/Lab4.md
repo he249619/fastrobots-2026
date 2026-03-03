@@ -37,12 +37,12 @@ You may notice that one of my input pins to the motor controller shown is not on
 
 When testing to see if the motor drivers produce the correct output, I used the `analogWrite()` function in Arduino to control the PWM output of Pins 9, 11, 12, and 14. For example, with the code shown below, I tested if the motor controllers were able to output the correct duty cycles of about 79% (200 out of the 255 maximum) and 40 percent (100 out of the 255 maximum).
 
-`cpp
+```cpp
  analogWriteResolution(8);
 
  analogWrite(9, 0);
  analogWrite(11, 100);
-`
+```
 
 For each motor driver, I commanded one of the pins associated with it to output either 100 or 200 as the PWM signal and set the other pin as 0, and then tested the opposite as well. This was done with very similar code to that shown above, just requiring me to change the pin numbers and PWM value in the function call.
 
@@ -57,7 +57,7 @@ It is interesting to note that the Artemis can output PWM signals with different
 
 After ensuring that the motor drivers were outputting the expected values, I each of them to one of the car’s motors one at a time. The motor drivers, and the motors as well, were still powered by the power supply at this point. I tested the behavior of the motors when given the following command continuously:
 
-`cpp
+```cpp
  analogWrite(9, 100);
  analogWrite(11, 0);
 
@@ -84,7 +84,7 @@ After ensuring that the motor drivers were outputting the expected values, I eac
 
 
  delay(2000);
-`
+```
 
 The result of this test can be seen in the video below.
 
