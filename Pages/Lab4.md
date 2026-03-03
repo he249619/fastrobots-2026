@@ -33,12 +33,12 @@ You may notice that one of my input pins to the motor controller shown is not on
 
 When testing to see if the motor drivers produce the correct output, I used the `analogWrite()` function in Arduino to control the PWM output of Pins 9, 11, 12, and 14. For example, with the code shown below, I tested if the motor controllers were able to output the correct duty cycles of about 79% (200 out of the 255 maximum) and 40 percent (100 out of the 255 maximum).
 
-`cpp
+```cpp
  analogWriteResolution(8);
 
  analogWrite(9, 0);
  analogWrite(11, 100);
-`
+```
 
 For each motor driver, I commanded one of the pins associated with it to output either 100 or 200 as the PWM signal and set the other pin as 0, and then tested the opposite as well. This was done with very similar code to that shown above, just requiring me to change the pin numbers and PWM value in the function call.
 
@@ -83,11 +83,13 @@ While it may be hard to see, the difference in speeds can be heard in the video.
 
 ### Fully Integrated System
 
-The natural next step was to use the Li-Ion battery to power the motors instead of the DC power supply. The result of this can be seen in the video below.
+The natural next step was to use the Li-Ion battery to power the motors instead of the DC power supply. How I decided to place all devices on the car is shown in the image below.
+
+# <img src="Images/Lab 4/car_wiring.png" style="max-width:75%"/>
+
+The result of this setup can be seen in the video below, depicting my car running independently from the given controller, the DC power supply, and a direct connection to my computer.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Ui9a14Kx_7s" title="ECE 4160: Lab 3 Three Sensors in Parallel" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
-
-### Picture of all the components secured in the car (Consider labeling your picture if you can’t see all the components)
 
 ### PWM Input Limitations
 
@@ -115,5 +117,3 @@ After some experimentation, I found that 1.15 was a good scaling factor for my c
 While moving in a straight line is important, it isn't very fun. Instead, I made my robot car move in a slithering pattern like a snake by predetermining the PWM inputs and the timing for each of the inputs. It even drifts a little bit!
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/f-eLMC-MM68" title="ECE 4160: Lab 3 Three Sensors in Parallel" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
-
-
