@@ -53,38 +53,31 @@ The output of these tests can be seen below. The first image shows the motor dri
 
 It is interesting to note that the Artemis can output PWM signals with different resolutions. When the PWM resolution is set to 8, as I did here, PWM signals can be between 0 and 255. When it is set to 16, however, PWM signals can be set anywhere between 0 and 65535. Resolution this high doesn’t seem necessary for the robot in this lab, but it’s good to know that the option is there if I want to develop very fine tuned inputs into the system later on. 
 
-### Short video of wheels spinning as expected (including code snippet it’s running on)
+### Testing Functionality
 
 After ensuring that the motor drivers were outputting the expected values, I each of them to one of the car’s motors one at a time. The motor drivers, and the motors as well, were still powered by the power supply at this point. I tested the behavior of the motors when given the following command continuously:
 
-`cpp
+```cpp
  analogWrite(9, 100);
  analogWrite(11, 0);
 
-
  delay(2000);
-
 
  analogWrite(9, 0);
  analogWrite(11, 0);
 
-
  delay(2000);
-
 
  analogWrite(9, 0);
  analogWrite(11, 200);
 
-
  delay(2000);
-
 
  analogWrite(9, 0);
  analogWrite(11, 100);
 
-
  delay(2000);
-`
+```
 
 The result of this test can be seen in the video below.
 
@@ -92,7 +85,7 @@ The result of this test can be seen in the video below.
 
 While it may be hard to see, the difference in speeds can be heard in the video. 
 
-### Short video of both wheels spinning (with battery driving the motor drivers)
+### Car Powered by Battery
 
 The natural next step was to use the Li-Ion battery to power the motors instead of the DC power supply. The result of this can be seen in the video below.
 
@@ -100,7 +93,7 @@ The natural next step was to use the Li-Ion battery to power the motors instead 
 
 ### Picture of all the components secured in the car (Consider labeling your picture if you can’t see all the components)
 
-### Lower limit PWM value discussion
+### PWM Input Limintations
 
 Through experimentation, I found that for any PWM input lower than 30 out of 255 will cause the car to stall when attempting to move forward from a stopped position. This value is a very low boundary for the minimum necessary PWM input to move from a standstill because after it initially causes the car to move, it stalls again. This behavior can be seen in the first video below. The second video illustrates how, with a PWM signal of just 25, the car no longer moves. 
 
