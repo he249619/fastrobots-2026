@@ -21,15 +21,13 @@ Importantly, the diagram above illustrates that a Li-Ion 3.7V 850mAh battery is 
 
 ## Lab Work
 
-### Picture of your setup with power supply and oscilloscope hookup
+### Testing Setup
 
 Before soldering the battery to the motor drivers, I needed to ensure that they were outputting the expected signal when given a certain input from the Artemis board. In order to do this, I tested each of the motor drivers by connecting them to a DC power supply and monitoring their output with an oscilloscope. I set the power supply 3.7V to simulate the voltage of the Li-Ion battery that will power the motors in the final configuration. This lab setup is pictured below.
 
 You may notice that one of my input pins to the motor controller shown is not one of the pins that I described in the previous section. This is simply because I wanted to test different pin connections, as I found that some of the pins automatically go high when the Artemis board boots up. Pin 9 is one of these pins, and through this experimentation I found out that I have to set it low before in the `setup()` portion of my code in order to change the PWM signal it outputs later. 
 
 # <img src="Images/Lab 4/lab_setup.jpg" style="max-width:75%"/>
-
-<!-- # <img src="Images/Lab 4/closer_up_setup.jpg" style="max-width:75%"/> -->
 
 ### Testing PWM Output (Include the code snippet for your analogWrite code that tests the motor drivers)
 
@@ -83,7 +81,7 @@ The result of this test can be seen in the video below.
 
 While it may be hard to see, the difference in speeds can be heard in the video. 
 
-### Car Powered by Battery
+### Fully Integrated System
 
 The natural next step was to use the Li-Ion battery to power the motors instead of the DC power supply. The result of this can be seen in the video below.
 
@@ -91,7 +89,7 @@ The natural next step was to use the Li-Ion battery to power the motors instead 
 
 ### Picture of all the components secured in the car (Consider labeling your picture if you can’t see all the components)
 
-### PWM Input Limintations
+### PWM Input Limitations
 
 Through experimentation, I found that for any PWM input lower than 30 out of 255 will cause the car to stall when attempting to move forward from a stopped position. This value is a very low boundary for the minimum necessary PWM input to move from a standstill because after it initially causes the car to move, it stalls again. This behavior can be seen in the first video below. The second video illustrates how, with a PWM signal of just 25, the car no longer moves. 
 
@@ -104,7 +102,18 @@ In order to have the car rotate consistently, the Artemis needs to command a PWM
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/D-NCks6sAcs" title="ECE 4160: Lab 3 Three Sensors in Parallel" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
 
-### Calibration demonstration (discussion, video, code, pictures as needed)
+### Calibration Discussion
 
-### Open loop code and video
+As mentioned above, one motor seems to be more impacted by a PWM input than the other. This could be an issue because when given the same input, the motors should allow for the car to drive in a straight line, which was not the case. In order to overcome this issue, I decided to multiply the PWM input of the motor that seemed to lag behind by a value greater than 1. This caused its PWM input to be slightly larger than its counterpart's, which resulted in more ideal behavior. 
+
+After some experimentation, I found that 1.15 was a good scaling factor for my car. The video below shows the robot moving in a relatively straight line for 6 feet with this scaling factor.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/us1MvqbDR-w" title="ECE 4160: Lab 3 Three Sensors in Parallel" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
+
+### Open Loop Control
+
+While moving in a straight line is important, it isn't very fun. Instead, I made my robot car move in a slithering pattern like a snake by predetermining the PWM inputs and the timing for each of the inputs. It even drifts a little bit!
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/f-eLMC-MM68" title="ECE 4160: Lab 3 Three Sensors in Parallel" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
+
 
