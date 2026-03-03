@@ -31,8 +31,6 @@ You may notice that one of my input pins to the motor controller shown is not on
 
 <!-- # <img src="Images/Lab 4/closer_up_setup.jpg" style="max-width:75%"/> -->
 
-### Power supply setting discussion (done in previous parts)
-
 ### Testing PWM Output (Include the code snippet for your analogWrite code that tests the motor drivers)
 
 When testing to see if the motor drivers produce the correct output, I used the `analogWrite()` function in Arduino to control the PWM output of Pins 9, 11, 12, and 14. For example, with the code shown below, I tested if the motor controllers were able to output the correct duty cycles of about 79% (200 out of the 255 maximum) and 40 percent (100 out of the 255 maximum).
