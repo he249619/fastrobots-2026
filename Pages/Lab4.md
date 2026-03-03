@@ -116,4 +116,27 @@ After some experimentation, I found that 1.15 was a good scaling factor for my c
 
 While moving in a straight line is important, it isn't very fun. Instead, I made my robot car move in a slithering pattern like a snake by predetermining the PWM inputs and the timing for each of the inputs. It even drifts a little bit!
 
+The code I ran in order to do this flows from one set of PWM inputs to another after a certain amount of time has passed. Below is some pseudo code of my open loop control.
+
+```cpp
+if (time passed <= 600 us) { // the first turn
+    analogWrite(9, 75*1.15); // very low duty cycle
+    analogWrite(11, 0);
+    analogWrite(12, 220); // almost full duty cycle
+    analogWrite(14, 0);
+} else if (time passed <= 1200 us){ // the second turn is the reverse of the first
+    analogWrite(9, 220*1.15);
+    analogWrite(11, 0);
+    analogWrite(12, 75);
+    analogWrite(14, 0);
+} else { // back to the first turn
+    analogWrite(9, 75*1.15);
+    analogWrite(11, 0);
+    analogWrite(12, 220);
+    analogWrite(14, 0);
+}
+```
+
+This code resulted in the behavior shown in the video below.
+
 <iframe width="560" height="315" src="https://www.youtube.com/embed/f-eLMC-MM68" title="ECE 4160: Lab 3 Three Sensors in Parallel" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
