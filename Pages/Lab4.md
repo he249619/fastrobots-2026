@@ -116,7 +116,7 @@ After some experimentation, I found that 1.15 was a good scaling factor for my c
 
 While moving in a straight line is important, it isn't very fun. Instead, I made my robot car move in a slithering pattern like a snake by predetermining the PWM inputs and the timing for each of the inputs. It even drifts a little bit!
 
-The code I ran in order to do this flows from one set of PWM inputs to another after a certain amount of time has passed. Below is some pseudo code of my open loop control.
+The code I ran in order to do this flows from one set of PWM inputs to another after a certain amount of time has passed. Below is some pseudo code of my open loop control. This code, along with all the other commands sent to the Artemis board, was sent via Bluetooth from my laptop.
 
 ```cpp
 if (time passed <= 600 us) { // the first turn
