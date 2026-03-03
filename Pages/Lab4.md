@@ -11,7 +11,7 @@ layout: default
 
 This lab focuses on integrating two DRV8833 dual motor drivers into our system so that we have greater control over how we drive the car as opposed to using the car’s original control PCB. Each of these motor drivers has the potential to drive two motors, but in order to increase the current supply to either motor, both channels on a singular motor driver were combined. This allowed for the motors to produce a larger torque. A diagram of this circuit is shown below.
 
-# <img src="Images/Lab 4/wiring.png" style="max-width:75%"/>
+# <img src="Images/Lab 4/wiring.png" style="max-width:90%"/>
 
 As can be seen in the diagram above, four pins are required to control these two motor drivers. This is because each of the combined channels, AIN1 + BIN1 and AIN2 + BIN2 on both motor drivers, requires an independent Pulse Width Modulation (PWM) signal, which in turn drives the motors of the car. For the first motor driver, I use Pin 9 for the IN1 channel and Pin 11 for the IN2 channel. For the second motor driver, I use Pin 12 for the IN1 channel and Pin 14 for the IN2 channel. The outputs of both motor drivers, AOUT1 + BOUT1 and AOUT2 + BOUT2, got to their corresponding motor’s power and ground, allowing the Artemis to control the motors through the dual motor drivers.
 
@@ -31,7 +31,7 @@ You may notice that one of my input pins to the motor controller shown is not on
 
 ### Testing PWM Output (Include the code snippet for your analogWrite code that tests the motor drivers)
 
-When testing to see if the motor drivers produce the correct output, I used the `analogWrite()` function in Arduino to control the PWM output of Pins 9, 11, 12, and 14. For example, with the code shown below, I tested if the motor controllers were able to output the correct duty cycles of about 79% (200 out of the 255 maximum) and 40 percent (100 out of the 255 maximum).
+When testing to see if the motor drivers produce the correct output, I used the `analogWrite()` function in Arduino to control the PWM output of Pins 9, 11, 12, and 14. For example, with the code shown below, I tested if the motor controllers were able to output the correct duty cycles of about 79% (200 out of the 255 maximum) and 40% (100 out of the 255 maximum).
 
 ```cpp
  analogWriteResolution(8);
@@ -47,7 +47,7 @@ The output of these tests can be seen below. The first image shows the motor dri
 # <img src="Images/Lab 4/100_PWM.jpg" style="max-width:75%"/>
 # <img src="Images/Lab 4/200_PWM.jpg" style="max-width:75%"/>
 
-It is interesting to note that the Artemis can output PWM signals with different resolutions. When the PWM resolution is set to 8, as I did here, PWM signals can be between 0 and 255. When it is set to 16, however, PWM signals can be set anywhere between 0 and 65535. Resolution this high doesn’t seem necessary for the robot in this lab, but it’s good to know that the option is there if I want to develop very fine tuned inputs into the system later on. 
+It is interesting to note that the Artemis has different PWM resolutions. When the PWM resolution is set to 8, as I did here, PWM signals can be between 0 and 255. When it is set to 16, however, PWM signals can be set anywhere between 0 and 65535. Resolution this high doesn’t seem necessary for the robot in this lab, but it’s good to know that the option is there if I want to develop very fine tuned inputs into the system later on. 
 
 ### Testing Functionality
 
@@ -79,15 +79,15 @@ The result of this test can be seen in the video below.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Gream7-C52o" title="ECE 4160: Lab 3 Three Sensors in Parallel" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
 
-While it may be hard to see, the difference in speeds can be heard in the video. 
+While it may be hard to see in the video, the difference in speeds can be heard by the change in volume of the motor. 
 
 ### Fully Integrated System
 
 The natural next step was to use the Li-Ion battery to power the motors instead of the DC power supply. How I decided to place all devices on the car is shown in the image below.
 
-# <img src="Images/Lab 4/car_wiring.png" style="max-width:75%"/>
+# <img src="Images/Lab 4/car_wiring.png" style="max-width:90%"/>
 
-The result of this setup can be seen in the video below, depicting my car running independently from the given controller, the DC power supply, and a direct connection to my computer.
+The result of this setup can be seen in the video below, depicting my car running independently from the given controller, the DC power supply, or a direct connection to my computer.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Ui9a14Kx_7s" title="ECE 4160: Lab 3 Three Sensors in Parallel" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
 
