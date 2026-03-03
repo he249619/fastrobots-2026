@@ -37,12 +37,12 @@ You may notice that one of my input pins to the motor controller shown is not on
 
 When testing to see if the motor drivers produce the correct output, I used the `analogWrite()` function in Arduino to control the PWM output of Pins 9, 11, 12, and 14. For example, with the code shown below, I tested if the motor controllers were able to output the correct duty cycles of about 79% (200 out of the 255 maximum) and 40 percent (100 out of the 255 maximum).
 
-```cpp
+`cpp
  analogWriteResolution(8);
 
  analogWrite(9, 0);
  analogWrite(11, 100);
-```
+`
 
 For each motor driver, I commanded one of the pins associated with it to output either 100 or 200 as the PWM signal and set the other pin as 0, and then tested the opposite as well. This was done with very similar code to that shown above, just requiring me to change the pin numbers and PWM value in the function call.
 
@@ -57,7 +57,7 @@ It is interesting to note that the Artemis can output PWM signals with different
 
 After ensuring that the motor drivers were outputting the expected values, I each of them to one of the car’s motors one at a time. The motor drivers, and the motors as well, were still powered by the power supply at this point. I tested the behavior of the motors when given the following command continuously:
 
-```cpp
+`cpp
  analogWrite(9, 100);
  analogWrite(11, 0);
 
@@ -84,7 +84,7 @@ After ensuring that the motor drivers were outputting the expected values, I eac
 
 
  delay(2000);
-```
+`
 
 The result of this test can be seen in the video below.
 
@@ -94,9 +94,24 @@ While it may be hard to see, the difference in speeds can be heard in the video.
 
 ### Short video of both wheels spinning (with battery driving the motor drivers)
 
+The natural next step was to use the Li-Ion battery to power the motors instead of the DC power supply. The result of this can be seen in the video below.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Ui9a14Kx_7s" title="ECE 4160: Lab 3 Three Sensors in Parallel" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
+
 ### Picture of all the components secured in the car (Consider labeling your picture if you can’t see all the components)
 
 ### Lower limit PWM value discussion
+
+Through experimentation, I found that for any PWM input lower than 30 out of 255 will cause the car to stall when attempting to move forward from a stopped position. This value is a very low boundary for the minimum necessary PWM input to move from a standstill because after it initially causes the car to move, it stalls again. This behavior can be seen in the first video below. The second video illustrates how, with a PWM signal of just 25, the car no longer moves. 
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/9GP-EUnP98c" title="ECE 4160: Lab 3 Three Sensors in Parallel" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/E7GnW6LYYcU" title="ECE 4160: Lab 3 Three Sensors in Parallel" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
+
+
+In order to have the car rotate consistently, the Artemis needs to command a PWM signal that is no lower than 180 out of 255. This value produced a slight rotational movement, but it also caused the car to move forward. It is possible that this has to do with the calibration of the motors, which I will discuss in the following section. Ideally, when attempting to rotate on-axis from a standstill, the PWM signal is greater than at least 200 to get really good rotation. The video below shows the slight rotational movement when the car is given a PWM signal of 180.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/D-NCks6sAcs" title="ECE 4160: Lab 3 Three Sensors in Parallel" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
 
 ### Calibration demonstration (discussion, video, code, pictures as needed)
 
