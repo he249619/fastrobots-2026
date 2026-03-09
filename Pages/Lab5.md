@@ -11,10 +11,15 @@ layout: default
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Gream7-C52o" title="ECE 4160: Lab 3 Three Sensors in Parallel" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
 
 ## Prelab
+
 ### Clearly describe how you handle sending and receiving data over Bluetooth
+
 ### Consider adding code snippets as necessary to showcase how you implemented this on Arduino and Python
+
 ## Lab Tasks
+
 ### P/I/D discussion (Kp/Ki/Kd values chosen, why you chose a combination of controllers, etc.)
+
 ### Range/Sampling time discussion
 
 ```cpp
