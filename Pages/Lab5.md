@@ -173,7 +173,7 @@ In order to remove this oscillatory behavior, I added a non-zero `kd` term. The 
 
 While this was better, I believed that the car could reach the goal in less time and with less oscillation. Thus began a game of playing around with the values of `kp` and `kd`, increasing the former to increase the speed of the car and the latter to discourage oscillatory behavior. Eventually, I decided that  `kp = 0.19` and `kd = 0.007` produced a quick response from the car with minimal oscillations.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/e54BBLMmohk0" title="ECE 4160: Lab 3 Three Sensors in Parallel" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/e54BBLMmohk" title="ECE 4160: Lab 3 Three Sensors in Parallel" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
 
 # <img src="Images/Lab 5/Larger P and D/final_terms.png" style="max-width:90%"/>
 # <img src="Images/Lab 5/Larger P and D/final_pwm.png" style="max-width:90%"/>
