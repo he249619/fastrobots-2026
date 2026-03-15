@@ -1,0 +1,1 @@
+The maximum error is 180 degrees. I think it would be best to wrap all angles between [180,-180). A rotation towards the left I will count as positive pwm, and a rotation towards the right I will count as negative pwm values.
