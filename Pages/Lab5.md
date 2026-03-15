@@ -149,12 +149,15 @@ With `kp=0.12`, and `ki=kd=0.0`, the car moved slowly and would overshoot the go
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/biKzvUNXVKs" title="ECE 4160: Lab 3 Three Sensors in Parallel" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
 
+# <img src="Images/Lab 5/Just P/no_wall_terms.png" style="max-width:90%"/>
 # <img src="Images/Lab 5/Just P/no_wall_distance.png" style="max-width:90%"/>
 # <img src="Images/Lab 5/Just P/no_wall_pwm.png" style="max-width:90%"/>
 
 When the initial error was larger, it caused the robot overshoot even more. Here, the robot starts at about 1390 mm from the wall and is attempting to get to 500mm:
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/wIy1Zj0XlH4" title="ECE 4160: Lab 3 Three Sensors in Parallel" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
+
+# <img src="Images/Lab 5/Just P/overshoot_terms.png" style="max-width:90%"/>
 # <img src="Images/Lab 5/Just P/overshoot_pwm.png" style="max-width:90%"/>
 # <img src="Images/Lab 5/Just P/overshoot_distance.png" style="max-width:90%"/>
 
@@ -164,6 +167,7 @@ In order to remove this oscillatory behavior, I added a non-zero `kd` term. The 
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/WuX_4CsHXg0" title="ECE 4160: Lab 3 Three Sensors in Parallel" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
 
+# <img src="Images/Lab 5/P and D/less_overshoot_terms.png" style="max-width:90%"/>
 # <img src="Images/Lab 5/P and D/less_overshoot_pwm.png" style="max-width:90%"/>
 # <img src="Images/Lab 5/P and D/less_overshoot_distance.png" style="max-width:90%"/>
 
@@ -171,6 +175,7 @@ While this was better, I believed that the car could reach the goal in less time
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/e54BBLMmohk0" title="ECE 4160: Lab 3 Three Sensors in Parallel" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
 
+# <img src="Images/Lab 5/Larger P and D/final_terms.png" style="max-width:90%"/>
 # <img src="Images/Lab 5/Larger P and D/final_pwm.png" style="max-width:90%"/>
 # <img src="Images/Lab 5/Larger P and D/final_distance.png" style="max-width:90%"/>
 
@@ -235,6 +240,9 @@ The performance of the robot with the extrapolated data is comparable to without
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/5x_ZpusBX4U" title="ECE 4160: Lab 3 Three Sensors in Parallel" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
 
+# <img src="Images/Lab 5/Extrapolated/terms.png" style="max-width:90%"/>
 # <img src="Images/Lab 5/Extrapolated/pwm.png" style="max-width:90%"/>
 # <img src="Images/Lab 5/Extrapolated/distance.png" style="max-width:90%"/>
+
+
 
