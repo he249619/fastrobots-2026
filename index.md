@@ -21,3 +21,4 @@ This will be updated as the labs are finished.
 2. [Lab 2: IMU](Pages/Lab2.md)
 3. [Lab 3: Time of Flight Sensor](Pages/Lab3.md)
 4. [Lab 4: Motors and Open Loop Control](Pages/Lab4.md)
+5. [Lab 5: Linear PID Control and Linear Interpolation](Pages/Lab5.md)
