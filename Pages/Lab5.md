@@ -29,12 +29,12 @@ layout: default
 # <img src="Images/Lab 5/P and D/less_overshoot_pwm.png" style="max-width:90%"/>
 # <img src="Images/Lab 5/P and D/less_overshoot_terms.png" style="max-width:90%"/>
 
-**Larger P and D**
+**Extrapolated P and D**
 
-# <img src="Images/Lab 5/Larger P and D/constants.png" style="max-width:90%"/>
-# <img src="Images/Lab 5/Larger P and D/final_distance.png" style="max-width:90%"/>
-# <img src="Images/Lab 5/Larger P and D/final_pwm.png" style="max-width:90%"/>
-# <img src="Images/Lab 5/Larger P and D/final_terms.png" style="max-width:90%"/>
+# <img src="Images/Lab 5/Extrapolated P and D/constants.png" style="max-width:90%"/>
+# <img src="Images/Lab 5/Extrapolated P and D/final_distance.png" style="max-width:90%"/>
+# <img src="Images/Lab 5/Extrapolated P and D/final_pwm.png" style="max-width:90%"/>
+# <img src="Images/Lab 5/Extrapolated P and D/final_terms.png" style="max-width:90%"/>
 
 **Extrapolated**
 
