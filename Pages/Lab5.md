@@ -6,7 +6,42 @@ layout: default
 
 # Lab 5: Linear PID Control and Linear Interpolation
 
-# <img src="Images/Lab 4/wiring.png" style="max-width:90%"/>
+**General Information Imgaes**
+
+# <img src="Images/Lab 5/loop_speed_with_extrapolation.png" style="max-width:90%"/>
+# <img src="Images/Lab 5/loop_speed_without_extrapolation.png" style="max-width:90%"/>
+# <img src="Images/Lab 5/rawDistance_Extrapolated_lpf.png" style="max-width:90%"/>
+# <img src="Images/Lab 5/rawDistance_Extrapolated.png" style="max-width:90%"/>
+
+**P Only**
+
+# <img src="Images/Lab 5/Just P/d_term.png" style="max-width:90%"/>
+# <img src="Images/Lab 5/Just P/no_wall_distance.png" style="max-width:90%"/>
+# <img src="Images/Lab 5/Just P/no_wall_pwm.png" style="max-width:90%"/>
+# <img src="Images/Lab 5/Just P/no_wall_terms.png" style="max-width:90%"/>
+# <img src="Images/Lab 5/Just P/overshoot_distance.png" style="max-width:90%"/>
+# <img src="Images/Lab 5/Just P/overshoot_pwm.png" style="max-width:90%"/>
+# <img src="Images/Lab 5/Just P/overshoot_terms.png" style="max-width:90%"/>
+
+**P and D**
+
+# <img src="Images/Lab 5/P and D/less_overshoot_distance.png" style="max-width:90%"/>
+# <img src="Images/Lab 5/P and D/less_overshoot_pwm.png" style="max-width:90%"/>
+# <img src="Images/Lab 5/P and D/less_overshoot_terms.png" style="max-width:90%"/>
+
+**Larger P and D**
+
+# <img src="Images/Lab 5/Larger P and D/constants.png" style="max-width:90%"/>
+# <img src="Images/Lab 5/Larger P and D/final_distance.png" style="max-width:90%"/>
+# <img src="Images/Lab 5/Larger P and D/final_pwm.png" style="max-width:90%"/>
+# <img src="Images/Lab 5/Larger P and D/final_terms.png" style="max-width:90%"/>
+
+**Extrapolated**
+
+# <img src="Images/Lab 5/Extrapolated/constants.png" style="max-width:90%"/>
+# <img src="Images/Lab 5/Extrapolated/distance.png" style="max-width:90%"/>
+# <img src="Images/Lab 5/Extrapolated/pwm.png" style="max-width:90%"/>
+# <img src="Images/Lab 5/Extrapolated/terms.png" style="max-width:90%"/>
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Gream7-C52o" title="ECE 4160: Lab 3 Three Sensors in Parallel" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
 
