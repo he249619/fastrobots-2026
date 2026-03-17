@@ -82,7 +82,6 @@ Using `kp = 1.0` and `kd = ki = 0.0` was a good start, but it resulted in a sign
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Osg98f0OM9E" title="ECE 4160: Lab 3 Three Sensors in Parallel" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
 
 # <img src="Images/Lab 6/Just P/angle.png" style="max-width:90%"/>
-# <img src="Images/Lab 6/Just P/constants.png" style="max-width:90%"/>
 # <img src="Images/Lab 6/Just P/p.png" style="max-width:90%"/>
 # <img src="Images/Lab 6/Just P/pwm.png" style="max-width:90%"/>
 
@@ -91,7 +90,6 @@ When the car attempted to rotate 180°, it overshoot even more.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/NP9hRd67f1Q" title="ECE 4160: Lab 3 Three Sensors in Parallel" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
 
 # <img src="Images/Lab 6/Just P, Overshoot/angle.png" style="max-width:90%"/>
-# <img src="Images/Lab 6/Just P, Overshoot/constants.png" style="max-width:90%"/>
 # <img src="Images/Lab 6/Just P, Overshoot/p.png" style="max-width:90%"/>
 # <img src="Images/Lab 6/Just P, Overshoot/pwm.png" style="max-width:90%"/>
 
@@ -110,8 +108,7 @@ After many trials, I finally arrived at values of `1.5` and `0.03` for `kp` and 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/EXq_kSRCReA" title="ECE 4160: Lab 3 Three Sensors in Parallel" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
 
 # <img src="Images/Lab 6/OG P and D/angle.png" style="max-width:90%"/>
-# <img src="Images/Lab 6/OG P and D/constants.png" style="max-width:90%"/>
-# <img src="Images/Lab 6/OG P and D/p.png" style="max-width:90%"/>
+# <img src="Images/Lab 6/OG P and D/p_d.png" style="max-width:90%"/>
 # <img src="Images/Lab 6/OG P and D/pwm.png" style="max-width:90%"/>
 
 The following video shows how the setpoint can be changed as the controller is running, as well as how the car can adapt to disturbances. Interestingly, the behavior of the car here is slightly less ideal than that in the previous video. This could be due to many factors, but I believe that it is because the motor battery didn’t have the exact same charge for the two demonstrations.
