@@ -28,8 +28,8 @@ while there is a Bluetooth connection {
 
 
 	if the flag associated with sending the data collected 
-while the distance PID loop ran is set high by 
-the Bluetooth commands:
+	while the distance PID loop ran is set high by 
+	the Bluetooth commands:
 		send all relevant data
 
 
@@ -39,13 +39,13 @@ the Bluetooth commands:
 
 
 	if the flag associated with sending the data collected 
-while the angular PID loop ran is set high by 
-the Bluetooth commands:
+	while the angular PID loop ran is set high by 
+	the Bluetooth commands:
 		send all relevant data
 
 
 	if the flag associated with cutting power to the
-motors is set high by the Bluetooth commands:
+	motors is set high by the Bluetooth commands:
 		stop the motors
 }
 ```
