@@ -27,7 +27,7 @@ ble.send_command(CMD.DISTANCE_PID, string)
 
 The Artemis would receive this command, set the appropriate PID values, and then run the controller continuously for a specified amount of time, regardless of if the goal was achieved. 
 
-After using this method for a couple of tries, I realized that the system could be more adaptable if I separated these functions into different Bluetooth commands. For example, I created a `SET_DIST_PID_PARAMS` that allowed me to change the PID constants and the desired goal at any point in time, even if the PID control loop was already running. `TURN_ON_MOTORS` and `TURN_OFF_MOTORS` allowed for the motors to be driven or turned off, respectively, so that I could run the PID loop with and without the car moving during the test period. The command `DISTANCE_PID` started the PID control, which ran until the Artemis received a `STOP_PID` command. 
+After using this method for a couple of tries, I realized that the system could be more adaptable if I separated these functions into different Bluetooth commands. For example, I created a `SET_DIST_PID_PARAMS` command that allowed me to change the PID constants and the desired goal at any point in time, even if the PID control loop was already running. `TURN_ON_MOTORS` and `TURN_OFF_MOTORS` allowed for the motors to be driven or turned off, respectively, so that I could run the PID loop with and without the car moving during the test period. The command `DISTANCE_PID` started the PID control, which ran until the Artemis received a `STOP_PID` command. 
 
 While the PID loop is running, arrays of relevant data are populated so long as they are not full, like so:
 
