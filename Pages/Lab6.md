@@ -27,9 +27,8 @@ while there is a Bluetooth connection {
 		run one iteration of the distance PID loop
 
 
-	if the flag associated with sending the data collected 
-	while the distance PID loop ran is set high by 
-	the Bluetooth commands:
+	if the flag associated with sending the data collected while
+	the distance PID loop ran is set high by the Bluetooth commands:
 		send all relevant data
 
 
@@ -38,9 +37,8 @@ while there is a Bluetooth connection {
 		run one iteration of the angular PID loop
 
 
-	if the flag associated with sending the data collected 
-	while the angular PID loop ran is set high by 
-	the Bluetooth commands:
+	if the flag associated with sending the data collected while
+	the angular PID loop ran is set high by the Bluetooth commands:
 		send all relevant data
 
 
