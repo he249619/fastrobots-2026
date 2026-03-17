@@ -183,7 +183,7 @@ While this was better, I believed that the car could reach the goal in less time
 
 While tuning `kp` and `kd`, I noticed that the car never had steady state error between its desired state and its current state. Therefore, I decided that it wasn’t necessary to implement an integral component in the PID controller.
 
-### Range/Sampling time discussion
+### Sampling Time Discussion
 
 Our robot is very fast, so we want to run our controller as fast as possible. If the controller only ran when sensor data was available, it would be significantly bottlenecked by the sampling frequency of the ToF. In order to determine how quick this is, I implemented the following loop on the Artemis board.
 
