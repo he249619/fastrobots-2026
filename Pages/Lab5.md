@@ -91,14 +91,14 @@ The Artemis board continuously listened for all of these commands. If one of the
 
 ```cpp
 case DISTANCE_PID:
-distance_pid = 1;
+            distance_pid = 1;
             counter = 0;
             Serial.println("Started distance PID");
             break;
 
 
 case STOP_PID:
-distance_pid = 0;
+            distance_pid = 0;
             angular_pid = 0;
             turn_off_motors = 1;
             distance_pid_running = 0;
@@ -107,7 +107,7 @@ distance_pid = 0;
 
 
 case SEND_DISTANCE_PID_DATA:
-send_distance_pid = 1;
+            send_distance_pid = 1;
             Serial.println("Sending distance PID data");
 break;
 ```
