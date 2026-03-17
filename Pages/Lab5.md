@@ -200,7 +200,7 @@ loop()
 
         if (distanceSensor0.checkForDataReady()) {
             distance = distanceSensor0.getDistance();            
-distanceSensor0.clearInterrupt();
+            distanceSensor0.clearInterrupt();
             distanceSensor0.stopRanging();
             distanceSensor0.startRanging();
             counter = counter + 1;
