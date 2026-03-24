@@ -24,7 +24,7 @@ In the car’s system, the state could be represented as `[position, velocity]`,
 
 Here, the 2x2 matrix is `A`, and the 2x1 matrix is `B`. The only unknowns are `d`, a drag constant, and `m`, the inertial mass of the car. Luckily, these can be found by doing a force balance on the car and assuming that the PWM input, `u`, acts as a force on the car. From here, we can write:
 
-# <img src="Images/Lab 7/force_balance.png" style="max-width:90%"/>
+# <img src="Images/Lab 7/foce_balance.png" style="max-width:90%"/>
 
 This allows us to solve for the acceleration and velocity in terms of `u`, `m`, and `d`:
 
@@ -32,7 +32,7 @@ This allows us to solve for the acceleration and velocity in terms of `u`, `m`, 
 
 In order to find `d`, we can provide a step response input to the car to cause it to drive forward, and then wait for the velocity to stop changing. At this steady state velocity, the acceleration would be zero and `d` would become equal to `u` divided by the steady state velocity. For simplicity, we can normalize the step response from whatever PWM input we choose to use. I decided to build my Kalman filter around a step response of a PWM input of 255 so that my car can perform well at high speeds.
 
-I was able to collect data about my car’s distance from a wall while driving directly at it with a PWM input of 255. I took the average of four trials and plotted them below:
+I collected data about my car’s distance from a wall while driving towards it with a PWM input of 255. I took the average of four trials and plotted them below:
 
 # <img src="Images/Lab 7/average_distance.png" style="max-width:90%"/>
 # <img src="Images/Lab 7/average_velocity.png" style="max-width:90%"/>
@@ -41,8 +41,8 @@ Unfortunately, the car wasn't able to achieve a steady state velocity before hit
 
 # <img src="Images/Lab 7/fit_data.png" style="max-width:90%"/>
 
-From this, I was able to determine that `d = 1/5769.887 = 0.0001733
-[N*s/mm]`. I was able to find `m` by solving the first order Taylor expansion of:
+From this, I determined that `d = 1/5769.887 = 0.0001733
+[N*s/mm]`. I found `m` by solving the first order Taylor expansion of:
 
 # <img src="Images/Lab 7/velocity_equation.png" style="max-width:90%"/>
 
@@ -68,7 +68,7 @@ Conversely, if the process noise is very high relative to the measurement noise,
 
 # <img src="Images/Lab 7/high_process_noise.png" style="max-width:90%"/>
 
-I was able to use the Kalman filter on this old data by using these two functions:
+I ran the Kalman filter on this old data by using these two functions:
 
 ```python
 def kf_predict(mu, sigma, u, s_u, Ad, Bd):
