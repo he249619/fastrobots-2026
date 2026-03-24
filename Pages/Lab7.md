@@ -24,7 +24,7 @@ In the car’s system, the state could be represented as `[position, velocity]`,
 
 Here, the 2x2 matrix is `A`, and the 2x1 matrix is `B`. The only unknowns are `d`, a drag constant, and `m`, the inertial mass of the car. Luckily, these can be found by doing a force balance on the car and assuming that the PWM input, `u`, acts as a force on the car. From here, we can write:
 
-# <img src="Images/Lab 7/foce_balance.png" style="max-width:90%"/>
+# <img src="Images/Lab 7/force_balance.png" style="max-width:90%"/>
 
 This allows us to solve for the acceleration and velocity in terms of `u`, `m`, and `d`:
 
