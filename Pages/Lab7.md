@@ -68,7 +68,9 @@ Conversely, if the process noise is very high relative to the measurement noise,
 
 # <img src="Images/Lab 7/high_process_noise.png" style="max-width:90%"/>
 
-I ran the Kalman filter on this old data by using these two functions:
+Throughout the tuning process, I changed the values of these uncertainties a lot. Initially, I tried to reason about how uncertain the measurement noise would be based on previous data I had collected, and made rough order of magnitude estimates for the process noise. This was initially a measurement uncertainty of about `10`, and a process uncertainty of about `20` for both the position and velocity. I then iteratively observed the Kalman filter’s response to the uncertainties, changed the uncertainties to either increase or decrease the significance of the measurements, and then observed the behavior again.
+
+In order to visualize the behavior, I used these two functions to run the Kalman filter on the Lab 5 data:
 
 ```python
 def kf_predict(mu, sigma, u, s_u, Ad, Bd):
