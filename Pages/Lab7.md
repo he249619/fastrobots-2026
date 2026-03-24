@@ -155,7 +155,7 @@ An issue that I ran into was that my filter would automatically move to wherever
 
 The following is an example of my car running the PD controller with a Kalman Filter for estimating the distance from the wall instead of linear interpolation. For this run, I used a measurement uncertainty of `20`, a position uncertainty of `10`, and a velocity uncertainty of `15`.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/biKzvUNXVKs" title="ECE 4160: Lab 3 Three Sensors in Parallel" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/n6S_k3I2Wgk" title="ECE 4160: Lab 3 Three Sensors in Parallel" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
 
 # <img src="Images/Lab 7/better_kf_pwm.png" style="max-width:90%"/>
 # <img src="Images/Lab 7/better_kf_distance.png" style="max-width:90%"/>
