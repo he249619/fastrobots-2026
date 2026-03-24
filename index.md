@@ -23,3 +23,4 @@ This will be updated as the labs are finished.
 4. [Lab 4: Motors and Open Loop Control](Pages/Lab4.md)
 5. [Lab 5: Linear PID Control and Linear Interpolation](Pages/Lab5.md)
 6. [Lab 6: Orientation Control](Pages/Lab6.md)
+7. [Lab 7: Kalman Filter](Pages/Lab7.md)
