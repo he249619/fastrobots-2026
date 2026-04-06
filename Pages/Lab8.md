@@ -6,11 +6,11 @@ layout: default
 
 # Lab 8: Stunts!
 
-The goal of this lab was to make our car do a stunt, and I chose to make my car drift. I did this by having the car drive directly towards a wall, start turning 180° once it was within three feet of the wall, and then driving back in the same direction it originated after turning.
+The goal of this lab was to make our car do a stunt, and I chose to make my car drift. I did this by having the car drive directly towards a wall, start turning 180° around once it was within three feet of the wall, and then drive back in the same direction it originated after turning.
 
 ### Updated Software
 
-In order to accomplish the drift, I added a new function named `do_the_drift()` to the code on the Artemis that transitioned the car from one state of operation to another during the stunt. This function was called once in every `void loop()` iteration so long as the global variable `initiate_drift` was `1`.
+In order to accomplish the drift, I added a new function named `do_the_drift()` to the code on the Artemis. This function was called once in every `void loop()` iteration so long as the global variable `initiate_drift` was `1`.
 
 ```cpp
 void loop() {
@@ -27,7 +27,7 @@ void loop() {
 }
 ``` 
 
-This flag, as well as other flags used within `do_the_drift()`, were all when the Artemis received a `DRIFT` command from my laptop.
+The `initiate_drift` flag, as well as other flags used within `do_the_drift()`, were all set when the Artemis received a `DRIFT` command from my laptop.
 
 ```python
 drift_speed = 130 # pwm value at which the motors ran when moving straight
@@ -40,9 +40,9 @@ string = str(drift_speed) + "|" + str(goal_angle) + "|" + str(drive_seconds) + "
 ble.send_command(CMD.DRIFT, string)
 ```
 
-The `do_the_drift()` function incorporated a lot of the distance PID controller I developed, except the PWM value calculated in this new function did not change. Instead, the motors ran at a constant PWM value `drift_speed`, which was set by the `DRIFT` command. The Kalman filter was used to determine how far away the car was from the wall based on the ToF readings and the model of the system.
+The `do_the_drift()` function incorporated a lot of the distance PID controller I previously developed, except the PWM value sent to the motors did not change with respect to distance. Instead, the motors ran at a constant PWM value `drift_speed`, which is set by the `DRIFT` command. The Kalman filter was used to determine how far away the car was from the wall based on the ToF readings and the model of the system.
 
-Once the car was within `turning_distance` mm from the wall, the value of which was set via the same bluetooth command mentioned above, `do_the_drift()` then stopped the car from driving forward and called the previously made `run_angular_pid()` to rotate the car 180°. It also sets the value of the `do_turn` flag from `0` to `1`. This ensured that this section of code started running once the car was close enough to the wall, and continued to run as the car was spinning even though the measured distance in front of it would change as it was spinning. The `run_angular_pid()` function was called until the car was within ±10° of 180°. Not enforcing the car to turn to exactly 180° allowed for the car to begin driving back more quickly. Once the heading of the car was close enough to 180°, `done_spinning` was set to `1` and this section of code would no longer be entered.
+Once the car was within `turning_distance` mm from the wall, the value of which was set via the same bluetooth command mentioned above, `do_the_drift()` then stopped the car from driving forward and called the previously made `run_angular_pid()` to rotate the car 180°. It also sets the value of the `do_turn` flag from `0` to `1`. This ensured that this section of code started running once the car was close enough to the wall, and continued to run while the car was spinning even though the measured distance in front of it would change as it was spinning. The `run_angular_pid()` function was called until the car was within ±10° of 180°. Not enforcing the car to turn to exactly 180° allowed for the car to begin driving back more quickly. Once the heading of the car was close enough to 180°, `done_spinning` was set to `1` and this section of code would no longer be entered.
 
 ```cpp
 if ( ((kalman_distance_output <= turning_distance) || (do_turn)) && !done_spinning){
@@ -56,7 +56,7 @@ if ( ((kalman_distance_output <= turning_distance) || (do_turn)) && !done_spinni
 }
 ```
 
-After the car had finished spinning, all it had to do was drive forward again. To do this, I simply ensured that a PWM signal of `drift_speed` was sent to the motors for `drive_seconds` seconds. I decided that it was not necessary to report the PWM value of Kalman filter output for this portion of the stunt because the PWM value was constant and known, and the Kalman filter may output odd data because it was uncertain what would be in front of the car as it was driving back during the experiment.
+After the car had finished spinning, all it had to do was drive forward again. To do this, I simply ensured that a PWM signal of `drift_speed` was sent to the motors for `drive_seconds` seconds. I decided that it was not necessary to report the PWM value or Kalman filter output for this portion of the stunt because the PWM value was constant and known and the distance between the car and any objects in front of it no longer impacted the behavior of the system.
 
 
 ```cpp
