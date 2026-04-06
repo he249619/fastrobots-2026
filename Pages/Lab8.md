@@ -126,13 +126,13 @@ This stunt had a PWM input of 160. While it was faster and still able to drift, 
 
 #### Additional Stunts
 
-These videos don’t show ideal behavior for the stunt, but I thought they were worthy of mentioning.
+These videos don’t show ideal behavior for the stunt, but I thought they were worth mentioning.
 
-In the first one, the car somehow managed to do two rotations instead of just one! I am not entirely sure how this happened, but I thought it was cool. However, because of the additional twist, the car seemed to have lost a lot of its original linear momentum and the second rotation experienced less drift than the first.
+In the first one, the car somehow managed to do two rotations instead of just one. I am not entirely sure how this happened, but I thought it was cool. However, because of the additional twist, the car seemed to have lost a lot of its original linear momentum and the second rotation experienced less drift than the first.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/dlhIX9TBZ08" title="ECE 4160: Lab 8 Double Turn" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
 
-However, not all my attempts at performing this stunt ended as majestically as the ones shown earlier. For example, here my car jitters in place for a little bit, and then proceeds to run full steam ahead into a leg of a table.
+However, not all my attempts at performing this stunt ended as majestically as the ones shown earlier. For example, here my car jitters in place for a little bit, and then proceeds to run full steam ahead into a piece of furniture.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/LRG9N9JXt3s" title="ECE 4160: Lab 8 Blooper" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
 
