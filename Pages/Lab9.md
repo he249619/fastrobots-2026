@@ -127,22 +127,46 @@ Here is the collected data from all of the spots:
 
 # <img src="Images/Lab 9/distance_1.png" style="max-width:90%"/>
 
+# <img src="Images/Lab 9/polar_1.png" style="max-width:90%"/>
+
 # <img src="Images/Lab 9/distance_2.png" style="max-width:90%"/>
+
+# <img src="Images/Lab 9/polar_2.png" style="max-width:90%"/>
 
 # <img src="Images/Lab 9/distance_3.png" style="max-width:90%"/>
 
+# <img src="Images/Lab 9/polar_3.png" style="max-width:90%"/>
+
 # <img src="Images/Lab 9/distance_4.png" style="max-width:90%"/>
+
+# <img src="Images/Lab 9/polar_4.png" style="max-width:90%"/>
 
 # <img src="Images/Lab 9//distance_5.png" style="max-width:90%"/>
 
+# <img src="Images/Lab 9/polar_5.png" style="max-width:90%"/>
+
 To convert this data, which is all centered about the robot, into a global map, I needed to use a transformation matrix to plot these data points in the world’s reference frame.
 
+To do this, I created a transformation matrix that converted the data measured by the ToF sensor to the orientation of the center of the robot, and then a separate transformation matrix to convert the new coordinate to the global frame. Mathematically, this looks like:
 
-I implemented this in Python on my laptop:
+# <img src="Images/Lab 9/transform.png" style="max-width:90%"/>
+
+Here, P^ToF represents the measured point in the ToF’s reference frame, T^R_ToF represents the transformation from the ToF’s frame to the frame of the robot, T^G_R represents moving from the robot’s frame to the global frame of the world, and P^G represents the position of the measured distance in the world frame.
+
+To determine T^R_ToF, I realized that if I create the orientation of the robot and the ToF to be the same, only translated along the robot’s x-axis by a distance `L`, then this transformation matrix would be very simple since there was no rotation to worry about. This resulted in the following transformation matrix:
+
+# <img src="Images/Lab 9/transformation_T_to_R.png" style="max-width:90%"/>
+
+Moving from the robot’s frame of reference to the world’s frame was more difficult to think about. I realized that since I defined the robot’s x-axis to point in the world’s y-direction when the heading was 0, I was able to create a simple rotation matrix about the world’s z-axis. This resulted in a rotation where the sine of the robots heading times the component of the measurement in the robot’s x-axis minus cosine of the robot's heading times the component of the measurement in the robot’s y-axis resulted in a vector pointing along the world’s x-axis. Similarly, the component of the measurement in the robot’s x-axis times cosine of the heading plus the component of the measurement in the robot’s y-axis times sine of the heading pointed along the global y-axis. This created the rotation matrix between the robot’s frame and the world’s. The position of the robot in the world’s frame was simply equal to the coordinate of the Spot that it was at when taking the measurements, which I named x_R and y_R. This resulted in the following transformation matrix, where I am using short hand notation for sine and cosine, and `theta_R` is the robot’s heading:
+
+# <img src="Images/Lab 9/transformation_R_to_G.png" style="max-width:90%"/>
+
+By multiplying these matrices and position vector together, I was able to simplify this total transformation and created the following function in Python:
 
 ```python
 def transformation(measurement, x_R, y_R, theta_R):
-    l = 82.55 # distance between ToF and center of robot
+    L = 82.55 # distance between ToF and center of robot
+    # returns the x position in global frame, y position in global frame
     return (np.sin(theta_R)*(measurement+l) + x_R), (np.cos(theta_R)*(measurement+l) + y_R)
 ```
 
@@ -182,3 +206,8 @@ beginning_list = [[-1750, 50],
                  ]
 
 ```
+
+
+
+
+
