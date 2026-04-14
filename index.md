@@ -25,3 +25,4 @@ This will be updated as the labs are finished.
 6. [Lab 6: Orientation Control](Pages/Lab6.md)
 7. [Lab 7: Kalman Filter](Pages/Lab7.md)
 8. [Lab 8: Stunts!](Pages/Lab8.md)
+9. [Lab 9: Mapping](Pages/Lab9.md)
