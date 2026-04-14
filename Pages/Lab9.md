@@ -75,7 +75,7 @@ This continues until the number of desired rotations has been achieved.
 
 I executed the above function at five separate locations in the world: (0, 0), (0, 3), (5,3), (5,-3), and (-3,-2). Importantly, those coordinates are in feet, not meters. For simplicity, I convert these to mm and name them Spot 4, Spot 1, Spot 3, Spot 5, and Spot 2, respectively. 
 
-# <img src="Images/Lab 9/annotated_world.png" style="max-width:90%"/>
+# <img src="Images/Lab 9/annotated_world_1.png" style="max-width:90%"/>
 
 Before beginning the measurement taking process, I would orient the robot so that a heading of 0° corresponded to pointing directly into the +y direction of the world’s reference frame.
 
