@@ -137,7 +137,9 @@ To do this, I created a transformation matrix that converted the data measured b
 
 Here, P^ToF represents the measured point in the ToF’s reference frame, T^R_ToF represents the transformation from the ToF’s frame to the frame of the robot, T^G_R represents moving from the robot’s frame to the global frame of the world, and P^G represents the position of the measured distance in the world frame.
 
-To determine T^R_ToF, I realized that if I create the orientation of the robot and the ToF to be the same, only translated along the robot’s x-axis by a distance `L`, then there would be no rotation. This resulted in the following transformation matrix:
+To determine T^R_ToF, I realized that if I create the orientation of the robot and the ToF to be the same, only translated along the robot’s x-axis by a distance `L`, then there would be no rotation. A visualization of this reference frame can be seen below, followed by the resulting transformation matrix:
+
+# <img src="Images/Lab 9/reference_frames.png" style="max-width:90%"/>
 
 # <img src="Images/Lab 9/transformation_T_to_R.png" style="max-width:90%"/>
 
@@ -145,7 +147,11 @@ Moving from the robot’s frame of reference to the world’s frame was more dif
 
 # <img src="Images/Lab 9/transformation_R_to_G.png" style="max-width:90%"/>
 
-By multiplying these matrices and position vector together, I was able to simplify this total transformation and created the following function in Python:
+I then multiplied these matrices and the original position vector, where `m` is the ToF measurement:
+
+# <img src="Images/Lab 9/math.png" style="max-width:90%"/>
+
+I used this to create the following function in Python:
 
 ```python
 def transformation(measurement, x_R, y_R, theta_R):
@@ -158,7 +164,7 @@ Then, I simply ran this function in a `for loop` with the distance and heading d
 
 # <img src="Images/Lab 9/annotated_map.png" style="max-width:90%"/>
 
-When fitting lines of best fit, and taking into account possible errors described earlier, I get the following world map:
+Taking into account the possible errors described earlier as well as clear outliers in the ToF data, I created the following world map:
 
 # <img src="Images/Lab 9/drawn_map.png" style="max-width:90%"/>
 
