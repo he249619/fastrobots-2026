@@ -139,13 +139,13 @@ Here, P^ToF represents the measured point in the ToF’s reference frame, T^R_To
 
 To determine T^R_ToF, I realized that if I create the orientation of the robot and the ToF to be the same, only translated along the robot’s x-axis by a distance `L`, then there would be no rotation. A visualization of this reference frame can be seen below, followed by the resulting transformation matrix:
 
-# <img src="Images/Lab 9/reference_frames.png" style="max-width:90%"/>
+# <img src="Images/Lab 9/reference_frames.png" style="max-width:70%"/>
 
 # <img src="Images/Lab 9/transformation_T_to_R.png" style="max-width:90%"/>
 
 Moving from the robot’s frame of reference to the world’s frame was more difficult to think about. I realized that since I defined the robot’s x-axis to point in the world’s y-direction when the heading was 0, I was able to create a simple rotation matrix about the world’s z-axis. This resulted in a rotation where the sine of the robots heading times the component of the measurement in the robot’s x-axis minus cosine of the robot's heading times the component of the measurement in the robot’s y-axis resulted in a vector pointing along the world’s x-axis. Similarly, the component of the measurement in the robot’s x-axis times cosine of the heading plus the component of the measurement in the robot’s y-axis times sine of the heading pointed along the global y-axis. 
 
-This created the rotation matrix between the robot’s frame and the world’s. The position of the robot in the world’s frame was simply equal to the coordinate of the Spot that it was at when taking the measurements, which I named x_R and y_R. This resulted in the following transformation matrix, where I am using short hand notation for sine and cosine, and `theta_R` is the robot’s heading:
+This created the rotation matrix between the robot’s frame and the world’s. The position of the robot in the world’s frame was simply equal to the coordinate of the Spot that it was at when taking the measurements, which I named `x_R` and `y_R`. This resulted in the following transformation matrix, where I am using short hand notation for sine and cosine, and `theta_R` is the robot’s heading:
 
 # <img src="Images/Lab 9/transformation_R_to_G.png" style="max-width:90%"/>
 
