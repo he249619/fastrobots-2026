@@ -21,31 +21,15 @@ To control the robot’s orientation while rotating and taking measurements, I d
            success = robot_cmd.get_next_value(angle_increment);
            if (!success)
                return;
-
-
            success = robot_cmd.get_next_value(number_of_rotations);
            if (!success)
                return;
-
-
            internal_counter = 0; # Used to keep track of number of measurements
-
-
            disable_motors = 0; # allows motors to be ran
-
-
 	    accumulated_angle = 0.0; # keeps track of how much the robot has rotated 
-
-
            mapping();
-
-
            disable_motors = 1; # doesn’t allow motors to be ran
-
-
            transmit_mapping_info(); # sends all data collected during mapping process
-
-
            break;
 ```
 
@@ -57,13 +41,9 @@ Once a measurement has been taken, the estimate of yaw is taken from the IMU via
 
 ```cpp
        angle = wrap_180(return_yaw_measurement(accumulated_angle));
-
-
        if ( (previous_angle < 0.0 ) && (angle >= 0.0) ){
            rotations = rotations + 1;
        }
-
-
        previous_angle = angle;
 ```
 
@@ -74,8 +54,6 @@ After storing the data, I calculate the new goal angle based on the current head
 ```cpp
        accumulated_angle = accumulated_angle + angle_increment;
        goal_angle = accumulated_angle + goal_angle_offset;
-
-
        if (goal_angle > 360.0){
            goal_angle_offset = goal_angle_offset - 360.0;
            goal_angle = accumulated_angle + goal_angle_offset;
@@ -125,22 +103,28 @@ This distance error, in addition to the heading error discussed earlier, could c
 
 Here is the collected data from all of the spots:
 
+Spot 1:
+
 # <img src="Images/Lab 9/distance_1.png" style="max-width:90%"/>
 
 # <img src="Images/Lab 9/polar_1.png" style="max-width:90%"/>
 
+Spot 2:
 # <img src="Images/Lab 9/distance_2.png" style="max-width:90%"/>
 
 # <img src="Images/Lab 9/polar_2.png" style="max-width:90%"/>
 
+Spot 3:
 # <img src="Images/Lab 9/distance_3.png" style="max-width:90%"/>
 
 # <img src="Images/Lab 9/polar_3.png" style="max-width:90%"/>
 
+Spot 4:
 # <img src="Images/Lab 9/distance_4.png" style="max-width:90%"/>
 
 # <img src="Images/Lab 9/polar_4.png" style="max-width:90%"/>
 
+Spot 5:
 # <img src="Images/Lab 9//distance_5.png" style="max-width:90%"/>
 
 # <img src="Images/Lab 9/polar_5.png" style="max-width:90%"/>
@@ -153,7 +137,7 @@ To do this, I created a transformation matrix that converted the data measured b
 
 Here, P^ToF represents the measured point in the ToF’s reference frame, T^R_ToF represents the transformation from the ToF’s frame to the frame of the robot, T^G_R represents moving from the robot’s frame to the global frame of the world, and P^G represents the position of the measured distance in the world frame.
 
-To determine T^R_ToF, I realized that if I create the orientation of the robot and the ToF to be the same, only translated along the robot’s x-axis by a distance `L`, then this transformation matrix would be very simple since there was no rotation to worry about. This resulted in the following transformation matrix:
+To determine T^R_ToF, I realized that if I create the orientation of the robot and the ToF to be the same, only translated along the robot’s x-axis by a distance `L`, then there would be no rotation. This resulted in the following transformation matrix:
 
 # <img src="Images/Lab 9/transformation_T_to_R.png" style="max-width:90%"/>
 
