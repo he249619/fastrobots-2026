@@ -19,7 +19,7 @@ while cmdr.sim_is_running() and cmdr.plotter_is_running():
     cmdr.plot_gt(gt_pose[0], gt_pose[1])
 ```
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/3K-tkRqZhZw" title="ECE 4160: Lab 9 Mapping" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/rQIweY6gHlQ" title="ECE 4160: Lab 9 Mapping" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
 
 ####  Closed Loop Controller
 
@@ -45,7 +45,7 @@ I noticed that the robot will run into an obstacle if it is not directly in its 
 
 One possible solution to this could be to have the robot move forwards until it is a certain distance from the obstacle in front of it, and then once it has surpassed that threshold the robot could rotate a full 360° and incrementally take distance measurements. The robot could then go between whichever two angles resulted in consecutive measurements that had the largest average distance. Using the heading between these angles would hopefully avoid the situation of the robot unexpectedly running into walls.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/3K-tkRqZhZw" title="ECE 4160: Lab 9 Mapping" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/wnhaE0D8utM" title="ECE 4160: Lab 9 Mapping" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
 
 ### Lab
 
