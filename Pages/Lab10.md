@@ -32,6 +32,8 @@ while cmdr.sim_is_running() and cmdr.plotter_is_running():
     cmdr.plot_gt(gt_pose[0], gt_pose[1])
 ```
 
+This code resulted in the following behavior.
+
 <iframe width="560" height="315" src="https://www.youtube.com/embed/rQIweY6gHlQ" title="ECE 4160: Lab 9 Mapping" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
 
 ####  Closed Loop Controller
