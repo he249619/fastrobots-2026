@@ -19,7 +19,7 @@ The simulation environment maps the robot’s world and visualizes the robot’s
 
 I first created an open loop controller that made the robot move in a square.
 
-I did this by commanding the robot to move forward, stop moving and turn 90°, and then continuously applying these same commands. The velocity command runs for 1 second, but that is because I force the system to wait 1 second before updating this value. If I had not put this here, I assume that the velocity stay constant until it was changed via a new velocity command.
+I did this by commanding the robot to move forward, stop moving and turn 90°, and then continuously applying these same commands. The velocity command runs for 1 second, but that is because I force the system to wait 1 second before updating this value. If I had not put this here, I assume that the velocity was constant until it was changed via a new command.
 
 ```python
 while cmdr.sim_is_running() and cmdr.plotter_is_running():
@@ -54,22 +54,22 @@ while cmdr.sim_is_running() and cmdr.plotter_is_running():
     cmdr.plot_gt(gt_pose[0], gt_pose[1])
 ```
 
-Whenever the robot was within 0.5 meters of an obstacle directly in front of it, as measured by the distance center on the front of its chassis, the robot car would turn 90° and continue turning until the sensor reported a distance greater than 0.5 meters. Since all of the obstacles within the robot’s world had right corners, I figured that a 90° rotation would be sufficient in allowing the robot to avoid most obstacles. In addition to this, I made sure that the robot moved slowly so that it could rotate in time before hitting an obstacle in front of it. I originally implemented it so that the robot moves at about 0.5 m/s, but I also noticed that the obstacle avoidance seemed to work just as fine when the robot moved at 2 m/s. I do not believe this result would be as easily replicable in the real world because it is possible the simulator doesn’t account for the momentum that the car has when moving quickly.
+Whenever the robot was within 0.5 meters of an obstacle directly in front of it, the robot would turn 90° and continue turning until the sensor reported a distance greater than 0.5 meters. Since all of the obstacles within the robot’s world had right corners, a 90° rotation would be sufficient in allowing the robot to avoid most obstacles. Additionally, the robot's small velocity allowed it to rotate in time before hitting an obstacle. I originally had the robot move at 0.5 m/s, but I noticed that the obstacle avoidance worked just as well when the robot moved at 2 m/s. I don’t believe this result would be replicable in the real world because of the additional momentum of the car.
 
-I noticed that the robot will run into an obstacle if it doesn't see it but it exists within the robot’s path. For example, this seems to happen when the robot’s sensor’s path of measurement barely misses a close wall or corner. The robot then believes that its closest obstacle is actually much farther away than it, causing it to run into a wall.
+I noticed that the robot ran into obstacles if they weren’t directly within the line of sight of the robot’s distance sensor. For example, this happens when the sensor’s path of measurement barely misses a close obstacle. The robot then believes that its closest obstacle is much farther away, causing it to run into a wall.
 
-A solution to this could be to have the robot move forward until it is a certain distance from the obstacle in front of it, and then the robot could rotate 360° and incrementally take distance measurements. The robot could then go between whichever two angles resulted in consecutive measurements that had the largest average distance. This would hopefully avoid the situation of the robot unexpectedly running into walls.
+A solution to this could be to have the robot move forward until it is near an obstacle, and then rotate 360° and incrementally take distance measurements. The robot could drive between whichever two angles resulted in consecutive measurements with the largest average distance. Hopefully, this would prevent the robot from running into walls.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/wnhaE0D8utM" title="ECE 4160: Lab 9 Mapping" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
 
 ### Lab: Implementing a Bayes Filter
 
-To put it simply, Bayes Filters operate by starting with an initial belief about the state of the robot, and changing the probability of this belief in order to hopefully better reflect the true state of the robot based on two considerations:
+To put it simply, Bayes Filters operate by starting with an initial belief about the state of the robot, and changing the likelihood of this belief in order to better reflect the true state of the robot based on two considerations:
 
-1. Given the previous input, and taking into account all possible previous states, what state is the robot likely to find itself in? This is the prediction step of the Bayes Filter, and it requires an odometry motion model in order to see how likely it is to go from one state to another given an input.
-2. Over all possible current states, which states would most likely allow the robot to sense the environment in the way that it had? This is the update step of the Bayes filter, and it requires a sensor model.
+1. Given the previous input, and taking into account all possible previous states, what state is the robot likely to find itself in? This is the prediction step of the Bayes Filter.
+2. Over all possible current states, which states would most likely allow the robot to sense the environment in the way that it had? This is the update step of the Bayes filter.
 
-This functionality can be visualized below in an image of the algorithm borrowed from the Fast Robot lecture slides:
+This algorithm can be visualized below, in an image borrowed from the lecture slides.
 
 # <img src="Images/Lab 10/bayes_algo.png" style="max-width:90%"/>
 
@@ -77,7 +77,7 @@ This functionality can be visualized below in an image of the algorithm borrowed
 
 ##### Computing Control
 
-This function took in the current and previous poses and calculated the control input necessary to move the robot from the previous to current pose.
+This function took in the current and previous poses to calculate the control input that would move the robot from the previous to current pose.
 
 The control is a combination of an initial rotation, a translation, and a second rotation. A visualization of this can be seen in the image below, which is borrowed from the lecture slides. Here, the robot object associated with `x',y',theta'` is the current pose, and the robot associated with `x,y,theta` is the previous pose.
  
@@ -107,9 +107,9 @@ def compute_control(cur_pose, prev_pose):
 
 ##### Odometry Motion Model
 
-This function returns the probability that the robot moved from a previous pose to the current pose when given a control input `u`. We use `compute_control()` in order to determine what the robot would have to actually do to move from the previous to current pose, and compare this movement to what it would have done if it had followed the ideal control input `u` from the previous pose. 
+This function returns the probability that the robot moved from a previous pose to the current pose when given an ideal control input `u`. We use `compute_control()` in order to determine what the robot actually did to move between the poses, and compared this movement to what it would have done if it had followed `u` from the previous pose. 
 
-We then assume that the actual control inputs differ from the ideal control input following a normal distribution, and we use this to determine the probability that the robot could move from the previous pose to the current one given input `u`.
+We assume that the actual control inputs differ from the ideal control input following a normal distribution, and we use this to determine the probability that the robot could move from the previous pose to the current one given input `u`.
 
 ```python
 def odom_motion_model(cur_pose, prev_pose, u):
@@ -210,3 +210,4 @@ The output of the Baye Filter, however, much more closely approaches the true po
 ### Acknowledgements
 
 I referenced Stephan Wagner’s and Tyler Wisniewski’s previous work in order to double check mine.
+
