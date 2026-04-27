@@ -3,10 +3,22 @@ description: "Lab Description and Report"
 layout: default
 ---
 # Lab 10: Grid Localization using Bayes Filter
+
+In this lab, we discretize the robot’s world into multiple grids. We do this in order to better localize and eventually maneuver through the world. To break the world into grids, we discretize both the x and y directions, and then we create a new xy grid for each orientation of interest. The following image, borrowed from lecture material, can help with visualizing this.
+
+# <img src="Images/Lab 10/discretization.png" style="max-width:90%"/>
+
+To use these grids to do localization, we will implement a Bayes Filter. While the Bayes Filter will be explained later in this lab, we first need to ensure that the simulation environment in which we are testing the Bayes Filter is functional.
+
 ### Pre-lab: Using the Simulator
+
+The simulation environment maps the robot’s world and also visualizes the robot’s pose. The robot is able to take distance measurements from its front, just like the robot in real life. Additionally, we are able to control both the linear velocity and the radial velocity of the robot. Before implementing the Bayes Filter, I needed to experiment with the simulation framework.
+
 ####  Open Loop Controller
-The velocity command runs for 1 second, but that is because I force the system to maintain a specific velocity for 1 second by using `await asyncio.sleep(1)`. If I had not put this here, I would assume that the velocity command could be set once and stay on at the same velocity until it was changed to a different velocity value via a new velocity command.
-It appears that the robot creates about the same shape every complete cycle, but it is not a perfect square. This can easily be deduced when looking at the plotted true position of the robot, which looks like a lot of square shaped objects rotated about their center, stacked upon one another. However, it does appear that the shape the robot traces out seems to rotate the same amount every cycle, leading me to believe that the robot is executing roughly the same shape.
+
+I first tried to create an open loop controller that would make the robot move in a square.
+
+I do this by commanding the robot to move forward, stop moving and turn 90°, and then continuously applying these same commands. The velocity command runs for 1 second, but that is because I force the system to maintain a specific velocity for 1 second by using `await asyncio.sleep(1)`. If I had not put this here, I would assume that the velocity command could be set once and stay on at the same velocity until it was changed to a different velocity value via a new velocity command.
 
 ```python
 while cmdr.sim_is_running() and cmdr.plotter_is_running():
