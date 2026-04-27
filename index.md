@@ -26,3 +26,4 @@ This will be updated as the labs are finished.
 7. [Lab 7: Kalman Filter](Pages/Lab7.md)
 8. [Lab 8: Stunts!](Pages/Lab8.md)
 9. [Lab 9: Mapping](Pages/Lab9.md)
+10. [Lab 10: Grid Localization using Bayes Filter](Pages/Lab10.md)
