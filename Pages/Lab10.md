@@ -32,7 +32,7 @@ while cmdr.sim_is_running() and cmdr.plotter_is_running():
     cmdr.plot_gt(gt_pose[0], gt_pose[1])
 ```
 
-This code resulted in the following behavior.
+This code resulted in the following behavior. In the video, the data plotted in red is the raw odometry data, and the data plotted in green is the true position of the robot. As it can be seen, the raw odometry data does a terrible job at localizing on the robot. This will be fixed with the Bayes Filter.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/rQIweY6gHlQ" title="ECE 4160: Lab 9 Mapping" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen> </iframe> 
 
@@ -79,8 +79,8 @@ This functionality can be visualized below in an image of the algorithm borrowed
 
 The first function I implemented was `compute_control()`. This took in the current and previous poses of the robot, and calculated the control inputs necessary to move the robot from the previous to current pose. Importantly, this calculates the control input that the robot actually performed, and not necessarily the control input that the robot was given.
 
-The control is a combination of an initial rotation, a translation, and a second rotation. This simple model works as a control input because our robot can only change heading and position, and these three steps can allow for us to track the changes between the starting and ending poses without having to know exactly how the robot moved. A visualization of this can be seen in the image below, which is borrowed from the lecture slides.
-
+The control is a combination of an initial rotation, a translation, and a second rotation. This simple model works as a control input because our robot can only change heading and position, and these three steps can allow for us to track the changes between the starting and ending poses without having to know exactly how the robot moved. A visualization of this can be seen in the image below, which is borrowed from the lecture slides. Here, the circular robot object associated with `x',y',theta'` is the current pose, and the robot associated with `x,y,theta` is the previous pose.
+ 
 # <img src="Images/Lab 10/odometry_pic.png" style="max-width:90%"/>
 
 The math behind deriving the two rotations and translation is shown below, also borrowed from the lecture slides.
