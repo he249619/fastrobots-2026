@@ -1,3 +1,4 @@
+--- 
 title: "Lab 10"
 description: "Lab Description and Report"
 layout: default
