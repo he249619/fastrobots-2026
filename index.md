@@ -27,3 +27,4 @@ This will be updated as the labs are finished.
 8. [Lab 8: Stunts!](Pages/Lab8.md)
 9. [Lab 9: Mapping](Pages/Lab9.md)
 10. [Lab 10: Grid Localization using Bayes Filter](Pages/Lab10.md)
+11. [Lab 11: Localization on the Real Robot](Pages/Lab11.md)
