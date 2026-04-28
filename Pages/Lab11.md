@@ -192,6 +192,7 @@ Trial 1:
 
 Trial 2:
 # <img src="Images/Lab 11/s2_t2.png" style="max-width:90%"/>
+
 True Position | Bayes Localization | Distance from Truth | Reported Probability
 --- | --- | --- | ---
 (-0.9144, -0.6096) | (-0.914, -0.914) | 0.3044 m | 0.9884
@@ -200,12 +201,14 @@ True Position | Bayes Localization | Distance from Truth | Reported Probability
 
 Trial 1:
 # <img src="Images/Lab 11/s3_t1.png" style="max-width:90%"/>
+
 True Position | Bayes Localization | Distance from Truth | Reported Probability
 --- | --- | --- | ---
 (1.524, 0.9144) | (1.524,0.610) | 0.3044 m | 0.9999995
 
 Trial 2:
 # <img src="Images/Lab 11/s3_t2.png" style="max-width:90%"/>
+
 True Position | Bayes Localization | Distance from Truth | Reported Probability
 --- | --- | --- | ---
 (1.524, 0.9144) | (1.524,0.610) | 0.3044 m | 0.9999999
@@ -214,12 +217,14 @@ True Position | Bayes Localization | Distance from Truth | Reported Probability
 
 Trial 1:
 # <img src="Images/Lab 11/s4_t1.png" style="max-width:90%"/>
+
 True Position | Bayes Localization | Distance from Truth | Reported Probability
 --- | --- | --- | ---
 (0, 0) | (0,0) | 0 m | 1
 
 Trial 2:
 # <img src="Images/Lab 11/s4_t2.png" style="max-width:90%"/>
+
 True Position | Bayes Localization | Distance from Truth | Reported Probability
 --- | --- | --- | ---
 (0, 0) | (0,0) | 0 m | 0.9999999
@@ -228,12 +233,14 @@ True Position | Bayes Localization | Distance from Truth | Reported Probability
 
 Trial 1:
 # <img src="Images/Lab 11/s5_t1.png" style="max-width:90%"/>
+
 True Position | Bayes Localization | Distance from Truth | Reported Probability
 --- | --- | --- | ---
 (1.524, -0.9144) | (1.829,-0.610) | 0.4309 m | 1.0
 
 Trial 2:
 # <img src="Images/Lab 11/s5_t2.png" style="max-width:90%"/>
+
 True Position | Bayes Localization | Distance from Truth | Reported Probability
 --- | --- | --- | ---
 (1.524, -0.9144) | (1.829,-0.610) | 0.4309 m | 1.0
